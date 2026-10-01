@@ -1,4 +1,4 @@
-<img src="images/logo.svg" alt="" width="96" align="right">
+<img src="images/logo.svg" alt="" width="120" align="right">
 
 # Jev Triage (jevtri)
 

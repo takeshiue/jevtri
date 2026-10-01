@@ -1,5 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="jevtri logo (placeholder)">
-<rect width="128" height="128" rx="24" fill="#111"/>
-<path d="M28 40h72M28 64h48M28 88h28" stroke="#fff" stroke-width="10" stroke-linecap="round"/>
-<circle cx="94" cy="88" r="14" fill="#7ee787"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#12191d"/><stop offset=".56" stop-color="#050808"/><stop offset="1"/></linearGradient>
+<linearGradient id="sweep" x1=".12" y1=".9" x2=".9" y2=".08"><stop stop-color="#00a95f" stop-opacity=".06"/><stop offset=".62" stop-color="#00d86b" stop-opacity=".22"/><stop offset="1" stop-color="#18f96d" stop-opacity=".50"/></linearGradient>
+<linearGradient id="beam" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#02985c"/><stop offset=".55" stop-color="#70f58c"/><stop offset="1" stop-color="#f5fff1"/></linearGradient>
+<linearGradient id="tri" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#58f59b"/><stop offset="1" stop-color="#06e775"/></linearGradient>
+<filter id="g1" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="13" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="g2" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect x="76" y="73" width="1090" height="1097" rx="228" fill="url(#bg)" stroke="#27343a" stroke-width="3"/>
+<g>
+<path d="M627 690 L205 326 A555 555 0 0 1 902 184 Z" fill="url(#sweep)"/>
+<path d="M205 326 A555 555 0 0 1 902 184" fill="none" stroke="#00bd67" stroke-width="12" opacity=".68"/>
+<path d="M314 421 A410 410 0 0 1 835 298" fill="none" stroke="#00cb70" stroke-width="12" opacity=".70"/>
+<path d="M421 518 A267 267 0 0 1 762 424" fill="none" stroke="#00cb70" stroke-width="12" opacity=".70"/>
+<path d="M520 608 A130 130 0 0 1 686 563" fill="none" stroke="#00c96e" stroke-width="11" opacity=".57"/>
+<path d="M627 690 L510 145" stroke="#00a85e" stroke-width="8" opacity=".24"/>
+<path d="M627 690 L902 235" stroke="#00ff6a" stroke-width="40" stroke-linecap="round" opacity=".15" filter="url(#g1)"/>
+<path d="M627 690 L902 235" stroke="url(#beam)" stroke-width="30" stroke-linecap="round"/>
+<circle cx="395" cy="382" r="25" fill="#48f49a" filter="url(#g2)"/>
+<circle cx="568" cy="548" r="25" fill="#4cf69a" filter="url(#g2)"/>
+<circle cx="902" cy="235" r="58" fill="#43ff75" opacity=".18" filter="url(#g1)"/>
+<circle cx="902" cy="235" r="52" fill="#f2fff0"/>
+</g>
+<text x="627" y="912" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="202" font-weight="700" letter-spacing="-8"><tspan fill="#fff">jev</tspan><tspan fill="url(#tri)">tri</tspan></text>
+<text x="627" y="1017" text-anchor="middle" font-family="DejaVu Sans, Arial, sans-serif" font-size="64" font-weight="400" letter-spacing="6" fill="#b4c5d6">Jev Triage</text>
 </svg>
