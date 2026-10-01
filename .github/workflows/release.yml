@@ -102,6 +102,9 @@ jobs:
         run: |
           version=$(sed -n 's/^var version = "\(.*\)"$/\1/p' cmd/jevtri/main.go)
           mkdir -p build
+          # The public repository has no .gitignore; without this GoReleaser
+          # sees build/ as a dirty tree and refuses to release.
+          echo /build/ >> .git/info/exclude
           git archive --format=tar.gz --prefix="jevtri-$version/" -o "build/jevtri-$version.tar.gz" HEAD
           awk -v v="$version" '/^## /{p=($2==v); next} p' CHANGELOG.md > build/notes.md
       - name: Import the signing key
