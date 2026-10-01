@@ -1,24 +1,15 @@
-# jevtri
+<img src="images/logo.svg" alt="" width="96" align="right">
+
+# Jev Triage (jevtri)
 
 [English](README.md) | [日本語](README.ja.md) | 简体中文
 
-jevtri 帮助您在 Linux 服务器发生故障后，决定首先阅读哪个日志。
+jevtri（jev + triage）是用于 Linux 服务器故障**分诊（triage）**的工具。分诊是指在正式排查之前，
+快速决定从哪里开始调查的初步判断。jevtri 帮助您决定首先阅读哪个日志。
 它从已配置的日志中收集故障时间前后的日志行，对敏感信息进行脱敏，然后请
 [Jev](https://docs.typesafe.ai) API 判断每个日志的调查价值。
 
-```
-$ sudo jevtri -t 03:02 -i "网站返回 502"
-Reference time: 2026-09-28 03:02:00 CST
-Window:         02:57:00 .. 03:07:00 (5 min)
-Symptom:        网站返回 502
-
-Investigation priority (0-100; not the probability of being the cause):
-   1. /var/log/nginx/error.log   97
-   2. /var/log/messages          33
-   3. /var/log/secure             0
-
-Start with: /var/log/nginx/error.log
-```
+![运行示例: sudo jevtri -t 03:02 -i "网站返回 502"，nginx 的 error.log 排名第一](images/example-zh-CN.svg)
 
 这个数字是**调查优先级**，并不是该日志包含故障原因的概率。jevtri 只建议从哪里开始调查；
 它不会查明原因、修复问题或监控服务器。有些故障不会在任何日志中留下痕迹。当所有日志的得分都很低时，
@@ -26,22 +17,56 @@ jevtri 会给出提示，并建议检查未配置的日志、应用程序本身�
 
 结果和错误信息以英文显示。
 
+判断示例（测试所用日志及其结果）见[这里](guide/examples.zh-CN.md)，发送前的脱敏示例见[这里](guide/masking.zh-CN.md)。
+
 ## 安装
 
-x86_64 和 arm64 的软件包与 `SHA256SUMS` 一起发布在
-[发布页面](https://github.com/takeshiue/jevtri/releases)。
-`SHA256SUMS` 使用本仓库和发布页面中的密钥 `jevtri-signing-key.asc` 签名（`SHA256SUMS.asc`）。
-密钥指纹为 `EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961`。
+一条命令即可安装：
+
+AlmaLinux、Rocky Linux、RHEL 8、9、10:
 
 ```sh
-gpg --import jevtri-signing-key.asc
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_x86_64.rpm
+```
+
+Ubuntu 22.04、24.04，Debian 12:
+
+```sh
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_amd64.deb && sudo apt install ./jevtri_0.1.0_amd64.deb
+```
+
+在 arm64 服务器上，请将 `x86_64` 替换为 `aarch64`，将 `amd64` 替换为 `arm64`。
+其他文件见[发布页面](https://github.com/takeshiue/jevtri/releases)。
+
+### 先验证签名再安装
+
+`SHA256SUMS` 使用密钥 `jevtri-signing-key.asc` 签名（`SHA256SUMS.asc`）。
+请确认 `gpg --verify` 显示 `Good signature` 以及指纹
+`EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961` 后再安装。
+
+AlmaLinux、Rocky Linux、RHEL 8、9、10:
+
+```sh
+base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
+curl -fL --remote-name-all $base/jevtri_0.1.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-# AlmaLinux、Rocky Linux、RHEL 8、9、10
 sudo dnf install ./jevtri_0.1.0_x86_64.rpm
-# Ubuntu 22.04、24.04，Debian 12
+```
+
+Ubuntu 22.04、24.04，Debian 12:
+
+```sh
+base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
+curl -fL --remote-name-all $base/jevtri_0.1.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+curl -fsSL $base/jevtri-signing-key.asc | gpg --import
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS
 sudo apt install ./jevtri_0.1.0_amd64.deb
 ```
+
+### 支持的平台和安装的文件
 
 软件包已在 x86_64 的 AlmaLinux 8、9、10，Ubuntu 22.04、24.04 和 Debian 12 上测试。
 arm64 软件包以相同方式构建，但尚未在 arm64 服务器上测试。
@@ -111,6 +136,12 @@ jevtri 可以通过 cron 或 systemd 定时器运行。不指定 `-t` 时，它�
 | 3 | 无法连接 Jev，或请求被拒绝。不会编造优先级 |
 
 ## 报告真实案例
+
+为了改进 jevtri 的判断，作者正在收集真实的故障案例，欢迎您的协助。
+
+`jevtri report` 本身**不发送任何内容**，只生成报告文件。是否提交由您决定。如果提交，请先检查内容，
+再由您自己粘贴到本仓库的 GitHub Issue（任何人都能阅读的公开位置）。作者会阅读这些 Issue，
+用于改进排序和作为测试。
 
 找到故障的真正原因后，可以用 `sudo jevtri report` 将发送记录中的那次运行生成报告：
 选择该次运行以及真正显示原因的日志。报告以 `0600` 写在发送记录旁边，主机名、个人用户名（UID 1000 及以上）和 IP 地址会被
@@ -194,8 +225,9 @@ jevtri 只向 TypeSafe 提供的服务 Jev（`https://api.typesafe.ai/v1/systemo
 2025-11-19，于 2026-09-27 查阅），输入不会用于训练或微调模型，除服务提供商外不会向第三方披露，
 并可应要求删除。保存期限仅写明为“合理必要的期限”，没有具体说明。
 
-Jev 的费用为每百万输入令牌 0.042 美元，输出免费
-（[models](https://docs.typesafe.ai/models)，2026-09-28 查阅）。一次运行的费用远低于 1 美分。
+Jev 的费用为每百万输入令牌约 0.28 元人民币（0.042 美元），输出免费
+（[models](https://docs.typesafe.ai/models)，2026-09-28 查阅；按 1 美元 = 6.70 元人民币换算）。
+即使发送量达到默认上限（48,000 字节），一次运行的费用也不到 0.02 元人民币。
 
 ## 帮助和手册
 

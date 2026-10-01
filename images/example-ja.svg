@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="628" height="252" viewBox="0 0 628 252" role="img" aria-label="jevtri example output">
+<rect width="628" height="252" rx="8" fill="#000"/>
+<g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,'Noto Sans Mono CJK JP',monospace" font-size="14" fill="#fff" xml:space="preserve">
+<text x="16" y="30" fill="#7ee787">$ sudo jevtri -t 03:02 -i &quot;Web サイトが 502 を返す&quot;</text>
+<text x="16" y="50">Reference time: 2026-09-28 03:02:00 JST</text>
+<text x="16" y="70">Window:         02:57:00 .. 03:07:00 (5 min)</text>
+<text x="16" y="90">Symptom:        Web サイトが 502 を返す</text>
+<text x="16" y="110"></text>
+<text x="16" y="130">Investigation priority (0-100; not the probability of being the cause):</text>
+<text x="16" y="150">   1. /var/log/nginx/error.log   97</text>
+<text x="16" y="170">   2. /var/log/messages          33</text>
+<text x="16" y="190">   3. /var/log/secure             0</text>
+<text x="16" y="210"></text>
+<text x="16" y="230">Start with: /var/log/nginx/error.log</text>
+</g></svg>

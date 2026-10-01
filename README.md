@@ -1,25 +1,17 @@
-# jevtri
+<img src="images/logo.svg" alt="" width="96" align="right">
+
+# Jev Triage (jevtri)
 
 English | [日本語](README.ja.md) | [简体中文](README.zh-CN.md)
 
-jevtri helps you decide which log to read first after an incident on a Linux server.
+jevtri (jev + triage) is a tool for the **triage** of incidents on Linux servers: the quick
+first decision on where to look, made before the real troubleshooting begins.
+It helps you decide which log to read first.
 It collects the lines around the incident time from the logs you configured, masks
 secrets, and asks the [Jev](https://docs.typesafe.ai) API how worth investigating
 each log is.
 
-```
-$ sudo jevtri -t 03:02 -i "The website returns 502"
-Reference time: 2026-09-28 03:02:00 JST
-Window:         02:57:00 .. 03:07:00 (5 min)
-Symptom:        The website returns 502
-
-Investigation priority (0-100; not the probability of being the cause):
-   1. /var/log/nginx/error.log   97
-   2. /var/log/messages          33
-   3. /var/log/secure             0
-
-Start with: /var/log/nginx/error.log
-```
+![Example: sudo jevtri -t 03:02 -i "The website returns 502" ranks nginx error.log first](images/example.svg)
 
 The number is an **investigation priority**, not the probability that a log holds
 the cause. jevtri recommends where to start; it does not find the cause, fix
@@ -27,23 +19,56 @@ anything, or watch the server. Some failures leave no trace in any log. When eve
 log scores low, jevtri says so and suggests looking at logs that are not
 configured, at the application, or outside the host.
 
+See [examples](guide/examples.md) of test logs and how they were ranked, and an [example of masking](guide/masking.md) before sending.
+
 ## Install
 
-Packages for x86_64 and arm64 are on the
-[releases page](https://github.com/takeshiue/jevtri/releases), with `SHA256SUMS`.
-`SHA256SUMS` is signed (`SHA256SUMS.asc`) with the key `jevtri-signing-key.asc`
-in this repository and on the releases page. Its fingerprint is
-`EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961`.
+One command:
+
+AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-gpg --import jevtri-signing-key.asc
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_x86_64.rpm
+```
+
+Ubuntu 22.04, 24.04, Debian 12:
+
+```sh
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_amd64.deb && sudo apt install ./jevtri_0.1.0_amd64.deb
+```
+
+On arm64 servers, replace `x86_64` with `aarch64` and `amd64` with `arm64`.
+Other files are on the [releases page](https://github.com/takeshiue/jevtri/releases).
+
+### Verify the signature first
+
+`SHA256SUMS` is signed (`SHA256SUMS.asc`) with the key `jevtri-signing-key.asc`.
+Check that `gpg --verify` prints `Good signature` and the fingerprint
+`EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961` before installing.
+
+AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
+
+```sh
+base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
+curl -fL --remote-name-all $base/jevtri_0.1.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-# AlmaLinux, Rocky Linux, RHEL 8, 9, 10
 sudo dnf install ./jevtri_0.1.0_x86_64.rpm
-# Ubuntu 22.04, 24.04, Debian 12
+```
+
+Ubuntu 22.04, 24.04, Debian 12:
+
+```sh
+base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
+curl -fL --remote-name-all $base/jevtri_0.1.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+curl -fsSL $base/jevtri-signing-key.asc | gpg --import
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS
 sudo apt install ./jevtri_0.1.0_amd64.deb
 ```
+
+### Platforms and installed files
 
 The packages are tested on AlmaLinux 8, 9 and 10, Ubuntu 22.04 and 24.04 and
 Debian 12 on x86_64. The arm64 packages are built the same way but have not been
@@ -117,6 +142,13 @@ jevtri can run from cron or a systemd timer. Without `-t` it looks at the last
 | 3 | Jev could not be reached or refused the request. No priorities are made up |
 
 ## Report a real case
+
+To make jevtri rank better, the author collects real incidents. Your help is welcome.
+
+`jevtri report` itself **sends nothing**; it only writes a report file. Whether to post it
+is up to you. If you do, check it and paste it yourself into a GitHub issue in this
+repository, which anyone can read. The author reads these issues and uses them to
+improve the ranking and as tests.
 
 When you have found the real cause of an incident, `sudo jevtri report` turns
 that run from the send log into a report: choose the run and the log that

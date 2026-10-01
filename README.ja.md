@@ -1,24 +1,16 @@
-# jevtri
+<img src="images/logo.svg" alt="" width="96" align="right">
+
+# Jev Triage (jevtri)
 
 [English](README.md) | 日本語 | [简体中文](README.zh-CN.md)
 
-jevtri は、Linux サーバーで障害が起きたとき、最初にどのログを読むかを決める手助けをします。
+jevtri（jev + triage）は、Linux サーバーの障害の**トリアージ**のための道具です。トリアージとは、
+本格的な切り分けに入る前に、どこから調べるかを手早く決める初動の判断のことです。
+jevtri は、最初にどのログを読むかを決める手助けをします。
 設定したログから障害時刻の前後の行を集め、機密を伏せ字にしたうえで、
 [Jev](https://docs.typesafe.ai) の API に各ログを調べる価値を判定させます。
 
-```
-$ sudo jevtri -t 03:02 -i "Web サイトが 502 を返す"
-Reference time: 2026-09-28 03:02:00 JST
-Window:         02:57:00 .. 03:07:00 (5 min)
-Symptom:        Web サイトが 502 を返す
-
-Investigation priority (0-100; not the probability of being the cause):
-   1. /var/log/nginx/error.log   97
-   2. /var/log/messages          33
-   3. /var/log/secure             0
-
-Start with: /var/log/nginx/error.log
-```
+![実行例: sudo jevtri -t 03:02 -i "Web サイトが 502 を返す" で nginx の error.log が1位](images/example-ja.svg)
 
 数字は**調査優先度**で、そのログに原因がある確率ではありません。jevtri が示すのは
 どこから調べ始めるかのおすすめです。原因の特定、復旧、サーバーの監視は行いません。
@@ -27,23 +19,56 @@ Start with: /var/log/nginx/error.log
 
 結果の表示とエラーメッセージは英語です。
 
+判定の例（試験で使ったログと、その結果）は[こちら](guide/examples.ja.md)、送る前の伏せ字の例は[こちら](guide/masking.ja.md)にあります。
+
 ## 導入
 
-x86_64 と arm64 のパッケージを、`SHA256SUMS` とともに
-[リリースのページ](https://github.com/takeshiue/jevtri/releases)に置いています。
-`SHA256SUMS` には、このリポジトリとリリースのページにある鍵 `jevtri-signing-key.asc`
-で署名（`SHA256SUMS.asc`）しています。鍵のフィンガープリントは
-`EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961` です。
+コマンド1行で入ります。
+
+AlmaLinux、Rocky Linux、RHEL 8・9・10：
 
 ```sh
-gpg --import jevtri-signing-key.asc
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_x86_64.rpm
+```
+
+Ubuntu 22.04・24.04、Debian 12：
+
+```sh
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_amd64.deb && sudo apt install ./jevtri_0.1.0_amd64.deb
+```
+
+arm64 のサーバーでは、`x86_64` を `aarch64` に、`amd64` を `arm64` に置き換えます。
+ほかのファイルは[リリースのページ](https://github.com/takeshiue/jevtri/releases)にあります。
+
+### 署名を確かめてから入れる
+
+`SHA256SUMS` は鍵 `jevtri-signing-key.asc` で署名（`SHA256SUMS.asc`）しています。
+`gpg --verify` が `Good signature` と、フィンガープリント
+`EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961` を表示することを確かめてから入れてください。
+
+AlmaLinux、Rocky Linux、RHEL 8・9・10：
+
+```sh
+base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
+curl -fL --remote-name-all $base/jevtri_0.1.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-# AlmaLinux、Rocky Linux、RHEL 8・9・10
 sudo dnf install ./jevtri_0.1.0_x86_64.rpm
-# Ubuntu 22.04・24.04、Debian 12
+```
+
+Ubuntu 22.04・24.04、Debian 12：
+
+```sh
+base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
+curl -fL --remote-name-all $base/jevtri_0.1.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+curl -fsSL $base/jevtri-signing-key.asc | gpg --import
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS
 sudo apt install ./jevtri_0.1.0_amd64.deb
 ```
+
+### 対象と入るもの
 
 パッケージは x86_64 の AlmaLinux 8・9・10、Ubuntu 22.04・24.04、Debian 12 で試験しています。
 arm64 のパッケージは同じ方法で作っていますが、arm64 のサーバーでは試験していません。
@@ -114,6 +139,12 @@ cron や systemd タイマーからも実行できます。`-t` が無いとき�
 | 3 | Jev に接続できない、または要求を拒まれた。優先度は作らない |
 
 ## 実際の事例の報告
+
+jevtri の判定を良くするため、作者は実際の障害の事例を集めています。ご協力をお願いします。
+
+`jevtri report` 自体は**何も送りません**。報告のファイルを作るだけです。投稿するかどうかはあなたが決め、
+投稿する場合は、内容を確かめたうえで、このリポジトリの GitHub Issue（誰でも読める公開の場所）へ
+ご自身で貼り付けます。作者はその Issue を読み、判定の改善と試験に使います。
 
 障害の本当の原因が分かったら、`sudo jevtri report` で、送信記録にあるその実行から
 報告を作れます。実行と、本当の原因が出ていたログを選んでください。報告は送信記録と
@@ -203,9 +234,9 @@ TypeSafe の[プライバシーポリシー](https://typesafe.ai/legal/privacy-p
 第三者へ開示されず、依頼に応じて削除されます。保存期間は「合理的に必要な期間」とだけ書かれて
 おり、具体的な期間は分かりません。
 
-Jev の料金は入力100万トークンあたり 0.042 米ドルで、出力は無料です
-（[models](https://docs.typesafe.ai/models)、2026-09-28 に確認）。1回の実行は 1 セント
-よりずっと安くなります。
+Jev の料金は入力100万トークンあたり約 6.6 円（0.042 米ドル）で、出力は無料です
+（[models](https://docs.typesafe.ai/models)、2026-09-28 に確認。1 米ドル = 157 円で換算）。
+1回の実行は、送る量が既定の上限（48,000 バイト）いっぱいでも 1 円未満です。
 
 ## ソースからのビルド
 
