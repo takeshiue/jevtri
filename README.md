@@ -1,0 +1,237 @@
+# jevtri
+
+English | [日本語](README.ja.md) | [简体中文](README.zh-CN.md)
+
+jevtri helps you decide which log to read first after an incident on a Linux server.
+It collects the lines around the incident time from the logs you configured, masks
+secrets, and asks the [Jev](https://docs.typesafe.ai) API how worth investigating
+each log is.
+
+```
+$ sudo jevtri -t 03:02 -i "The website returns 502"
+Reference time: 2026-09-28 03:02:00 JST
+Window:         02:57:00 .. 03:07:00 (5 min)
+Symptom:        The website returns 502
+
+Investigation priority (0-100; not the probability of being the cause):
+   1. /var/log/nginx/error.log   97
+   2. /var/log/messages          33
+   3. /var/log/secure             0
+
+Start with: /var/log/nginx/error.log
+```
+
+The number is an **investigation priority**, not the probability that a log holds
+the cause. jevtri recommends where to start; it does not find the cause, fix
+anything, or watch the server. Some failures leave no trace in any log. When every
+log scores low, jevtri says so and suggests looking at logs that are not
+configured, at the application, or outside the host.
+
+## Install
+
+Packages for x86_64 and arm64 are on the
+[releases page](https://github.com/takeshiue/jevtri/releases), with `SHA256SUMS`.
+`SHA256SUMS` is signed (`SHA256SUMS.asc`) with the key `jevtri-signing-key.asc`
+in this repository and on the releases page. Its fingerprint is
+`EE2D 0814 C5CE 3F1F 76CE  4B2E B376 0451 3E19 3961`.
+
+```sh
+gpg --import jevtri-signing-key.asc
+gpg --verify SHA256SUMS.asc SHA256SUMS
+sha256sum -c --ignore-missing SHA256SUMS
+# AlmaLinux, Rocky Linux, RHEL 8, 9, 10
+sudo dnf install ./jevtri_0.1.0_x86_64.rpm
+# Ubuntu 22.04, 24.04, Debian 12
+sudo apt install ./jevtri_0.1.0_amd64.deb
+```
+
+The packages are tested on AlmaLinux 8, 9 and 10, Ubuntu 22.04 and 24.04 and
+Debian 12 on x86_64. The arm64 packages are built the same way but have not been
+tested on arm64 servers.
+
+The package installs `/usr/bin/jevtri`, an example configuration in
+`/usr/share/jevtri/`, the manual pages, and `/etc/logrotate.d/jevtri`. It does not install
+`/etc/jevtri/jevtri.conf`: `jevtri init` writes it for your server. Removing the
+package leaves your configuration, API key and send log in place.
+
+## Set up
+
+1. Put your Jev API key alone on one line in `/etc/jevtri/api-key`:
+
+   ```sh
+   sudo install -m 0600 -o root -g root /dev/null /etc/jevtri/api-key
+   sudo vi /etc/jevtri/api-key
+   ```
+
+   jevtri sends nothing if the file is missing or its mode is looser than `0600`.
+
+2. Write the configuration:
+
+   ```sh
+   sudo jevtri init
+   ```
+
+   `init` lists the known logs that exist on this server (for example
+   `/var/log/messages`, `/var/log/nginx/error.log`, PostgreSQL and Tomcat logs),
+   lets you pick them by number, and checks the time format of each against its
+   last lines. You can add other paths. For a log whose time format jevtri does
+   not know, it asks before sending the first 10 lines (masked) to Jev to identify
+   the format, and only registers the answer if the lines really read that way.
+
+   Running `jevtri` without a configuration starts `init` when it runs in a
+   terminal, and fails otherwise (cron, systemd timers, pipes).
+
+Run jevtri as root, so that it can read the logs.
+
+## Use
+
+```
+jevtri [options]
+jevtri init
+```
+
+| Option | Meaning |
+|---|---|
+| `-t`, `--time TIME` | Incident time: `HH:MM[:SS]` (today, or yesterday if that is in the future) or `YYYY-MM-DD HH:MM[:SS]`. Default: now |
+| `-m`, `--minutes N` | Minutes to look at: before and after `-t`, or the last N minutes without it. Default: 5 (`minutes` in the configuration) |
+| `-i`, `--issue TEXT` | The symptom, in any language, e.g. `"The website returns 502"` |
+| `-c`, `--config FILE` | Configuration file. Default: `/etc/jevtri/jevtri.conf` |
+| `-v`, `--verbose` | Also show the window, lines and bytes per log, masked values, and Jev's raw answer |
+| `-j`, `--json` | JSON output. `priority` is between 0 and 1 |
+| `--dry-run` | Show exactly what would be sent, and send nothing |
+| `--lang LANG` | Language of `--help`: `en`, `ja` or `zh-CN` |
+| `--version`, `-h`, `--help` | Version and help |
+
+Use `--dry-run` first to see what leaves the server.
+
+jevtri can run from cron or a systemd timer. Without `-t` it looks at the last
+`-m` minutes, so match the interval: every 10 minutes, use `-m 10`.
+
+### Exit status
+
+| Code | Meaning |
+|---|---|
+| 0 | Done. Also when no log has lines in the window (nothing is sent) |
+| 1 | Configuration or API key error, or no log could be read. Nothing is sent |
+| 2 | Done, but some logs could not be evaluated (unreadable, or no time found in them). They are listed and not ranked |
+| 3 | Jev could not be reached or refused the request. No priorities are made up |
+
+## Report a real case
+
+When you have found the real cause of an incident, `sudo jevtri report` turns
+that run from the send log into a report: choose the run and the log that
+really showed the cause. The report is written next to the send log (0600),
+with the host name, the user names of people (UID 1000 and above) and IP
+addresses replaced by labels such as `[host-1]`.
+Nothing is sent. Post it with the issue form whose link is printed; the issue
+is public, so remove other host names and anything else first. Reported cases become
+tests, and each release states how many of them it ranks correctly.
+
+## Configuration
+
+`/etc/jevtri/jevtri.conf` is an INI file. Errors are reported with the line number.
+See `/usr/share/jevtri/jevtri.conf.example`.
+
+```ini
+[general]
+minutes = 5
+max_bytes = 48000
+sent_log = /var/log/jevtri/sent.log
+
+[log nginx-error]
+path = /var/log/nginx/error.log
+time_format = slash-ymd
+
+[log tomcat]
+path = /var/log/tomcat/catalina.*.log
+time_format = dmy-month
+timezone = Asia/Tokyo
+read_compressed = yes
+mask = order-\d+
+```
+
+| Key | Meaning |
+|---|---|
+| `minutes` | Default for `-m` |
+| `max_bytes` | Bytes of log lines sent in one run, shared among the logs. Lines with ERROR, WARN, fail and similar words, and lines near the incident time, are kept first |
+| `sent_log` | Where each run is recorded |
+| `path` | The log. `*`, `?` and `[` match files with a date in their name. Rotated files (`.1`, `-20260928`) are read when the window reaches into them |
+| `time_format` | A name from the table below, or a pattern with `%` directives |
+| `timezone` | Time zone of a log written without one. Default: the server's |
+| `read_compressed` | `yes` to read rotated `.gz` files too |
+| `mask` | An extra regular expression to mask. May repeat |
+
+Time formats. Fractions of a second and a time zone (`+09:00`, `Z`, `JST`) may be
+present or not, and the time may be anywhere in the line.
+
+| Name | Example |
+|---|---|
+| `syslog` | `Sep 28 07:51:24` |
+| `rfc3339` | `2026-09-28T07:29:16.929554+09:00` |
+| `iso-space` | `2026-09-28 03:03:07.591 JST` |
+| `iso-comma` | `2026-09-28 15:47:01,123` |
+| `slash-ymd` | `2026/09/28 03:02:04` |
+| `apache-access` | `[28/Sep/2026:09:44:10 +0900]` |
+| `apache-error` | `[Mon Sep 28 03:02:10.715837 2026]` |
+| `dmy-month` | `28-Sep-2026 09:44:02.397` |
+| `slash-mdy` | `09/28/2026 15:47:01` |
+| `slash-dmy` | `28/09/2026 15:47:01` |
+| `epoch` | `1790532211` |
+
+Lines without a time (such as stack traces) belong to the line before them.
+
+Two shortcuts assume that a log is written in time order, oldest first. In an uncompressed file larger than 8 MiB, the start of the window is found by binary search, which assumes the timestamps increase through the file. Rotated files are taken newest first by modification time, and reading stops after the first file that has a line older than the window, which assumes older files hold older times. In a log written newest first, with times out of order, or with rotated files whose times overlap, lines in the window may be skipped, and such omissions may not produce a warning.
+
+At most 64 MiB of text is kept per log, across its rotated files. Beyond that the oldest entries by time are left out, and a warning says so.
+
+## What is sent, and where
+
+jevtri sends data to Jev, a service of TypeSafe, at
+`https://api.typesafe.ai/v1/systemone`. Nothing else is contacted.
+
+- **A normal run** sends, for each log that has lines in the window: its path and
+  those lines, after masking, within `max_bytes`; the incident time; and the
+  symptom given with `-i`. Times in the lines are rewritten to one time zone.
+  Logs without lines in the window are not sent.
+- **`jevtri init`** sends the first 10 lines of a log whose time format it does
+  not know, after masking, and only after you answer yes.
+- **Masked before sending:** passwords and other `key=value` secrets, tokens,
+  `Authorization` headers, cookies, private key blocks, credentials in URLs,
+  known token formats, the local part of e-mail addresses, card numbers, and your
+  `mask` patterns. Masking works by pattern and can miss things.
+- **Not masked:** IP addresses, host names, user names, paths, and anything else
+  in the lines. Check with `--dry-run`.
+- **Recorded:** every run, including dry runs, is appended to
+  `/var/log/jevtri/sent.log` (root only, `0600`) with what was sent and the answer.
+  The API key is not recorded. logrotate keeps 30 days.
+
+According to TypeSafe's [privacy policy](https://typesafe.ai/legal/privacy-policy)
+(last updated 2025-11-19, read 2026-09-27), input is not used to train or fine-tune
+models, is not disclosed to third parties other than service providers, and is
+deleted on request. How long it is kept is not stated beyond "as long as
+reasonably necessary".
+
+Jev charges USD 0.042 per million input tokens, and output is free
+([models](https://docs.typesafe.ai/models), 2026-09-28). One run costs well under
+one US cent.
+
+## Build from source
+
+Only the Go standard library is used. Building and testing need no network, and
+the tests send nothing to Jev.
+
+```sh
+go test ./...
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.1.0" -o jevtri ./cmd/jevtri
+```
+
+## Help and manual
+
+`jevtri --help` and `man jevtri` are in English, Japanese and Simplified Chinese,
+chosen by `LC_ALL`, `LC_MESSAGES` or `LANG`; `jevtri --help --lang zh-CN` picks one.
+Results and error messages are in English. Corrections to the translations are
+welcome.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

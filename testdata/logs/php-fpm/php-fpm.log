@@ -1,0 +1,11 @@
+[28-Sep-2026 03:03:32] NOTICE: fpm is running, pid 1
+[28-Sep-2026 03:03:32] NOTICE: ready to handle connections
+[28-Sep-2026 03:03:34] WARNING: [pool www] child 3 exited on signal 9 (SIGKILL) after 2.022116 seconds from start
+[28-Sep-2026 03:03:34] NOTICE: [pool www] child 8 started
+[28-Sep-2026 03:03:36] NOTICE: Reloading in progress ...
+[28-Sep-2026 03:03:36] NOTICE: reloading: execvp("php-fpm", {"php-fpm"})
+[28-Sep-2026 03:03:36] NOTICE: using inherited socket fd=9, ":::9000"
+[28-Sep-2026 03:03:36] NOTICE: fpm is running, pid 1
+[28-Sep-2026 03:03:36] NOTICE: ready to handle connections
+[28-Sep-2026 03:03:38] NOTICE: Finishing ...
+[28-Sep-2026 03:03:38] NOTICE: exiting, bye-bye!

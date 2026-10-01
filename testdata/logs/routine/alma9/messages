@@ -1,0 +1,6 @@
+Sep 29 08:09:31 web01 rsyslogd: [origin software="rsyslogd" swVersion="8.2510.0-2.el9_8.2" x-pid="31" x-info="https://www.rsyslog.com"] start
+Sep 29 08:10:41 web01 su: (to deploy) root on none
+Sep 29 08:12:14 web01 su: (to deploy) root on none
+Sep 29 08:13:47 web01 su: (to deploy) root on none
+Sep 29 08:15:20 web01 su: (to deploy) root on none
+Sep 29 08:16:53 web01 su: (to deploy) root on none

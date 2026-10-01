@@ -1,0 +1,116 @@
+# GoReleaser builds the rpm and deb packages for GitHub Releases.
+# Distribution packaging (debian/, .spec) is left to each distribution.
+version: 2
+
+project_name: jevtri
+
+builds:
+  - id: jevtri
+    main: ./cmd/jevtri
+    binary: jevtri
+    env:
+      - CGO_ENABLED=0
+    goos: [linux]
+    goarch: [amd64, arm64]
+    # No VCS stamp, so a rebuild from the source tarball matches the release.
+    flags: [-trimpath, -buildvcs=false]
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+
+# Only the rpm and deb packages are released, not bare binaries.
+archives:
+  - id: binaries
+    formats: [none]
+
+# A snapshot version can be set to test an upgrade between two builds.
+snapshot:
+  version_template: >-
+    {{ if index .Env "JEVTRI_SNAPSHOT_VERSION" }}{{ .Env.JEVTRI_SNAPSHOT_VERSION }}{{ else }}{{ incpatch .Version }}-SNAPSHOT-{{ .ShortCommit }}{{ end }}
+
+checksum:
+  name_template: SHA256SUMS
+  # Built beforehand by the release workflow with git archive.
+  extra_files:
+    - glob: ./build/jevtri-*.tar.gz
+
+# SHA256SUMS covers every file, so one signature over it signs them all.
+# The key is kept in the repository secrets.
+signs:
+  - artifacts: checksum
+    signature: "${artifact}.asc"
+    stdin: "{{ .Env.GPG_PASSPHRASE }}"
+    args: ["--batch", "--local-user", "{{ .Env.GPG_FINGERPRINT }}", "--pinentry-mode", "loopback", "--passphrase-fd", "0", "--armor", "--output", "${signature}", "--detach-sign", "${artifact}"]
+
+# A draft first: the workflow publishes it only after checking the signature.
+release:
+  github:
+    owner: takeshiue
+    name: jevtri
+  draft: true
+  extra_files:
+    - glob: ./build/jevtri-*.tar.gz
+    - glob: ./jevtri-signing-key.asc
+
+# Release notes are this version's section of CHANGELOG.md (see release.yml).
+changelog:
+  disable: true
+
+nfpms:
+  - id: packages
+    package_name: jevtri
+    file_name_template: >-
+      {{ .PackageName }}_{{ .Version }}_{{ if eq .Arch "amd64" }}{{ if eq .Format "rpm" }}x86_64{{ else }}amd64{{ end }}{{ else }}{{ if eq .Format "rpm" }}aarch64{{ else }}arm64{{ end }}{{ end }}
+    vendor: jevtri
+    homepage: https://github.com/takeshiue/jevtri
+    maintainer: takeshiue <1748595+takeshiue@users.noreply.github.com>
+    description: |-
+      Ranks which server logs to look at first after an incident.
+      jevtri collects the lines around a given time from the configured logs,
+      masks sensitive values, and asks the Jev API how worth investigating each
+      log is. The ranking is an investigation priority, not a cause probability.
+    license: MIT
+    formats: [rpm, deb]
+    bindir: /usr/bin
+    section: admin
+    priority: optional
+    # logrotate compresses the send log with gzip, which minimal EL8 images lack.
+    dependencies:
+      - gzip
+    rpm:
+      group: Applications/System
+    contents:
+      - src: packaging/jevtri.conf.example
+        dst: /usr/share/jevtri/jevtri.conf.example
+        file_info:
+          mode: 0644
+      - src: packaging/logrotate.jevtri
+        dst: /etc/logrotate.d/jevtri
+        type: config|noreplace
+        file_info:
+          mode: 0644
+      - src: man/jevtri.1
+        dst: /usr/share/man/man1/jevtri.1
+        file_info:
+          mode: 0644
+      - src: man/ja/jevtri.1
+        dst: /usr/share/man/ja/man1/jevtri.1
+        file_info:
+          mode: 0644
+      - src: man/zh_CN/jevtri.1
+        dst: /usr/share/man/zh_CN/man1/jevtri.1
+        file_info:
+          mode: 0644
+      - src: LICENSE
+        dst: /usr/share/doc/jevtri/LICENSE
+        file_info:
+          mode: 0644
+      # jevtri.conf is not packaged: 'jevtri init' runs when it is missing,
+      # and a file the package does not own survives removal.
+      - dst: /etc/jevtri
+        type: dir
+        file_info:
+          mode: 0755
+      - dst: /var/log/jevtri
+        type: dir
+        file_info:
+          mode: 0700

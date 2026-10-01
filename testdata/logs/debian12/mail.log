@@ -1,0 +1,17 @@
+2026-09-28T07:31:16.587081+09:00 web01 postfix/master[4471]: daemon started -- version 3.7.11, configuration /etc/postfix
+2026-09-28T07:31:40.863300+09:00 web01 postfix/pickup[4472]: D2B7E10579C: uid=1000 from=<deploy>
+2026-09-28T07:31:40.867825+09:00 web01 postfix/cleanup[4535]: D2B7E10579C: message-id=<20260927223140.D2B7E10579C@web01>
+2026-09-28T07:31:40.870282+09:00 web01 postfix/qmgr[4473]: D2B7E10579C: from=<deploy@web01.example.com>, size=453, nrcpt=1 (queue active)
+2026-09-28T07:31:40.871253+09:00 web01 postfix/pickup[4472]: D4A47105799: uid=0 from=<root>
+2026-09-28T07:31:40.872275+09:00 web01 postfix/cleanup[4535]: D4A47105799: message-id=<20260927223140.D4A47105799@web01>
+2026-09-28T07:31:40.877493+09:00 web01 postfix/qmgr[4473]: D4A47105799: from=<root@web01.example.com>, size=239, nrcpt=1 (queue active)
+2026-09-28T07:31:40.879914+09:00 web01 postfix/local[4538]: D2B7E10579C: to=<root@web01.example.com>, orig_to=<root>, relay=local, delay=0.03, delays=0.02/0.01/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-28T07:31:40.879981+09:00 web01 postfix/qmgr[4473]: D2B7E10579C: removed
+2026-09-28T07:31:40.903578+09:00 web01 postfix/smtp[4539]: D4A47105799: to=<ops@unreachable.invalid>, relay=none, delay=0.04, delays=0.02/0.02/0/0, dsn=4.4.3, status=deferred (Host or domain name not found. Name service error for name=unreachable.invalid type=MX: Host not found, try again)
+2026-09-28T07:32:01.364077+09:00 web01 postfix/pickup[4472]: 58DCD1057A7: uid=0 from=<root>
+2026-09-28T07:32:01.364965+09:00 web01 postfix/cleanup[4535]: 58DCD1057A7: message-id=<20260927223201.58DCD1057A7@web01>
+2026-09-28T07:32:01.367024+09:00 web01 postfix/qmgr[4473]: 58DCD1057A7: from=<root@web01.example.com>, size=614, nrcpt=1 (queue active)
+2026-09-28T07:32:01.369418+09:00 web01 postfix/local[4538]: 58DCD1057A7: to=<root@web01.example.com>, orig_to=<root>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-28T07:32:01.369592+09:00 web01 postfix/qmgr[4473]: 58DCD1057A7: removed
+2026-09-28T07:32:55.887267+09:00 web01 postfix/postfix-script[4554]: stopping the Postfix mail system
+2026-09-28T07:32:55.889259+09:00 web01 postfix/master[4471]: terminating on signal 15

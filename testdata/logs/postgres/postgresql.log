@@ -1,0 +1,40 @@
+2026-09-28 03:03:03.843 JST [42] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-28 03:03:03.845 JST [42] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-28 03:03:03.852 JST [46] LOG:  database system was shut down at 2026-09-28 03:03:03 JST
+2026-09-28 03:03:03.860 JST [42] LOG:  database system is ready to accept connections
+2026-09-28 03:03:03.963 JST [42] LOG:  received fast shutdown request
+2026-09-28 03:03:03.966 JST [42] LOG:  aborting any active transactions
+2026-09-28 03:03:03.970 JST [42] LOG:  background worker "logical replication launcher" (PID 49) exited with exit code 1
+2026-09-28 03:03:03.972 JST [44] LOG:  shutting down
+2026-09-28 03:03:03.973 JST [44] LOG:  checkpoint starting: shutdown immediate
+2026-09-28 03:03:03.982 JST [44] LOG:  checkpoint complete: wrote 3 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.002 s, total=0.011 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=0/14EF838, redo lsn=0/14EF838
+2026-09-28 03:03:03.986 JST [42] LOG:  database system is shut down
+2026-09-28 03:03:04.089 JST [1] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-28 03:03:04.089 JST [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-09-28 03:03:04.089 JST [1] LOG:  listening on IPv6 address "::", port 5432
+2026-09-28 03:03:04.092 JST [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-28 03:03:04.097 JST [58] LOG:  database system was shut down at 2026-09-28 03:03:03 JST
+2026-09-28 03:03:04.104 JST [1] LOG:  database system is ready to accept connections
+2026-09-28 03:03:07.591 JST [67] ERROR:  syntax error at or near "selec" at character 1
+2026-09-28 03:03:07.591 JST [67] STATEMENT:  selec 1
+2026-09-28 03:03:08.289 JST [79] FATAL:  remaining connection slots are reserved for roles with the SUPERUSER attribute
+2026-09-28 03:03:08.391 JST [81] FATAL:  remaining connection slots are reserved for roles with the SUPERUSER attribute
+2026-09-28 03:03:16.634 JST [1] LOG:  starting PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-28 03:03:16.634 JST [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-09-28 03:03:16.634 JST [1] LOG:  listening on IPv6 address "::", port 5432
+2026-09-28 03:03:16.637 JST [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-09-28 03:03:16.643 JST [23] LOG:  database system was interrupted; last known up at 2026-09-28 03:03:04 JST
+2026-09-28 03:03:16.680 JST [23] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-09-28 03:03:16.683 JST [23] LOG:  redo starts at 0/14EF8B0
+2026-09-28 03:03:16.683 JST [23] LOG:  invalid record length at 0/14F26F0: expected at least 24, got 0
+2026-09-28 03:03:16.683 JST [23] LOG:  redo done at 0/14F2698 system usage: CPU: user: 0.00 s, system: 0.00 s, elapsed: 0.00 s
+2026-09-28 03:03:16.686 JST [21] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-09-28 03:03:16.697 JST [21] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.003 s, total=0.012 s; sync files=6, longest=0.002 s, average=0.001 s; distance=11 kB, estimate=11 kB; lsn=0/14F26F0, redo lsn=0/14F26F0
+2026-09-28 03:03:16.703 JST [1] LOG:  database system is ready to accept connections
+2026-09-28 03:03:22.632 JST [1] LOG:  received fast shutdown request
+2026-09-28 03:03:22.634 JST [1] LOG:  aborting any active transactions
+2026-09-28 03:03:22.640 JST [1] LOG:  background worker "logical replication launcher" (PID 26) exited with exit code 1
+2026-09-28 03:03:22.640 JST [21] LOG:  shutting down
+2026-09-28 03:03:22.642 JST [21] LOG:  checkpoint starting: shutdown immediate
+2026-09-28 03:03:22.648 JST [21] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.008 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=10 kB; lsn=0/14F2768, redo lsn=0/14F2768
+2026-09-28 03:03:22.652 JST [1] LOG:  database system is shut down

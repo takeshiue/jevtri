@@ -1,0 +1,35 @@
+name: Real incident case
+description: Tell which log really showed the cause of an incident, to improve the ranking. Made with `jevtri report`.
+title: "Case: "
+labels: ["case"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Cases from real incidents are how jevtri gets better: each one becomes a test, and each release reports how many reported cases it ranks correctly.
+
+        **This issue is public.** `jevtri report` replaces the host name, people's user names (UID 1000 and above) and IP addresses, but not other host names, system account names, paths or customer data. Read the report before posting.
+  - type: input
+    id: jevtri-version
+    attributes:
+      label: jevtri version
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+  - type: textarea
+    id: report
+    attributes:
+      label: Report
+      description: Paste the file written by `jevtri report`, or attach it if it is too long.
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Publishing
+      options:
+        - label: I have read the report, it holds nothing I cannot publish, and it may be used as a public test case under the MIT license.
+          required: true

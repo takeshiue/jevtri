@@ -1,0 +1,54 @@
+Sep 28 07:51:22 web01 sshd[657]: Server listening on 0.0.0.0 port 22.
+Sep 28 07:51:22 web01 sshd[657]: Server listening on :: port 22.
+Sep 28 07:51:22 web01 useradd[732]: new group: name=deploy, GID=1000
+Sep 28 07:51:22 web01 useradd[732]: new user: name=deploy, UID=1000, GID=1000, home=/home/deploy, shell=/bin/bash, from=none
+Sep 28 07:51:24 web01 sshd-session[750]: Invalid user admin from 127.0.0.1 port 44732
+Sep 28 07:51:24 web01 sshd-session[750]: pam_unix(sshd:auth): check pass; user unknown
+Sep 28 07:51:24 web01 sshd-session[750]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1 
+Sep 28 07:51:26 web01 sshd-session[750]: Failed password for invalid user admin from 127.0.0.1 port 44732 ssh2
+Sep 28 07:51:27 web01 sshd-session[750]: Connection closed by invalid user admin 127.0.0.1 port 44732 [preauth]
+Sep 28 07:51:27 web01 sshd-session[754]: Invalid user test from 127.0.0.1 port 54380
+Sep 28 07:51:27 web01 sshd-session[754]: pam_unix(sshd:auth): check pass; user unknown
+Sep 28 07:51:27 web01 sshd-session[754]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1 
+Sep 28 07:51:29 web01 sshd-session[754]: Failed password for invalid user test from 127.0.0.1 port 54380 ssh2
+Sep 28 07:51:30 web01 sshd-session[754]: Connection closed by invalid user test 127.0.0.1 port 54380 [preauth]
+Sep 28 07:51:31 web01 sshd-session[758]: Invalid user oracle from 127.0.0.1 port 54382
+Sep 28 07:51:31 web01 sshd-session[758]: pam_unix(sshd:auth): check pass; user unknown
+Sep 28 07:51:31 web01 sshd-session[758]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1 
+Sep 28 07:51:33 web01 sshd-session[758]: Failed password for invalid user oracle from 127.0.0.1 port 54382 ssh2
+Sep 28 07:51:34 web01 sshd-session[758]: Connection closed by invalid user oracle 127.0.0.1 port 54382 [preauth]
+Sep 28 07:51:34 web01 unix_chkpwd[764]: check pass; user unknown
+Sep 28 07:51:34 web01 unix_chkpwd[764]: password check failed for user (deploy)
+Sep 28 07:51:34 web01 sshd-session[762]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+Sep 28 07:51:36 web01 sshd-session[762]: Failed password for deploy from 127.0.0.1 port 54392 ssh2
+Sep 28 07:51:39 web01 sshd-session[762]: Failed password for deploy from 127.0.0.1 port 54392 ssh2
+Sep 28 07:51:39 web01 sshd-session[762]: Connection closed by authenticating user deploy 127.0.0.1 port 54392 [preauth]
+Sep 28 07:51:39 web01 unix_chkpwd[769]: check pass; user unknown
+Sep 28 07:51:39 web01 unix_chkpwd[769]: password check failed for user (deploy)
+Sep 28 07:51:39 web01 sshd-session[767]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+Sep 28 07:51:41 web01 sshd-session[767]: Failed password for deploy from 127.0.0.1 port 60818 ssh2
+Sep 28 07:51:41 web01 sshd-session[767]: Connection closed by authenticating user deploy 127.0.0.1 port 60818 [preauth]
+Sep 28 07:51:41 web01 unix_chkpwd[774]: check pass; user unknown
+Sep 28 07:51:41 web01 unix_chkpwd[774]: password check failed for user (deploy)
+Sep 28 07:51:41 web01 sshd-session[772]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+Sep 28 07:51:43 web01 sshd-session[772]: Failed password for deploy from 127.0.0.1 port 60830 ssh2
+Sep 28 07:51:46 web01 sshd-session[772]: Failed password for deploy from 127.0.0.1 port 60830 ssh2
+Sep 28 07:51:46 web01 sshd-session[772]: Connection closed by authenticating user deploy 127.0.0.1 port 60830 [preauth]
+Sep 28 07:51:46 web01 unix_chkpwd[779]: check pass; user unknown
+Sep 28 07:51:46 web01 unix_chkpwd[779]: password check failed for user (deploy)
+Sep 28 07:51:46 web01 sshd-session[777]: pam_unix(sshd:auth): authentication failure; logname=root uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+Sep 28 07:51:48 web01 sshd-session[777]: Failed password for deploy from 127.0.0.1 port 60836 ssh2
+Sep 28 07:51:50 web01 sshd-session[777]: Connection closed by authenticating user deploy 127.0.0.1 port 60836 [preauth]
+Sep 28 07:51:50 web01 su: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+Sep 28 07:51:50 web01 su: pam_unix(su-l:session): session opened for user deploy(uid=1000) by root(uid=0)
+Sep 28 07:51:50 web01 su: pam_lastlog(su-l:session): file /var/log/lastlog created
+Sep 28 07:51:50 web01 su: pam_lastlog(su-l:session): unable to open /var/log/btmp: No such file or directory
+Sep 28 07:51:50 web01 unix_chkpwd[808]: check pass; user unknown
+Sep 28 07:51:50 web01 unix_chkpwd[809]: check pass; user unknown
+Sep 28 07:51:50 web01 unix_chkpwd[809]: password check failed for user (deploy)
+Sep 28 07:51:50 web01 sudo: pam_unix(sudo:auth): authentication failure; logname=root uid=1000 euid=0 tty= ruser=deploy rhost=  user=deploy
+Sep 28 07:51:52 web01 unix_chkpwd[810]: check pass; user unknown
+Sep 28 07:51:52 web01 sudo: pam_unix(sudo:auth): conversation failed
+Sep 28 07:51:52 web01 sudo: pam_unix(sudo:auth): auth could not identify password for [deploy]
+Sep 28 07:51:52 web01 sudo:   deploy : user NOT in sudoers ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/true
+Sep 28 07:51:52 web01 su: pam_unix(su-l:session): session closed for user deploy

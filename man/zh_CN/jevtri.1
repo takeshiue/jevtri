@@ -1,0 +1,313 @@
+.\" Left-aligned: justifying CJK text without word spaces opens wide gaps.
+.\" groff 1.23 reads AD at each paragraph; 1.22 (EL8, EL9) keeps .ad l.
+.ds AD l
+.TH JEVTRI 1 "2026-09-30" "jevtri 0.1.0" "用户命令"
+.ad l
+.SH 名称
+jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
+.SH 概要
+.B jevtri
+.RB [ \-t
+.IR TIME ]
+.RB [ \-m
+.IR N ]
+.RB [ \-i
+.IR TEXT ]
+.RB [ \-c
+.IR FILE ]
+.RB [ \-v ]
+.RB [ \-j ]
+.RB [ \-\-dry\-run ]
+.br
+.B jevtri init
+.br
+.B jevtri report
+.br
+.B jevtri
+.RB [ \-\-help " [" \-\-lang
+.IR LANG ]]
+.RB [ \-\-version ]
+.SH 描述
+.B jevtri
+从已配置的日志中收集故障时间前后的日志行，对其中的敏感信息进行脱敏后，
+请 Jev API 判断每个日志的调查价值。
+结果按 0\-100 的
+.B 调查优先级
+排序显示。
+.PP
+优先级并不是该日志包含故障原因的概率。
+.B jevtri
+只建议从哪里开始阅读，不会查明原因、修复问题或监控服务器。
+有些故障不会在任何日志中留下痕迹。
+当所有日志的得分都很低时，
+.B jevtri
+会给出提示，并建议检查未配置的日志、应用程序本身或其他主机。
+.PP
+请以 root 身份运行
+.BR jevtri ，
+以便读取日志。
+.SH 选项
+.TP
+.BR \-t ", " \-\-time " \fITIME\fR"
+故障时间，格式为
+.I HH:MM[:SS]
+（今天；如果该时间在未来，则为昨天）或
+.IR "YYYY-MM-DD HH:MM[:SS]" 。
+默认为当前时间。
+.TP
+.BR \-m ", " \-\-minutes " \fIN\fR"
+查看范围的分钟数。
+指定
+.B \-t
+时查看该时间的前后，未指定时查看最近
+.I N
+分钟。默认为配置中的
+.BR minutes ，
+即 5。
+.TP
+.BR \-i ", " \-\-issue " \fITEXT\fR"
+症状，任何语言均可，例如
+.IR "\(dq网站返回 502\(dq" 。
+它会与日志一起发送给 Jev。
+.TP
+.BR \-c ", " \-\-config " \fIFILE\fR"
+配置文件。默认为
+.IR /etc/jevtri/jevtri.conf 。
+.TP
+.BR \-v ", " \-\-verbose
+同时显示时间范围、每个日志读取和发送的行数与字节数、脱敏的数量以及 Jev 的原始结果。
+不显示日志内容。
+.TP
+.BR \-j ", " \-\-json
+以 JSON 格式输出。其中
+.B priority
+为 0 到 1 之间的值。
+.TP
+.B \-\-dry\-run
+显示将要发送的内容，但不发送任何内容。
+.TP
+.BI \-\-lang " LANG"
+.B \-\-help
+的语言：
+.BR en 、
+.B ja
+或
+.BR zh\-CN 。
+未指定时，按照
+.BR LC_ALL 、
+.BR LC_MESSAGES 、
+.B LANG
+决定。
+结果和错误信息始终为英文。
+.TP
+.BR \-h ", " \-\-help
+显示帮助。
+.TP
+.B \-\-version
+显示版本。
+.SH INIT
+.B jevtri init
+列出本服务器上存在的已知日志，让用户按编号选择（例如
+.BR "1 3\-4" ；
+留空表示全部），并根据每个日志的最后几行确认其时间格式。
+也可以添加其他路径。
+对于时间格式未知的日志，会显示前 10 行（已脱敏），
+并在发送给 Jev 判断格式之前征求同意。
+只有当日志行确实能按该格式读取时才会登记。
+.PP
+如果配置文件已存在，
+.B init
+只会为缺少
+.B time_format
+的日志补充该项，其他内容不做改动。
+在没有配置的情况下运行
+.B jevtri
+时，如果在终端中运行则会启动
+.BR init ，
+否则（cron、systemd 定时器、管道）以错误结束。
+.PP
+.B jevtri report
+用于通过真实故障案例改进 jevtri。
+它列出发送记录中 Jev 已回答的运行，询问真正显示原因的日志和一行说明，
+并在发送记录旁边写入 Markdown 报告
+.I case\-YYYYMMDD\-HHMMSS.md
+（权限 0600）。
+主机名、个人用户名（UID 1000 及以上）和 IP 地址会被替换为
+.BR [host\-1] 、
+.B [user\-1]
+和
+.B [ip\-1]
+之类的标记。
+不发送任何内容：报告用于 jevtri 仓库的公开 Issue 表单，并显示其地址。
+Issue 对所有人公开，提交前请阅读报告，并删除其他主机名、系统账户名等内容。
+.SH 配置
+配置文件为 INI 格式：
+.B [general]
+以及每个日志一个
+.BI "[log " 名称 ]
+节，内容为
+.I 键
+=
+.I 值
+的行。
+以
+.B #
+开头的行为注释。错误会带行号报告。
+.PP
+.B [general]
+.TP
+.B minutes
+.B \-m
+的默认值。
+.TP
+.B max_bytes
+一次运行中发送的日志行字节数，在各日志之间平均分配（默认为 48000）。
+优先保留包含 ERROR、WARN、fail 等词的行以及接近故障时间的行。
+.TP
+.B sent_log
+记录每次运行的位置（默认为
+.IR /var/log/jevtri/sent.log ）。
+.PP
+.BI "[log " 名称 ]
+.TP
+.B path
+日志文件。
+可使用
+.BR * 、
+.BR ? 、
+.B [
+匹配文件名中带日期的日志。
+当时间范围回溯到已轮转的文件
+.RI （ .1 、
+.IR \-20260928 ）
+时，也会读取这些文件。
+.TP
+.B time_format
+下表中的名称，或使用
+.B %
+指令的模式。
+.TP
+.B timezone
+未写明时区的日志所使用的时区，例如
+.BR Asia/Shanghai 。
+默认为服务器的时区。
+.TP
+.B read_compressed
+设为
+.B yes
+时也读取已轮转的
+.I .gz
+文件。
+.TP
+.B mask
+发送前额外脱敏的正则表达式。可以重复。
+.PP
+时间格式。秒的小数部分和时区可有可无，时间可以出现在行中的任何位置。
+没有时间的行视为上一行的延续。
+.PP
+.RS
+.nf
+syslog         Sep 28 07:51:24
+rfc3339        2026\-09\-28T07:29:16.929554+09:00
+iso\-space      2026\-09\-28 03:03:07.591 JST
+iso\-comma      2026\-09\-28 15:47:01,123
+slash\-ymd      2026/09/28 03:02:04
+apache\-access  [28/Sep/2026:09:44:10 +0900]
+apache\-error   [Mon Sep 28 03:02:10.715837 2026]
+dmy\-month      28\-Sep\-2026 09:44:02.397
+slash\-mdy      09/28/2026 15:47:01
+slash\-dmy      28/09/2026 15:47:01
+epoch          1790532211
+.fi
+.RE
+.PP
+有两项加速处理假定日志按时间顺序（从旧到新）写入。\:对于大于 8 MiB 的未压缩文件，\:使用二分查找确定读取起始位置，\:这假定文件内的时间戳按升序排列。\:已轮转的文件按修改时间从新到旧读取，\:在遇到含有早于时间范围的行的文件后停止读取，\:这假定越旧的文件包含越早的时间。\:对于倒序写入、\:时间戳顺序混乱或已轮转文件时间范围重叠的日志，\:可能会跳过时间范围内的记录，\:这种遗漏不一定会触发截断警告。
+.PP
+每个日志（包括其已轮转的文件）最多保留 64 MiB 的文本。\:超出部分按时间从旧到新省略，\:并显示警告。
+.SH 发送的数据
+.B jevtri
+只向 TypeSafe 提供的服务 Jev
+.RI （ https://api.typesafe.ai/v1/systemone ）
+发送数据。
+.PP
+正常运行时，对于时间范围内有日志行的每个日志，发送其路径和脱敏后的日志行
+（在
+.B max_bytes
+范围内），以及故障时间和症状。
+日志行中的时间会统一改写为同一时区的表示。
+时间范围内没有日志行的日志不会发送。
+.B jevtri init
+仅在征得同意后，发送时间格式未知的日志的前 10 行（已脱敏）。
+.PP
+发送前脱敏的内容：密码等 键=值 形式的机密、令牌、Authorization 头、Cookie、
+私钥块、URL 中的凭据、已知格式的令牌、电子邮件地址中 @ 之前的部分、银行卡号，以及配置中的
+.BR mask 。
+脱敏基于模式匹配，可能会有遗漏。
+.B IP 地址、主机名、用户名和路径不会被脱敏。
+请用
+.B \-\-dry\-run
+确认。
+.PP
+每次运行（包括 \-\-dry\-run）发送的内容和响应都会追加到发送记录中。
+API 密钥不会被记录。
+.SH 退出状态
+.TP
+.B 0
+完成。时间范围内没有任何日志有日志行时也为 0（不发送任何内容）。
+.TP
+.B 1
+配置或 API 密钥错误，或没有可读取的日志。不发送任何内容。
+.TP
+.B 2
+完成，但有部分日志无法评估（无法读取，或找不到时间）。
+这些日志会列出但不参与排序。
+.TP
+.B 3
+无法连接 Jev，或请求被拒绝。不会编造优先级。
+.SH 文件
+.TP
+.I /etc/jevtri/jevtri.conf
+配置文件，由
+.B "jevtri init"
+写入。
+.TP
+.I /etc/jevtri/api\-key
+只包含一行 Jev API 密钥的文件，属主为 root，权限为 0600。
+如果该文件不存在或权限比此更宽松，则不发送任何内容。
+.TP
+.I /var/log/jevtri/sent.log
+发送记录，每次运行一行 JSON，权限为 0600。
+由
+.I /etc/logrotate.d/jevtri
+每天轮转，保留 30 天。
+.TP
+.I /usr/share/jevtri/jevtri.conf.example
+配置示例。
+.SH 示例
+针对网站故障，对今天 03:02 前后的日志排序：
+.PP
+.RS
+.nf
+sudo jevtri \-t 03:02 \-i "网站返回 502"
+.fi
+.RE
+.PP
+不发送，只确认将要发送的内容：
+.PP
+.RS
+.nf
+sudo jevtri \-t "2026\-09\-28 03:02" \-\-dry\-run
+.fi
+.RE
+.PP
+通过 cron 每 10 分钟运行一次并保存 JSON：
+.PP
+.RS
+.nf
+*/10 * * * * root jevtri \-m 10 \-\-json >> /var/log/jevtri/runs.json
+.fi
+.RE
+.SH 另请参阅
+.BR logrotate (8)
+.PP
+https://github.com/takeshiue/jevtri

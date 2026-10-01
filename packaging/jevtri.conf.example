@@ -1,0 +1,37 @@
+# Example jevtri configuration. jevtri reads /etc/jevtri/jevtri.conf.
+# Run 'sudo jevtri init' to write that file from the logs found on this
+# server, or copy this file there and edit it. See jevtri(1).
+#
+# The API key is not written here. Put it alone on one line in
+# /etc/jevtri/api-key, owned by root with mode 0600.
+
+[general]
+# Minutes before the reference time to look at when -m is not given.
+# minutes = 5
+# Bytes of log lines sent to Jev in one run, shared among the logs.
+# max_bytes = 48000
+# Where each run is recorded (JSON Lines). Rotated by /etc/logrotate.d/jevtri.
+# sent_log = /var/log/jevtri/sent.log
+
+[log messages]
+path = /var/log/messages
+time_format = syslog
+
+[log secure]
+path = /var/log/secure
+time_format = syslog
+
+[log nginx-error]
+path = /var/log/nginx/error.log
+time_format = slash-ymd
+# Read rotated .gz files too when the window reaches back into them.
+# read_compressed = yes
+
+[log tomcat]
+# A pattern matches files with a date in their name.
+path = /var/log/tomcat/catalina.*.log
+time_format = dmy-month
+# For logs written without a time zone, when it is not the server's.
+# timezone = Asia/Tokyo
+# Extra text to mask before sending, as a regular expression. May repeat.
+# mask = order-\d+

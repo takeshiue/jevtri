@@ -1,0 +1,243 @@
+2026-09-29T08:10:00.152906+09:00 web01 sshd[30]: Server listening on 0.0.0.0 port 22.
+2026-09-29T08:10:00.152940+09:00 web01 sshd[30]: Server listening on :: port 22.
+2026-09-29T08:10:00.568034+09:00 web01 sshd[126]: Accepted publickey for deploy from 127.0.0.1 port 58112 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:10:00.570401+09:00 web01 sshd[126]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:10:00.570863+09:00 web01 sshd[126]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:10:00.635145+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:10:00.635613+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:10:00.637489+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:10:00.639945+09:00 web01 sshd[137]: Received disconnect from 127.0.0.1 port 58112:11: disconnected by user
+2026-09-29T08:10:00.640177+09:00 web01 sshd[137]: Disconnected from user deploy 127.0.0.1 port 58112
+2026-09-29T08:10:00.640732+09:00 web01 sshd[126]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:10:23.806820+09:00 web01 sshd[144]: Accepted publickey for deploy from 127.0.0.1 port 60648 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:10:23.810901+09:00 web01 sshd[144]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:10:23.811299+09:00 web01 sshd[144]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:10:23.900997+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:10:23.902538+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:10:23.908187+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:10:23.913300+09:00 web01 sshd[155]: Received disconnect from 127.0.0.1 port 60648:11: disconnected by user
+2026-09-29T08:10:23.913489+09:00 web01 sshd[155]: Disconnected from user deploy 127.0.0.1 port 60648
+2026-09-29T08:10:23.914355+09:00 web01 sshd[144]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:10:47.081745+09:00 web01 sshd[162]: Accepted publickey for deploy from 127.0.0.1 port 40068 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:10:47.083753+09:00 web01 sshd[162]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:10:47.084133+09:00 web01 sshd[162]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:10:47.142500+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:10:47.142899+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:10:47.144868+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:10:47.148283+09:00 web01 sshd[173]: Received disconnect from 127.0.0.1 port 40068:11: disconnected by user
+2026-09-29T08:10:47.148457+09:00 web01 sshd[173]: Disconnected from user deploy 127.0.0.1 port 40068
+2026-09-29T08:10:47.149381+09:00 web01 sshd[162]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:11:01.161074+09:00 web01 CRON[185]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:11:01.170089+09:00 web01 CRON[185]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:11:10.343722+09:00 web01 sshd[191]: Accepted publickey for deploy from 127.0.0.1 port 35642 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:11:10.347024+09:00 web01 sshd[191]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:11:10.348506+09:00 web01 sshd[191]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:10.422711+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:11:10.424103+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:11:10.430334+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:11:10.437293+09:00 web01 sshd[202]: Received disconnect from 127.0.0.1 port 35642:11: disconnected by user
+2026-09-29T08:11:10.437498+09:00 web01 sshd[202]: Disconnected from user deploy 127.0.0.1 port 35642
+2026-09-29T08:11:10.439537+09:00 web01 sshd[191]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:11:10.450420+09:00 web01 su[206]: (to deploy) root on none
+2026-09-29T08:11:10.452291+09:00 web01 su[206]: pam_unix(su-l:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:11:10.452643+09:00 web01 su[206]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:10.462993+09:00 web01 su[206]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:11:33.638966+09:00 web01 sshd[213]: Accepted publickey for deploy from 127.0.0.1 port 56858 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:11:33.640797+09:00 web01 sshd[213]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:11:33.641166+09:00 web01 sshd[213]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:33.700679+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:11:33.701097+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:11:33.703116+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:11:33.705643+09:00 web01 sshd[224]: Received disconnect from 127.0.0.1 port 56858:11: disconnected by user
+2026-09-29T08:11:33.705818+09:00 web01 sshd[224]: Disconnected from user deploy 127.0.0.1 port 56858
+2026-09-29T08:11:33.706883+09:00 web01 sshd[213]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:11:56.872976+09:00 web01 sshd[231]: Accepted publickey for deploy from 127.0.0.1 port 43192 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:11:56.874761+09:00 web01 sshd[231]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:11:56.875108+09:00 web01 sshd[231]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:56.932419+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:11:56.932786+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:11:56.934675+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:11:56.937310+09:00 web01 sshd[242]: Received disconnect from 127.0.0.1 port 43192:11: disconnected by user
+2026-09-29T08:11:56.937460+09:00 web01 sshd[242]: Disconnected from user deploy 127.0.0.1 port 43192
+2026-09-29T08:11:56.938154+09:00 web01 sshd[231]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:12:01.182046+09:00 web01 CRON[252]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:12:01.183897+09:00 web01 CRON[253]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:12:01.185654+09:00 web01 CRON[251]: pam_unix(cron:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:12:01.207353+09:00 web01 CRON[251]: pam_unix(cron:session): session closed for user deploy
+2026-09-29T08:12:01.210163+09:00 web01 CRON[253]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:12:01.266676+09:00 web01 CRON[252]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:12:20.119672+09:00 web01 sshd[266]: Accepted publickey for deploy from 127.0.0.1 port 35912 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:12:20.121151+09:00 web01 sshd[266]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:12:20.121574+09:00 web01 sshd[266]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:20.179459+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:12:20.179862+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:12:20.181761+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:12:20.184133+09:00 web01 sshd[277]: Received disconnect from 127.0.0.1 port 35912:11: disconnected by user
+2026-09-29T08:12:20.184416+09:00 web01 sshd[277]: Disconnected from user deploy 127.0.0.1 port 35912
+2026-09-29T08:12:20.184924+09:00 web01 sshd[266]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:12:43.350710+09:00 web01 sshd[284]: Accepted publickey for deploy from 127.0.0.1 port 37074 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:12:43.352534+09:00 web01 sshd[284]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:12:43.352889+09:00 web01 sshd[284]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:43.410665+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:12:43.411075+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:12:43.413029+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:12:43.415700+09:00 web01 sshd[295]: Received disconnect from 127.0.0.1 port 37074:11: disconnected by user
+2026-09-29T08:12:43.415902+09:00 web01 sshd[295]: Disconnected from user deploy 127.0.0.1 port 37074
+2026-09-29T08:12:43.417504+09:00 web01 sshd[284]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:12:43.419452+09:00 web01 su[299]: (to deploy) root on none
+2026-09-29T08:12:43.420161+09:00 web01 su[299]: pam_unix(su-l:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:12:43.420658+09:00 web01 su[299]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:43.424664+09:00 web01 su[299]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:13:01.269551+09:00 web01 CRON[304]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:13:01.274001+09:00 web01 CRON[304]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:13:06.592039+09:00 web01 sshd[310]: Accepted publickey for deploy from 127.0.0.1 port 49884 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:13:06.593956+09:00 web01 sshd[310]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:13:06.594368+09:00 web01 sshd[310]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:13:06.653092+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:13:06.653590+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:13:06.655606+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:13:06.658511+09:00 web01 sshd[321]: Received disconnect from 127.0.0.1 port 49884:11: disconnected by user
+2026-09-29T08:13:06.658759+09:00 web01 sshd[321]: Disconnected from user deploy 127.0.0.1 port 49884
+2026-09-29T08:13:06.660286+09:00 web01 sshd[310]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:13:29.842999+09:00 web01 sshd[332]: Accepted publickey for deploy from 127.0.0.1 port 49590 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:13:29.844852+09:00 web01 sshd[332]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:13:29.845268+09:00 web01 sshd[332]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:13:29.904275+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:13:29.904694+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:13:29.906666+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:13:29.909069+09:00 web01 sshd[343]: Received disconnect from 127.0.0.1 port 49590:11: disconnected by user
+2026-09-29T08:13:29.909367+09:00 web01 sshd[343]: Disconnected from user deploy 127.0.0.1 port 49590
+2026-09-29T08:13:29.909930+09:00 web01 sshd[332]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:13:53.080004+09:00 web01 sshd[350]: Accepted publickey for deploy from 127.0.0.1 port 56266 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:13:53.081837+09:00 web01 sshd[350]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:13:53.082213+09:00 web01 sshd[350]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:13:53.139512+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:13:53.139879+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:13:53.141853+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:13:53.144297+09:00 web01 sshd[361]: Received disconnect from 127.0.0.1 port 56266:11: disconnected by user
+2026-09-29T08:13:53.144539+09:00 web01 sshd[361]: Disconnected from user deploy 127.0.0.1 port 56266
+2026-09-29T08:13:53.145103+09:00 web01 sshd[350]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:14:01.282002+09:00 web01 CRON[366]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:14:01.283686+09:00 web01 CRON[367]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:14:01.299365+09:00 web01 CRON[367]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:14:01.342490+09:00 web01 CRON[366]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:14:16.312835+09:00 web01 sshd[378]: Accepted publickey for deploy from 127.0.0.1 port 45918 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:14:16.314654+09:00 web01 sshd[378]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:14:16.315008+09:00 web01 sshd[378]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:16.373713+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:14:16.374372+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:14:16.376489+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:14:16.379319+09:00 web01 sshd[389]: Received disconnect from 127.0.0.1 port 45918:11: disconnected by user
+2026-09-29T08:14:16.379543+09:00 web01 sshd[389]: Disconnected from user deploy 127.0.0.1 port 45918
+2026-09-29T08:14:16.380115+09:00 web01 sshd[378]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:14:16.398587+09:00 web01 su[397]: (to deploy) root on none
+2026-09-29T08:14:16.399488+09:00 web01 su[397]: pam_unix(su-l:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:14:16.400111+09:00 web01 su[397]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:16.405569+09:00 web01 su[397]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:14:39.574976+09:00 web01 sshd[404]: Accepted publickey for deploy from 127.0.0.1 port 43442 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:14:39.576748+09:00 web01 sshd[404]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:14:39.577120+09:00 web01 sshd[404]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:39.636345+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:14:39.636768+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:14:39.638826+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:14:39.641338+09:00 web01 sshd[415]: Received disconnect from 127.0.0.1 port 43442:11: disconnected by user
+2026-09-29T08:14:39.641518+09:00 web01 sshd[415]: Disconnected from user deploy 127.0.0.1 port 43442
+2026-09-29T08:14:39.642177+09:00 web01 sshd[404]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:01.346725+09:00 web01 CRON[421]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:15:01.348401+09:00 web01 CRON[420]: pam_unix(cron:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:15:01.352924+09:00 web01 CRON[420]: pam_unix(cron:session): session closed for user deploy
+2026-09-29T08:15:01.353880+09:00 web01 CRON[421]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:15:02.807804+09:00 web01 sshd[429]: Accepted publickey for deploy from 127.0.0.1 port 43936 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:15:02.809456+09:00 web01 sshd[429]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:15:02.809807+09:00 web01 sshd[429]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:02.867800+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:15:02.868281+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:15:02.870255+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:15:02.872734+09:00 web01 sshd[440]: Received disconnect from 127.0.0.1 port 43936:11: disconnected by user
+2026-09-29T08:15:02.872981+09:00 web01 sshd[440]: Disconnected from user deploy 127.0.0.1 port 43936
+2026-09-29T08:15:02.873598+09:00 web01 sshd[429]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:26.040003+09:00 web01 sshd[447]: Accepted publickey for deploy from 127.0.0.1 port 57262 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:15:26.041875+09:00 web01 sshd[447]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:15:26.042266+09:00 web01 sshd[447]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:26.100123+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:15:26.100625+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:15:26.102551+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:15:26.105281+09:00 web01 sshd[458]: Received disconnect from 127.0.0.1 port 57262:11: disconnected by user
+2026-09-29T08:15:26.105480+09:00 web01 sshd[458]: Disconnected from user deploy 127.0.0.1 port 57262
+2026-09-29T08:15:26.106361+09:00 web01 sshd[447]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:49.289159+09:00 web01 sshd[469]: Accepted publickey for deploy from 127.0.0.1 port 38794 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:15:49.291040+09:00 web01 sshd[469]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:15:49.291483+09:00 web01 sshd[469]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:49.350013+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:15:49.350509+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:15:49.352444+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:15:49.355281+09:00 web01 sshd[480]: Received disconnect from 127.0.0.1 port 38794:11: disconnected by user
+2026-09-29T08:15:49.355478+09:00 web01 sshd[480]: Disconnected from user deploy 127.0.0.1 port 38794
+2026-09-29T08:15:49.356022+09:00 web01 sshd[469]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:49.358711+09:00 web01 su[484]: (to deploy) root on none
+2026-09-29T08:15:49.359593+09:00 web01 su[484]: pam_unix(su-l:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:15:49.359894+09:00 web01 su[484]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:49.363947+09:00 web01 su[484]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:16:01.360116+09:00 web01 CRON[489]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:16:01.362740+09:00 web01 CRON[490]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:16:01.377180+09:00 web01 CRON[490]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:16:01.431576+09:00 web01 CRON[489]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:16:12.531762+09:00 web01 sshd[501]: Accepted publickey for deploy from 127.0.0.1 port 47310 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:16:12.533615+09:00 web01 sshd[501]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:16:12.533983+09:00 web01 sshd[501]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:16:12.591588+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:16:12.591999+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:16:12.593939+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:16:12.596289+09:00 web01 sshd[512]: Received disconnect from 127.0.0.1 port 47310:11: disconnected by user
+2026-09-29T08:16:12.596464+09:00 web01 sshd[512]: Disconnected from user deploy 127.0.0.1 port 47310
+2026-09-29T08:16:12.597176+09:00 web01 sshd[501]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:16:35.765029+09:00 web01 sshd[519]: Accepted publickey for deploy from 127.0.0.1 port 54988 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:16:35.766815+09:00 web01 sshd[519]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:16:35.767174+09:00 web01 sshd[519]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:16:35.825800+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:16:35.826241+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:16:35.828136+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:16:35.831297+09:00 web01 sshd[530]: Received disconnect from 127.0.0.1 port 54988:11: disconnected by user
+2026-09-29T08:16:35.831510+09:00 web01 sshd[530]: Disconnected from user deploy 127.0.0.1 port 54988
+2026-09-29T08:16:35.832113+09:00 web01 sshd[519]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:16:59.014334+09:00 web01 sshd[541]: Accepted publickey for deploy from 127.0.0.1 port 55762 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:16:59.016237+09:00 web01 sshd[541]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:16:59.016590+09:00 web01 sshd[541]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:16:59.075113+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:16:59.075607+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:16:59.077504+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:16:59.079536+09:00 web01 sshd[552]: Received disconnect from 127.0.0.1 port 55762:11: disconnected by user
+2026-09-29T08:16:59.079720+09:00 web01 sshd[552]: Disconnected from user deploy 127.0.0.1 port 55762
+2026-09-29T08:16:59.080305+09:00 web01 sshd[541]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:17:01.435674+09:00 web01 CRON[558]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:17:01.436363+09:00 web01 CRON[557]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:17:01.441475+09:00 web01 CRON[557]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:17:01.442327+09:00 web01 CRON[558]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:17:22.247807+09:00 web01 sshd[566]: Accepted publickey for deploy from 127.0.0.1 port 45706 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:17:22.249546+09:00 web01 sshd[566]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:17:22.249916+09:00 web01 sshd[566]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:17:22.307926+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:17:22.308440+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:17:22.310452+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:17:22.312290+09:00 web01 sshd[577]: Received disconnect from 127.0.0.1 port 45706:11: disconnected by user
+2026-09-29T08:17:22.312493+09:00 web01 sshd[577]: Disconnected from user deploy 127.0.0.1 port 45706
+2026-09-29T08:17:22.313154+09:00 web01 sshd[566]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:17:22.317057+09:00 web01 su[581]: (to deploy) root on none
+2026-09-29T08:17:22.317924+09:00 web01 su[581]: pam_unix(su-l:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:17:22.318307+09:00 web01 su[581]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:17:22.322319+09:00 web01 su[581]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:17:45.489781+09:00 web01 sshd[588]: Accepted publickey for deploy from 127.0.0.1 port 50952 ssh2: ED25519 SHA256:XbXDYNbKQDiq+w6CkYgXpcA+c6qxvnS3lGqpko64rHg
+2026-09-29T08:17:45.491514+09:00 web01 sshd[588]: pam_unix(sshd:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:17:45.491871+09:00 web01 sshd[588]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:17:45.549490+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:17:45.549902+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by root(uid=1001)
+2026-09-29T08:17:45.551744+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:17:45.554286+09:00 web01 sshd[599]: Received disconnect from 127.0.0.1 port 50952:11: disconnected by user
+2026-09-29T08:17:45.554437+09:00 web01 sshd[599]: Disconnected from user deploy 127.0.0.1 port 50952
+2026-09-29T08:17:45.555314+09:00 web01 sshd[588]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:18:01.447820+09:00 web01 CRON[609]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:18:01.448725+09:00 web01 CRON[610]: pam_unix(cron:session): session opened for user root(uid=0) by root(uid=0)
+2026-09-29T08:18:01.450249+09:00 web01 CRON[608]: pam_unix(cron:session): session opened for user deploy(uid=1001) by root(uid=0)
+2026-09-29T08:18:01.458180+09:00 web01 CRON[610]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:18:01.459371+09:00 web01 CRON[608]: pam_unix(cron:session): session closed for user deploy
+2026-09-29T08:18:01.498921+09:00 web01 CRON[609]: pam_unix(cron:session): session closed for user root

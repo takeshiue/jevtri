@@ -1,0 +1,137 @@
+2026-09-28T10:36:59.169934+09:00 web01 systemd[1]: Started jt-oom.service - /usr/bin/python3 -c "a = bytearray(256 * 1024 * 1024)".
+2026-09-28T10:36:59.236282+09:00 web01 kernel: python3 invoked oom-killer: gfp_mask=0xcc0(GFP_KERNEL), order=0, oom_score_adj=0
+2026-09-28T10:36:59.236310+09:00 web01 kernel: CPU: 0 PID: 267858 Comm: python3 Tainted: P           O       6.8.0-60-generic #63-Ubuntu
+2026-09-28T10:36:59.236311+09:00 web01 kernel: Hardware name: Virtuozzo OpenStack Compute/Virtuozzo, BIOS edk2-20231122-6.vz9.3 11/22/2023
+2026-09-28T10:36:59.236312+09:00 web01 kernel: Call Trace:
+2026-09-28T10:36:59.236312+09:00 web01 kernel:  <TASK>
+2026-09-28T10:36:59.236313+09:00 web01 kernel:  dump_stack_lvl+0x76/0xa0
+2026-09-28T10:36:59.236313+09:00 web01 kernel:  dump_stack+0x10/0x20
+2026-09-28T10:36:59.236316+09:00 web01 kernel:  dump_header+0x47/0x1f0
+2026-09-28T10:36:59.236317+09:00 web01 kernel:  oom_kill_process+0x118/0x280
+2026-09-28T10:36:59.236317+09:00 web01 kernel:  out_of_memory+0x103/0x350
+2026-09-28T10:36:59.236317+09:00 web01 kernel:  mem_cgroup_out_of_memory+0x145/0x170
+2026-09-28T10:36:59.236318+09:00 web01 kernel:  try_charge_memcg+0x6d6/0x7d0
+2026-09-28T10:36:59.236318+09:00 web01 kernel:  ? srso_alias_return_thunk+0x5/0xfbef5
+2026-09-28T10:36:59.236319+09:00 web01 kernel:  ? vma_alloc_folio+0x7a/0xd0
+2026-09-28T10:36:59.236322+09:00 web01 kernel:  __mem_cgroup_charge+0x45/0xc0
+2026-09-28T10:36:59.236322+09:00 web01 kernel:  do_anonymous_page+0xb2/0x430
+2026-09-28T10:36:59.236323+09:00 web01 kernel:  handle_pte_fault+0x1cb/0x1d0
+2026-09-28T10:36:59.236323+09:00 web01 kernel:  __handle_mm_fault+0x654/0x800
+2026-09-28T10:36:59.236323+09:00 web01 kernel:  handle_mm_fault+0x18a/0x380
+2026-09-28T10:36:59.236324+09:00 web01 kernel:  do_user_addr_fault+0x169/0x670
+2026-09-28T10:36:59.236327+09:00 web01 kernel:  exc_page_fault+0x83/0x1b0
+2026-09-28T10:36:59.236327+09:00 web01 kernel:  asm_exc_page_fault+0x27/0x30
+2026-09-28T10:36:59.236327+09:00 web01 kernel: RIP: 0033:0x7c7901da1efa
+2026-09-28T10:36:59.236328+09:00 web01 kernel: Code: 00 00 48 c7 c1 ff ff ff ff c4 e2 e8 f5 c9 c4 e1 fb 92 c9 62 e1 7f 49 7f 00 c3 66 0f 1f 44 00 00 40 0f b6 c6 48 89 d1 48 89 fa <f3> aa 48 89 d0 c3 48 3b 15 09 23 06 00 77 e7 62 e1 fe 48 7f 07 62
+2026-09-28T10:36:59.236328+09:00 web01 kernel: RSP: 002b:00007fffb80c5a28 EFLAGS: 00010206
+2026-09-28T10:36:59.236329+09:00 web01 kernel: RAX: 0000000000000000 RBX: 00007c79016a6a70 RCX: 000000000c3ef010
+2026-09-28T10:36:59.236332+09:00 web01 kernel: RDX: 00007c78f169d010 RSI: 0000000000000000 RDI: 00007c78f52ae000
+2026-09-28T10:36:59.236332+09:00 web01 kernel: RBP: 00007fffb80c5af0 R08: 00000000ffffffff R09: 0000000000000000
+2026-09-28T10:36:59.236333+09:00 web01 kernel: R10: 0000000000000022 R11: 0000000000000246 R12: 0000000010000000
+2026-09-28T10:36:59.236333+09:00 web01 kernel: R13: 00007c7901b9b1d8 R14: 0000000000000000 R15: 0000000000000001
+2026-09-28T10:36:59.236334+09:00 web01 kernel:  </TASK>
+2026-09-28T10:36:59.236334+09:00 web01 kernel: memory: usage 65536kB, limit 65536kB, failcnt 58
+2026-09-28T10:36:59.236334+09:00 web01 kernel: swap: usage 0kB, limit 0kB, failcnt 0
+2026-09-28T10:36:59.236337+09:00 web01 kernel: Memory cgroup stats for /system.slice/jt-oom.service:
+2026-09-28T10:36:59.236338+09:00 web01 kernel: anon 66863104
+2026-09-28T10:36:59.236338+09:00 web01 kernel: file 0
+2026-09-28T10:36:59.236339+09:00 web01 kernel: kernel 245760
+2026-09-28T10:36:59.236339+09:00 web01 kernel: kernel_stack 0
+2026-09-28T10:36:59.236339+09:00 web01 kernel: pagetables 204800
+2026-09-28T10:36:59.236342+09:00 web01 kernel: sec_pagetables 0
+2026-09-28T10:36:59.236343+09:00 web01 kernel: percpu 48
+2026-09-28T10:36:59.236343+09:00 web01 kernel: sock 0
+2026-09-28T10:36:59.236343+09:00 web01 kernel: vmalloc 0
+2026-09-28T10:36:59.236344+09:00 web01 kernel: shmem 0
+2026-09-28T10:36:59.236344+09:00 web01 kernel: zswap 0
+2026-09-28T10:36:59.236344+09:00 web01 kernel: zswapped 0
+2026-09-28T10:36:59.236347+09:00 web01 kernel: file_mapped 0
+2026-09-28T10:36:59.236348+09:00 web01 kernel: file_dirty 0
+2026-09-28T10:36:59.236348+09:00 web01 kernel: file_writeback 0
+2026-09-28T10:36:59.236348+09:00 web01 kernel: swapcached 0
+2026-09-28T10:36:59.236349+09:00 web01 kernel: anon_thp 0
+2026-09-28T10:36:59.236349+09:00 web01 kernel: file_thp 0
+2026-09-28T10:36:59.236352+09:00 web01 kernel: shmem_thp 0
+2026-09-28T10:36:59.236352+09:00 web01 kernel: inactive_anon 0
+2026-09-28T10:36:59.236353+09:00 web01 kernel: active_anon 66863104
+2026-09-28T10:36:59.236353+09:00 web01 kernel: inactive_file 0
+2026-09-28T10:36:59.236354+09:00 web01 kernel: active_file 0
+2026-09-28T10:36:59.236354+09:00 web01 kernel: unevictable 0
+2026-09-28T10:36:59.236357+09:00 web01 kernel: slab_reclaimable 8328
+2026-09-28T10:36:59.236357+09:00 web01 kernel: slab_unreclaimable 19992
+2026-09-28T10:36:59.236357+09:00 web01 kernel: slab 28320
+2026-09-28T10:36:59.236358+09:00 web01 kernel: workingset_refault_anon 0
+2026-09-28T10:36:59.236358+09:00 web01 kernel: workingset_refault_file 0
+2026-09-28T10:36:59.236359+09:00 web01 kernel: workingset_activate_anon 0
+2026-09-28T10:36:59.236359+09:00 web01 kernel: workingset_activate_file 0
+2026-09-28T10:36:59.236362+09:00 web01 kernel: workingset_restore_anon 0
+2026-09-28T10:36:59.236362+09:00 web01 kernel: workingset_restore_file 0
+2026-09-28T10:36:59.236363+09:00 web01 kernel: workingset_nodereclaim 0
+2026-09-28T10:36:59.236363+09:00 web01 kernel: pgscan 0
+2026-09-28T10:36:59.236364+09:00 web01 kernel: pgsteal 0
+2026-09-28T10:36:59.236364+09:00 web01 kernel: pgscan_kswapd 0
+2026-09-28T10:36:59.236366+09:00 web01 kernel: pgscan_direct 0
+2026-09-28T10:36:59.236367+09:00 web01 kernel: pgscan_khugepaged 0
+2026-09-28T10:36:59.236367+09:00 web01 kernel: pgsteal_kswapd 0
+2026-09-28T10:36:59.236368+09:00 web01 kernel: pgsteal_direct 0
+2026-09-28T10:36:59.236368+09:00 web01 kernel: pgsteal_khugepaged 0
+2026-09-28T10:36:59.236369+09:00 web01 kernel: pgfault 16573
+2026-09-28T10:36:59.236369+09:00 web01 kernel: pgmajfault 0
+2026-09-28T10:36:59.236372+09:00 web01 kernel: pgrefill 0
+2026-09-28T10:36:59.236372+09:00 web01 kernel: pgactivate 0
+2026-09-28T10:36:59.236373+09:00 web01 kernel: pgdeactivate 0
+2026-09-28T10:36:59.236373+09:00 web01 kernel: pglazyfree 0
+2026-09-28T10:36:59.236373+09:00 web01 kernel: pglazyfreed 0
+2026-09-28T10:36:59.236374+09:00 web01 kernel: zswpin 0
+2026-09-28T10:36:59.236376+09:00 web01 kernel: zswpout 0
+2026-09-28T10:36:59.236377+09:00 web01 kernel: zswpwb 0
+2026-09-28T10:36:59.236377+09:00 web01 kernel: thp_fault_alloc 0
+2026-09-28T10:36:59.236378+09:00 web01 kernel: thp_collapse_alloc 0
+2026-09-28T10:36:59.236378+09:00 web01 kernel: thp_swpout 0
+2026-09-28T10:36:59.236378+09:00 web01 kernel: thp_swpout_fallback 0
+2026-09-28T10:36:59.236384+09:00 web01 kernel: Tasks state (memory values in pages):
+2026-09-28T10:36:59.236384+09:00 web01 kernel: [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
+2026-09-28T10:36:59.236385+09:00 web01 kernel: [ 267858]     0 267858    70035    18080    16320     1760         0   204800        0             0 python3
+2026-09-28T10:36:59.236385+09:00 web01 kernel: oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=jt-oom.service,mems_allowed=0,oom_memcg=/system.slice/jt-oom.service,task_memcg=/system.slice/jt-oom.service,task=python3,pid=267858,uid=0
+2026-09-28T10:36:59.236386+09:00 web01 kernel: Memory cgroup out of memory: Killed process 267858 (python3) total-vm:280140kB, anon-rss:65280kB, file-rss:7040kB, shmem-rss:0kB, UID:0 pgtables:200kB oom_score_adj:0
+2026-09-28T10:36:59.242252+09:00 web01 systemd[1]: jt-oom.service: A process of this unit has been killed by the OOM killer.
+2026-09-28T10:36:59.243464+09:00 web01 systemd[1]: jt-oom.service: Main process exited, code=killed, status=9/KILL
+2026-09-28T10:36:59.243823+09:00 web01 systemd[1]: jt-oom.service: Failed with result 'oom-kill'.
+2026-09-28T10:37:02.185505+09:00 web01 systemd[1]: Started jt-segv.service - /usr/bin/python3 -c "import ctypes; ctypes.string_at(0)".
+2026-09-28T10:37:02.208542+09:00 web01 kernel: python3[267862]: segfault at 0 ip 00007cb0ab79bc5c sp 00007ffda399af58 error 4 in libc.so.6[7cb0ab628000+189000] likely on CPU 0 (core 0, socket 0)
+2026-09-28T10:37:02.208559+09:00 web01 kernel: Code: ff ff 48 89 f8 0f bc c9 f3 a4 c3 0f 1f 00 f3 0f 1e fa 89 f8 62 a1 fd 00 ef c0 25 ff 0f 00 00 3d e0 0f 00 00 0f 87 24 01 00 00 <62> f1 7d 20 74 07 c5 fb 93 c0 85 c0 74 16 0f bc c0 c3 66 90 0f bc
+2026-09-28T10:37:03.184849+09:00 web01 systemd[1]: jt-segv.service: Main process exited, code=dumped, status=11/SEGV
+2026-09-28T10:37:03.185257+09:00 web01 systemd[1]: jt-segv.service: Failed with result 'core-dump'.
+2026-09-28T10:37:05.202255+09:00 web01 kernel: loop0: detected capacity change from 0 to 65536
+2026-09-28T10:37:05.211229+09:00 web01 kernel: EXT4-fs (loop0): mounted filesystem 2e1978c8-73d8-435c-a4a4-0ad554dd6a73 r/w with ordered data mode. Quota mode: none.
+2026-09-28T10:37:05.229140+09:00 web01 systemd[1]: Started jt-writer.service - /usr/bin/sh -c "echo \"writing export\"; dd if=/dev/zero of=/mnt/jt-full/export.dat bs=1M".
+2026-09-28T10:37:05.240850+09:00 web01 sh[267879]: writing export
+2026-09-28T10:37:05.307749+09:00 web01 sh[267881]: dd: error writing '/mnt/jt-full/export.dat': No space left on device
+2026-09-28T10:37:05.308897+09:00 web01 sh[267881]: 26+0 records in
+2026-09-28T10:37:05.308954+09:00 web01 sh[267881]: 25+0 records out
+2026-09-28T10:37:05.309077+09:00 web01 sh[267881]: 26542080 bytes (27 MB, 25 MiB) copied, 0.0645403 s, 411 MB/s
+2026-09-28T10:37:05.311300+09:00 web01 systemd[1]: jt-writer.service: Main process exited, code=exited, status=1/FAILURE
+2026-09-28T10:37:05.311409+09:00 web01 systemd[1]: jt-writer.service: Failed with result 'exit-code'.
+2026-09-28T10:37:10.245135+09:00 web01 systemd[1]: Started jt-crashloop.service - /usr/bin/sh -c "echo \"connecting to database db01.example.com:5432\"; echo \"FATAL: could not connect to database\" >&2; exit 1".
+2026-09-28T10:37:10.251530+09:00 web01 sh[267886]: connecting to database db01.example.com:5432
+2026-09-28T10:37:10.251913+09:00 web01 sh[267886]: FATAL: could not connect to database
+2026-09-28T10:37:10.252058+09:00 web01 systemd[1]: jt-crashloop.service: Main process exited, code=exited, status=1/FAILURE
+2026-09-28T10:37:10.252588+09:00 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+2026-09-28T10:37:11.263853+09:00 web01 systemd[1]: jt-crashloop.service: Scheduled restart job, restart counter is at 1.
+2026-09-28T10:37:11.269799+09:00 web01 systemd[1]: Started jt-crashloop.service - /usr/bin/sh -c "echo \"connecting to database db01.example.com:5432\"; echo \"FATAL: could not connect to database\" >&2; exit 1".
+2026-09-28T10:37:11.274907+09:00 web01 sh[267889]: connecting to database db01.example.com:5432
+2026-09-28T10:37:11.275585+09:00 web01 sh[267889]: FATAL: could not connect to database
+2026-09-28T10:37:11.276096+09:00 web01 systemd[1]: jt-crashloop.service: Main process exited, code=exited, status=1/FAILURE
+2026-09-28T10:37:11.276970+09:00 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+2026-09-28T10:37:12.513889+09:00 web01 systemd[1]: jt-crashloop.service: Scheduled restart job, restart counter is at 2.
+2026-09-28T10:37:12.520780+09:00 web01 systemd[1]: Started jt-crashloop.service - /usr/bin/sh -c "echo \"connecting to database db01.example.com:5432\"; echo \"FATAL: could not connect to database\" >&2; exit 1".
+2026-09-28T10:37:12.522390+09:00 web01 sh[267891]: connecting to database db01.example.com:5432
+2026-09-28T10:37:12.522441+09:00 web01 sh[267891]: FATAL: could not connect to database
+2026-09-28T10:37:12.523377+09:00 web01 systemd[1]: jt-crashloop.service: Main process exited, code=exited, status=1/FAILURE
+2026-09-28T10:37:12.523645+09:00 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+2026-09-28T10:37:13.763806+09:00 web01 systemd[1]: jt-crashloop.service: Scheduled restart job, restart counter is at 3.
+2026-09-28T10:37:13.764938+09:00 web01 systemd[1]: jt-crashloop.service: Start request repeated too quickly.
+2026-09-28T10:37:13.764988+09:00 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+2026-09-28T10:37:13.765018+09:00 web01 systemd[1]: Failed to start jt-crashloop.service - /usr/bin/sh -c "echo \"connecting to database db01.example.com:5432\"; echo \"FATAL: could not connect to database\" >&2; exit 1".
+2026-09-28T10:37:20.251083+09:00 web01 systemd[1]: mnt-jt\x2dfull.mount: Deactivated successfully.
+2026-09-28T10:37:20.265307+09:00 web01 kernel: EXT4-fs (loop0): unmounting filesystem 2e1978c8-73d8-435c-a4a4-0ad554dd6a73.

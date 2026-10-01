@@ -1,0 +1,52 @@
+-- Logs begin at Sat 2026-09-26 11:47:43 JST, end at Mon 2026-09-28 10:38:49 JST. --
+Sep 28 10:38:26 web01 systemd[1]: Started Session 66 of user root.
+Sep 28 10:38:28 web01 systemd[1]: Started /usr/libexec/platform-python -c a = bytearray(256 * 1024 * 1024).
+Sep 28 10:38:29 web01 systemd[1]: jt-oom.service: Succeeded.
+Sep 28 10:38:31 web01 systemd[1]: Started /usr/libexec/platform-python -c import ctypes; ctypes.string_at(0).
+Sep 28 10:38:31 web01 kernel: platform-python[13811]: segfault at 0 ip 00007fd57f2a6c22 sp 00007ffec47d6e18 error 4 in _ctypes.cpython-36m-x86_64-linux-gnu.so[7fd57f29f000+1b000]
+Sep 28 10:38:31 web01 kernel: Code: ff ff 48 ff c6 eb e8 f3 0f 1e fa 48 8b 77 28 48 8b 7f 10 e9 10 f9 ff ff f3 0f 1e fa 48 89 fa 83 fe ff 75 1a 48 83 c9 ff 31 c0 <f2> ae 48 89 d7 48 89 ce 48 f7 d6 48 8d 76 ff e9 ea f8 ff ff 48 63
+Sep 28 10:38:31 web01 systemd[1]: Created slice system-systemd\x2dcoredump.slice.
+Sep 28 10:38:31 web01 systemd[1]: Started Process Core Dump (PID 13813/UID 0).
+Sep 28 10:38:31 web01 systemd-coredump[13814]: Resource limits disable core dumping for process 13811 (platform-python).
+Sep 28 10:38:31 web01 systemd-coredump[13814]: Process 13811 (platform-python) of user 0 dumped core.
+Sep 28 10:38:31 web01 systemd[1]: jt-segv.service: Main process exited, code=dumped, status=11/SEGV
+Sep 28 10:38:31 web01 systemd[1]: jt-segv.service: Failed with result 'core-dump'.
+Sep 28 10:38:31 web01 systemd[1]: systemd-coredump@0-13813-0.service: Succeeded.
+Sep 28 10:38:34 web01 kernel: loop: module loaded
+Sep 28 10:38:34 web01 kernel: loop0: detected capacity change from 0 to 33554432
+Sep 28 10:38:34 web01 kernel: EXT4-fs (loop0): mounted filesystem with ordered data mode. Opts: (null)
+Sep 28 10:38:34 web01 systemd[1]: Started /usr/bin/sh -c echo "writing export"; dd if=/dev/zero of=/mnt/jt-full/export.dat bs=1M.
+Sep 28 10:38:34 web01 sh[13839]: writing export
+Sep 28 10:38:34 web01 sh[13841]: dd: error writing '/mnt/jt-full/export.dat': No space left on device
+Sep 28 10:38:34 web01 sh[13841]: 26+0 records in
+Sep 28 10:38:34 web01 sh[13841]: 25+0 records out
+Sep 28 10:38:34 web01 sh[13841]: 26824704 bytes (27 MB, 26 MiB) copied, 0.0639751 s, 419 MB/s
+Sep 28 10:38:34 web01 systemd[1]: jt-writer.service: Main process exited, code=exited, status=1/FAILURE
+Sep 28 10:38:34 web01 systemd[1]: jt-writer.service: Failed with result 'exit-code'.
+Sep 28 10:38:39 web01 systemd[1]: Started /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.
+Sep 28 10:38:39 web01 sh[13844]: connecting to database db01.example.com:5432
+Sep 28 10:38:39 web01 sh[13844]: FATAL: could not connect to database
+Sep 28 10:38:39 web01 systemd[1]: jt-crashloop.service: Main process exited, code=exited, status=1/FAILURE
+Sep 28 10:38:39 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+Sep 28 10:38:40 web01 systemd[1]: jt-crashloop.service: Service RestartSec=1s expired, scheduling restart.
+Sep 28 10:38:40 web01 systemd[1]: jt-crashloop.service: Scheduled restart job, restart counter is at 1.
+Sep 28 10:38:40 web01 systemd[1]: Stopped /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.
+Sep 28 10:38:40 web01 systemd[1]: Started /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.
+Sep 28 10:38:40 web01 sh[13847]: connecting to database db01.example.com:5432
+Sep 28 10:38:40 web01 sh[13847]: FATAL: could not connect to database
+Sep 28 10:38:40 web01 systemd[1]: jt-crashloop.service: Main process exited, code=exited, status=1/FAILURE
+Sep 28 10:38:40 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+Sep 28 10:38:42 web01 systemd[1]: jt-crashloop.service: Service RestartSec=1s expired, scheduling restart.
+Sep 28 10:38:42 web01 systemd[1]: jt-crashloop.service: Scheduled restart job, restart counter is at 2.
+Sep 28 10:38:42 web01 systemd[1]: Stopped /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.
+Sep 28 10:38:42 web01 systemd[1]: Started /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.
+Sep 28 10:38:42 web01 sh[13849]: connecting to database db01.example.com:5432
+Sep 28 10:38:42 web01 sh[13849]: FATAL: could not connect to database
+Sep 28 10:38:42 web01 systemd[1]: jt-crashloop.service: Main process exited, code=exited, status=1/FAILURE
+Sep 28 10:38:42 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+Sep 28 10:38:43 web01 systemd[1]: jt-crashloop.service: Service RestartSec=1s expired, scheduling restart.
+Sep 28 10:38:43 web01 systemd[1]: jt-crashloop.service: Scheduled restart job, restart counter is at 3.
+Sep 28 10:38:43 web01 systemd[1]: Stopped /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.
+Sep 28 10:38:43 web01 systemd[1]: jt-crashloop.service: Start request repeated too quickly.
+Sep 28 10:38:43 web01 systemd[1]: jt-crashloop.service: Failed with result 'exit-code'.
+Sep 28 10:38:43 web01 systemd[1]: Failed to start /usr/bin/sh -c echo "connecting to database db01.example.com:5432"; echo "FATAL: could not connect to database" >&2; exit 1.

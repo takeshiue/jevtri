@@ -1,0 +1,12 @@
+[Tue Sep 29 08:08:10.159594 2026] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.68 (Unix) configured -- resuming normal operations
+[Tue Sep 29 08:08:10.159786 2026] [mpm_event:info] [pid 1:tid 1] AH00490: Server built: Sep 19 2026 00:19:44
+[Tue Sep 29 08:08:10.159795 2026] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Tue Sep 29 08:09:04.021106 2026] [core:info] [pid 4:tid 11] [client 10.0.2.100:35932] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:10:09.117285 2026] [core:info] [pid 4:tid 17] [client 10.0.2.100:39440] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:11:14.182848 2026] [core:info] [pid 5:tid 47] [client 10.0.2.100:35892] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:12:19.247094 2026] [core:info] [pid 4:tid 67] [client 10.0.2.100:50952] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:13:24.318351 2026] [core:info] [pid 5:tid 34] [client 10.0.2.100:34432] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:14:29.375427 2026] [core:info] [pid 4:tid 16] [client 10.0.2.100:46282] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:15:34.433701 2026] [core:info] [pid 5:tid 42] [client 10.0.2.100:39696] AH00128: File does not exist: /usr/local/apache2/htdocs/favicon.ico
+[Tue Sep 29 08:16:13.500023 2026] [core:info] [pid 1:tid 1] AH00096: removed PID file /usr/local/apache2/logs/httpd.pid (pid=1)
+[Tue Sep 29 08:16:13.500049 2026] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully

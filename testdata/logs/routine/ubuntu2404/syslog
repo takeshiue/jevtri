@@ -1,0 +1,61 @@
+2026-09-29T08:10:00.154140+09:00 web01 cron[31]: (CRON) INFO (pidfile fd = 3)
+2026-09-29T08:10:00.155291+09:00 web01 cron[33]: (CRON) STARTUP (fork ok)
+2026-09-29T08:10:00.156722+09:00 web01 cron[33]: (CRON) INFO (Running @reboot jobs)
+2026-09-29T08:10:00.372289+09:00 web01 postfix/postfix-script[118]: starting the Postfix mail system
+2026-09-29T08:10:00.389708+09:00 web01 postfix/master[120]: daemon started -- version 3.8.6, configuration /etc/postfix
+2026-09-29T08:10:01.144890+09:00 web01 rsyslogd: rsyslogd's groupid changed to 102
+2026-09-29T08:10:01.144990+09:00 web01 rsyslogd: rsyslogd's userid changed to 101
+2026-09-29T08:10:01.145022+09:00 web01 rsyslogd: [origin software="rsyslogd" swVersion="8.2312.0" x-pid="27" x-info="https://www.rsyslog.com"] start
+2026-09-29T08:10:47.172017+09:00 web01 postfix/pickup[121]: 29F7A413E: uid=0 from=<root>
+2026-09-29T08:10:47.176732+09:00 web01 postfix/cleanup[181]: 29F7A413E: message-id=<20260928231047.29F7A413E@fd3d79ecf0b3>
+2026-09-29T08:10:47.179890+09:00 web01 postfix/qmgr[123]: 29F7A413E: from=<root@web01.example.com>, size=410, nrcpt=1 (queue active)
+2026-09-29T08:10:47.187877+09:00 web01 postfix/local[184]: 29F7A413E: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.03, delays=0.02/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:10:47.188004+09:00 web01 postfix/qmgr[123]: 29F7A413E: removed
+2026-09-29T08:11:01.162738+09:00 web01 CRON[186]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:11:56.952062+09:00 web01 postfix/pickup[121]: E869D41A9: uid=0 from=<root>
+2026-09-29T08:11:56.952405+09:00 web01 postfix/cleanup[181]: E869D41A9: message-id=<20260928231156.E869D41A9@fd3d79ecf0b3>
+2026-09-29T08:11:56.954918+09:00 web01 postfix/qmgr[123]: E869D41A9: from=<root@web01.example.com>, size=410, nrcpt=1 (queue active)
+2026-09-29T08:11:56.957026+09:00 web01 postfix/local[184]: E869D41A9: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:11:56.957149+09:00 web01 postfix/qmgr[123]: E869D41A9: removed
+2026-09-29T08:12:01.188335+09:00 web01 CRON[254]: (deploy) CMD (date > /dev/null)
+2026-09-29T08:12:01.189701+09:00 web01 CRON[255]: (root) CMD (/usr/local/bin/backup-etc.sh)
+2026-09-29T08:12:01.193330+09:00 web01 CRON[256]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:13:01.270135+09:00 web01 CRON[305]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:13:06.673366+09:00 web01 postfix/pickup[121]: A458A41AF: uid=0 from=<root>
+2026-09-29T08:13:06.674151+09:00 web01 postfix/cleanup[181]: A458A41AF: message-id=<20260928231306.A458A41AF@fd3d79ecf0b3>
+2026-09-29T08:13:06.676191+09:00 web01 postfix/qmgr[123]: A458A41AF: from=<root@web01.example.com>, size=410, nrcpt=1 (queue active)
+2026-09-29T08:13:06.678317+09:00 web01 postfix/local[184]: A458A41AF: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:13:06.678449+09:00 web01 postfix/qmgr[123]: A458A41AF: removed
+2026-09-29T08:14:01.284550+09:00 web01 CRON[368]: (root) CMD (/usr/local/bin/backup-etc.sh)
+2026-09-29T08:14:01.286330+09:00 web01 CRON[369]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:14:16.396470+09:00 web01 postfix/pickup[121]: 60C4042CF: uid=0 from=<root>
+2026-09-29T08:14:16.396784+09:00 web01 postfix/cleanup[181]: 60C4042CF: message-id=<20260928231416.60C4042CF@fd3d79ecf0b3>
+2026-09-29T08:14:16.400368+09:00 web01 postfix/qmgr[123]: 60C4042CF: from=<root@web01.example.com>, size=411, nrcpt=1 (queue active)
+2026-09-29T08:14:16.403930+09:00 web01 postfix/local[184]: 60C4042CF: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:14:16.404052+09:00 web01 postfix/qmgr[123]: 60C4042CF: removed
+2026-09-29T08:15:01.347392+09:00 web01 CRON[422]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:15:01.348828+09:00 web01 CRON[423]: (deploy) CMD (date > /dev/null)
+2026-09-29T08:15:26.120462+09:00 web01 postfix/pickup[121]: 1D54642D0: uid=0 from=<root>
+2026-09-29T08:15:26.121360+09:00 web01 postfix/cleanup[181]: 1D54642D0: message-id=<20260928231526.1D54642D0@fd3d79ecf0b3>
+2026-09-29T08:15:26.123149+09:00 web01 postfix/qmgr[123]: 1D54642D0: from=<root@web01.example.com>, size=411, nrcpt=1 (queue active)
+2026-09-29T08:15:26.125125+09:00 web01 postfix/local[184]: 1D54642D0: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:15:26.125274+09:00 web01 postfix/qmgr[123]: 1D54642D0: removed
+2026-09-29T08:16:01.364659+09:00 web01 CRON[491]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:16:01.364826+09:00 web01 CRON[492]: (root) CMD (/usr/local/bin/backup-etc.sh)
+2026-09-29T08:16:35.845479+09:00 web01 postfix/pickup[121]: CE64A2BB: uid=0 from=<root>
+2026-09-29T08:16:35.846679+09:00 web01 postfix/cleanup[181]: CE64A2BB: message-id=<20260928231635.CE64A2BB@fd3d79ecf0b3>
+2026-09-29T08:16:35.848556+09:00 web01 postfix/qmgr[123]: CE64A2BB: from=<root@web01.example.com>, size=409, nrcpt=1 (queue active)
+2026-09-29T08:16:35.850536+09:00 web01 postfix/local[184]: CE64A2BB: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:16:35.850683+09:00 web01 postfix/qmgr[123]: CE64A2BB: removed
+2026-09-29T08:17:01.436126+09:00 web01 CRON[559]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:17:01.437351+09:00 web01 CRON[560]: (root) CMD (cd / && run-parts --report /etc/cron.hourly)
+2026-09-29T08:17:45.568377+09:00 web01 postfix/pickup[121]: 8ABE22BB: uid=0 from=<root>
+2026-09-29T08:17:45.569422+09:00 web01 postfix/cleanup[181]: 8ABE22BB: message-id=<20260928231745.8ABE22BB@fd3d79ecf0b3>
+2026-09-29T08:17:45.571445+09:00 web01 postfix/qmgr[123]: 8ABE22BB: from=<root@web01.example.com>, size=409, nrcpt=1 (queue active)
+2026-09-29T08:17:45.573665+09:00 web01 postfix/local[184]: 8ABE22BB: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:17:45.573781+09:00 web01 postfix/qmgr[123]: 8ABE22BB: removed
+2026-09-29T08:18:01.449262+09:00 web01 CRON[611]: (root) CMD (/usr/local/bin/backup-etc.sh)
+2026-09-29T08:18:01.449953+09:00 web01 CRON[612]: (root) CMD (/usr/local/bin/healthcheck.sh)
+2026-09-29T08:18:01.452016+09:00 web01 CRON[613]: (deploy) CMD (date > /dev/null)
+2026-09-29T08:18:08.592563+09:00 web01 postfix/postfix-script[628]: stopping the Postfix mail system
+2026-09-29T08:18:08.595282+09:00 web01 postfix/master[120]: terminating on signal 15

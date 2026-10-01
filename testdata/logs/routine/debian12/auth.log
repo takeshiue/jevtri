@@ -1,0 +1,323 @@
+2026-09-29T08:09:49.981714+09:00 web01 sshd[29]: Server listening on :: port 22.
+2026-09-29T08:09:51.286268+09:00 web01 sshd[125]: Accepted publickey for deploy from 127.0.0.1 port 35810 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:09:51.289762+09:00 web01 sshd[125]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:09:51.290559+09:00 web01 sshd[125]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:09:51.303900+09:00 web01 sshd[125]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:09:51.305668+09:00 web01 sshd[125]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:09:51.369763+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:09:51.370632+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:09:51.371337+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:09:51.376333+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:09:51.382526+09:00 web01 sshd[131]: Received disconnect from 127.0.0.1 port 35810:11: disconnected by user
+2026-09-29T08:09:51.382735+09:00 web01 sshd[131]: Disconnected from user deploy 127.0.0.1 port 35810
+2026-09-29T08:09:51.385238+09:00 web01 sshd[125]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:10:02.006390+09:00 web01 CRON[137]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:10:02.006604+09:00 web01 CRON[136]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:10:02.006685+09:00 web01 CRON[136]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:10:02.007291+09:00 web01 CRON[137]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:10:02.018404+09:00 web01 CRON[137]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:10:02.077018+09:00 web01 CRON[136]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:10:14.565517+09:00 web01 sshd[148]: Accepted publickey for deploy from 127.0.0.1 port 41640 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:10:14.567511+09:00 web01 sshd[148]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:10:14.567831+09:00 web01 sshd[148]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:10:14.572580+09:00 web01 sshd[148]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:10:14.572665+09:00 web01 sshd[148]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:10:14.584929+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:10:14.585154+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:10:14.585303+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:10:14.586830+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:10:14.588299+09:00 web01 sshd[154]: Received disconnect from 127.0.0.1 port 41640:11: disconnected by user
+2026-09-29T08:10:14.588487+09:00 web01 sshd[154]: Disconnected from user deploy 127.0.0.1 port 41640
+2026-09-29T08:10:14.589340+09:00 web01 sshd[148]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:10:37.827593+09:00 web01 sshd[161]: Accepted publickey for deploy from 127.0.0.1 port 39052 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:10:37.830087+09:00 web01 sshd[161]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:10:37.830607+09:00 web01 sshd[161]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:10:37.836532+09:00 web01 sshd[161]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:10:37.836642+09:00 web01 sshd[161]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:10:37.886244+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:10:37.886492+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:10:37.886581+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:10:37.888067+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:10:37.891294+09:00 web01 sshd[167]: Received disconnect from 127.0.0.1 port 39052:11: disconnected by user
+2026-09-29T08:10:37.891463+09:00 web01 sshd[167]: Disconnected from user deploy 127.0.0.1 port 39052
+2026-09-29T08:10:37.892015+09:00 web01 sshd[161]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:11:01.079429+09:00 web01 CRON[183]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:11:01.079535+09:00 web01 CRON[183]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:11:01.083926+09:00 web01 sshd[181]: Accepted publickey for deploy from 127.0.0.1 port 47154 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:11:01.085173+09:00 web01 CRON[183]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:11:01.085476+09:00 web01 sshd[181]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:11:01.085744+09:00 web01 sshd[181]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:01.090563+09:00 web01 sshd[181]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:11:01.090633+09:00 web01 sshd[181]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:11:01.138488+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:11:01.138729+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:11:01.138817+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:11:01.140377+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:11:01.142601+09:00 web01 sshd[191]: Received disconnect from 127.0.0.1 port 47154:11: disconnected by user
+2026-09-29T08:11:01.142851+09:00 web01 sshd[191]: Disconnected from user deploy 127.0.0.1 port 47154
+2026-09-29T08:11:01.143601+09:00 web01 sshd[181]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:11:01.147679+09:00 web01 su[195]: (to deploy) root on none
+2026-09-29T08:11:01.148270+09:00 web01 su[195]: pam_env(su-l:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:11:01.148479+09:00 web01 su[195]: pam_unix(su-l:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:11:01.148760+09:00 web01 su[195]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:01.155685+09:00 web01 su[195]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:11:24.332427+09:00 web01 sshd[202]: Accepted publickey for deploy from 127.0.0.1 port 57450 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:11:24.334416+09:00 web01 sshd[202]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:11:24.334719+09:00 web01 sshd[202]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:24.339185+09:00 web01 sshd[202]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:11:24.339317+09:00 web01 sshd[202]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:11:24.387365+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:11:24.387603+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:11:24.387703+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:11:24.389298+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:11:24.391302+09:00 web01 sshd[208]: Received disconnect from 127.0.0.1 port 57450:11: disconnected by user
+2026-09-29T08:11:24.391496+09:00 web01 sshd[208]: Disconnected from user deploy 127.0.0.1 port 57450
+2026-09-29T08:11:24.392272+09:00 web01 sshd[202]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:11:47.566446+09:00 web01 sshd[215]: Accepted publickey for deploy from 127.0.0.1 port 43176 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:11:47.568298+09:00 web01 sshd[215]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:11:47.568688+09:00 web01 sshd[215]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:11:47.573496+09:00 web01 sshd[215]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:11:47.573573+09:00 web01 sshd[215]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:11:47.621347+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:11:47.621615+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:11:47.621705+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:11:47.623189+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:11:47.625290+09:00 web01 sshd[221]: Received disconnect from 127.0.0.1 port 43176:11: disconnected by user
+2026-09-29T08:11:47.626486+09:00 web01 sshd[221]: Disconnected from user deploy 127.0.0.1 port 43176
+2026-09-29T08:11:47.627098+09:00 web01 sshd[215]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:12:01.095040+09:00 web01 CRON[232]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:01.095108+09:00 web01 CRON[232]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:12:01.096590+09:00 web01 CRON[230]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:01.096650+09:00 web01 CRON[230]: pam_unix(cron:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:12:01.099257+09:00 web01 CRON[231]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:01.099333+09:00 web01 CRON[231]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:12:01.116489+09:00 web01 CRON[230]: pam_unix(cron:session): session closed for user deploy
+2026-09-29T08:12:01.123544+09:00 web01 CRON[232]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:12:01.226513+09:00 web01 CRON[231]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:12:10.813478+09:00 web01 sshd[245]: Accepted publickey for deploy from 127.0.0.1 port 39336 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:12:10.815681+09:00 web01 sshd[245]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:12:10.816008+09:00 web01 sshd[245]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:10.820576+09:00 web01 sshd[245]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:12:10.820667+09:00 web01 sshd[245]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:10.868128+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:12:10.868418+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:12:10.868519+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:12:10.870065+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:12:10.872300+09:00 web01 sshd[251]: Received disconnect from 127.0.0.1 port 39336:11: disconnected by user
+2026-09-29T08:12:10.872490+09:00 web01 sshd[251]: Disconnected from user deploy 127.0.0.1 port 39336
+2026-09-29T08:12:10.872994+09:00 web01 sshd[245]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:12:34.046472+09:00 web01 sshd[258]: Accepted publickey for deploy from 127.0.0.1 port 40402 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:12:34.048490+09:00 web01 sshd[258]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:12:34.048891+09:00 web01 sshd[258]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:34.053407+09:00 web01 sshd[258]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:12:34.053481+09:00 web01 sshd[258]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:34.101112+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:12:34.101408+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:12:34.101500+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:12:34.103028+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:12:34.105301+09:00 web01 sshd[264]: Received disconnect from 127.0.0.1 port 40402:11: disconnected by user
+2026-09-29T08:12:34.105456+09:00 web01 sshd[264]: Disconnected from user deploy 127.0.0.1 port 40402
+2026-09-29T08:12:34.105957+09:00 web01 sshd[258]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:12:34.109165+09:00 web01 su[268]: (to deploy) root on none
+2026-09-29T08:12:34.109782+09:00 web01 su[268]: pam_env(su-l:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:34.109979+09:00 web01 su[268]: pam_unix(su-l:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:12:34.110389+09:00 web01 su[268]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:34.113900+09:00 web01 su[268]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:12:57.288538+09:00 web01 sshd[275]: Accepted publickey for deploy from 127.0.0.1 port 49862 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:12:57.290525+09:00 web01 sshd[275]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:12:57.290853+09:00 web01 sshd[275]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:12:57.295530+09:00 web01 sshd[275]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:12:57.295618+09:00 web01 sshd[275]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:12:57.343474+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:12:57.343749+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:12:57.343896+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:12:57.345559+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:12:57.348325+09:00 web01 sshd[281]: Received disconnect from 127.0.0.1 port 49862:11: disconnected by user
+2026-09-29T08:12:57.348504+09:00 web01 sshd[281]: Disconnected from user deploy 127.0.0.1 port 49862
+2026-09-29T08:12:57.349339+09:00 web01 sshd[275]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:13:01.229692+09:00 web01 CRON[290]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:13:01.229809+09:00 web01 CRON[290]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:13:01.233523+09:00 web01 CRON[290]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:13:20.546458+09:00 web01 sshd[296]: Accepted publickey for deploy from 127.0.0.1 port 44788 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:13:20.548334+09:00 web01 sshd[296]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:13:20.548597+09:00 web01 sshd[296]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:13:20.553028+09:00 web01 sshd[296]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:13:20.553132+09:00 web01 sshd[296]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:13:20.601150+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:13:20.601429+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:13:20.601518+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:13:20.603040+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:13:20.604881+09:00 web01 sshd[302]: Received disconnect from 127.0.0.1 port 44788:11: disconnected by user
+2026-09-29T08:13:20.605092+09:00 web01 sshd[302]: Disconnected from user deploy 127.0.0.1 port 44788
+2026-09-29T08:13:20.606103+09:00 web01 sshd[296]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:13:43.778407+09:00 web01 sshd[309]: Accepted publickey for deploy from 127.0.0.1 port 44142 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:13:43.780318+09:00 web01 sshd[309]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:13:43.780597+09:00 web01 sshd[309]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:13:43.785082+09:00 web01 sshd[309]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:13:43.785154+09:00 web01 sshd[309]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:13:43.833454+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:13:43.833753+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:13:43.833822+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:13:43.835389+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:13:43.837347+09:00 web01 sshd[315]: Received disconnect from 127.0.0.1 port 44142:11: disconnected by user
+2026-09-29T08:13:43.837541+09:00 web01 sshd[315]: Disconnected from user deploy 127.0.0.1 port 44142
+2026-09-29T08:13:43.838362+09:00 web01 sshd[309]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:14:01.236148+09:00 web01 CRON[320]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:14:01.237800+09:00 web01 CRON[321]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:14:01.237912+09:00 web01 CRON[321]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:14:01.238320+09:00 web01 CRON[320]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:14:01.243556+09:00 web01 CRON[321]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:14:01.305517+09:00 web01 CRON[320]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:14:07.012561+09:00 web01 sshd[332]: Accepted publickey for deploy from 127.0.0.1 port 45904 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:14:07.014157+09:00 web01 sshd[332]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:14:07.014465+09:00 web01 sshd[332]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:07.019163+09:00 web01 sshd[332]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:14:07.019291+09:00 web01 sshd[332]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:14:07.067559+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:14:07.067801+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:14:07.067889+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:14:07.069439+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:14:07.072309+09:00 web01 sshd[338]: Received disconnect from 127.0.0.1 port 45904:11: disconnected by user
+2026-09-29T08:14:07.072499+09:00 web01 sshd[338]: Disconnected from user deploy 127.0.0.1 port 45904
+2026-09-29T08:14:07.073239+09:00 web01 sshd[332]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:14:07.090443+09:00 web01 su[346]: (to deploy) root on none
+2026-09-29T08:14:07.091805+09:00 web01 su[346]: pam_env(su-l:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:14:07.092346+09:00 web01 su[346]: pam_unix(su-l:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:14:07.092739+09:00 web01 su[346]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:07.096884+09:00 web01 su[346]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:14:30.273520+09:00 web01 sshd[353]: Accepted publickey for deploy from 127.0.0.1 port 53134 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:14:30.275156+09:00 web01 sshd[353]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:14:30.275624+09:00 web01 sshd[353]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:30.280134+09:00 web01 sshd[353]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:14:30.280340+09:00 web01 sshd[353]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:14:30.328707+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:14:30.328910+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:14:30.328955+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:14:30.330530+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:14:30.332302+09:00 web01 sshd[359]: Received disconnect from 127.0.0.1 port 53134:11: disconnected by user
+2026-09-29T08:14:30.332492+09:00 web01 sshd[359]: Disconnected from user deploy 127.0.0.1 port 53134
+2026-09-29T08:14:30.333097+09:00 web01 sshd[353]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:14:53.605514+09:00 web01 sshd[366]: Accepted publickey for deploy from 127.0.0.1 port 54320 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:14:53.607521+09:00 web01 sshd[366]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:14:53.607842+09:00 web01 sshd[366]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:14:53.612519+09:00 web01 sshd[366]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:14:53.612603+09:00 web01 sshd[366]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:14:53.660961+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:14:53.661254+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:14:53.661360+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:14:53.662944+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:14:53.665327+09:00 web01 sshd[372]: Received disconnect from 127.0.0.1 port 54320:11: disconnected by user
+2026-09-29T08:14:53.665531+09:00 web01 sshd[372]: Disconnected from user deploy 127.0.0.1 port 54320
+2026-09-29T08:14:53.666132+09:00 web01 sshd[366]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:01.309684+09:00 web01 CRON[378]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:15:01.309752+09:00 web01 CRON[378]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:15:01.310595+09:00 web01 CRON[377]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:15:01.310655+09:00 web01 CRON[377]: pam_unix(cron:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:15:01.316590+09:00 web01 CRON[378]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:15:01.317448+09:00 web01 CRON[377]: pam_unix(cron:session): session closed for user deploy
+2026-09-29T08:15:16.838475+09:00 web01 sshd[386]: Accepted publickey for deploy from 127.0.0.1 port 54936 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:15:16.840233+09:00 web01 sshd[386]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:15:16.840570+09:00 web01 sshd[386]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:16.845327+09:00 web01 sshd[386]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:15:16.845408+09:00 web01 sshd[386]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:15:16.893298+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:15:16.893546+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:15:16.893633+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:15:16.895101+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:15:16.896983+09:00 web01 sshd[392]: Received disconnect from 127.0.0.1 port 54936:11: disconnected by user
+2026-09-29T08:15:16.897610+09:00 web01 sshd[392]: Disconnected from user deploy 127.0.0.1 port 54936
+2026-09-29T08:15:16.898429+09:00 web01 sshd[386]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:40.086513+09:00 web01 sshd[403]: Accepted publickey for deploy from 127.0.0.1 port 41966 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:15:40.088527+09:00 web01 sshd[403]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:15:40.088851+09:00 web01 sshd[403]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:40.093353+09:00 web01 sshd[403]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:15:40.093431+09:00 web01 sshd[403]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:15:40.141518+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:15:40.141772+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:15:40.141852+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:15:40.143552+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:15:40.145286+09:00 web01 sshd[409]: Received disconnect from 127.0.0.1 port 41966:11: disconnected by user
+2026-09-29T08:15:40.145473+09:00 web01 sshd[409]: Disconnected from user deploy 127.0.0.1 port 41966
+2026-09-29T08:15:40.146154+09:00 web01 sshd[403]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:15:40.150540+09:00 web01 su[413]: (to deploy) root on none
+2026-09-29T08:15:40.151054+09:00 web01 su[413]: pam_env(su-l:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:15:40.151315+09:00 web01 su[413]: pam_unix(su-l:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:15:40.151604+09:00 web01 su[413]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:15:40.155364+09:00 web01 su[413]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:16:01.321038+09:00 web01 CRON[418]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:16:01.321455+09:00 web01 CRON[419]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:16:01.321516+09:00 web01 CRON[419]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:16:01.323293+09:00 web01 CRON[418]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:16:01.328247+09:00 web01 CRON[419]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:16:01.404443+09:00 web01 CRON[418]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:16:03.330488+09:00 web01 sshd[430]: Accepted publickey for deploy from 127.0.0.1 port 40356 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:16:03.332081+09:00 web01 sshd[430]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:16:03.332578+09:00 web01 sshd[430]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:16:03.337004+09:00 web01 sshd[430]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:16:03.337094+09:00 web01 sshd[430]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:16:03.385377+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:16:03.385628+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:16:03.385714+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:16:03.387392+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:16:03.389906+09:00 web01 sshd[436]: Received disconnect from 127.0.0.1 port 40356:11: disconnected by user
+2026-09-29T08:16:03.390177+09:00 web01 sshd[436]: Disconnected from user deploy 127.0.0.1 port 40356
+2026-09-29T08:16:03.390850+09:00 web01 sshd[430]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:16:26.681478+09:00 web01 sshd[443]: Accepted publickey for deploy from 127.0.0.1 port 42586 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:16:26.683474+09:00 web01 sshd[443]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:16:26.683794+09:00 web01 sshd[443]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:16:26.688347+09:00 web01 sshd[443]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:16:26.688404+09:00 web01 sshd[443]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:16:26.736491+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:16:26.736731+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:16:26.736821+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:16:26.738368+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:16:26.741312+09:00 web01 sshd[449]: Received disconnect from 127.0.0.1 port 42586:11: disconnected by user
+2026-09-29T08:16:26.741500+09:00 web01 sshd[449]: Disconnected from user deploy 127.0.0.1 port 42586
+2026-09-29T08:16:26.742020+09:00 web01 sshd[443]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:16:49.964501+09:00 web01 sshd[460]: Accepted publickey for deploy from 127.0.0.1 port 33402 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:16:49.966434+09:00 web01 sshd[460]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:16:49.966733+09:00 web01 sshd[460]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:16:49.971288+09:00 web01 sshd[460]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:16:49.971339+09:00 web01 sshd[460]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:16:50.019487+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:16:50.019735+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:16:50.019802+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:16:50.021350+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:16:50.023041+09:00 web01 sshd[466]: Received disconnect from 127.0.0.1 port 33402:11: disconnected by user
+2026-09-29T08:16:50.023856+09:00 web01 sshd[466]: Disconnected from user deploy 127.0.0.1 port 33402
+2026-09-29T08:16:50.024444+09:00 web01 sshd[460]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:17:01.408059+09:00 web01 CRON[471]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:17:01.408578+09:00 web01 CRON[472]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:17:01.408643+09:00 web01 CRON[472]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:17:01.409342+09:00 web01 CRON[471]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-29T08:17:01.414241+09:00 web01 CRON[472]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:17:01.414738+09:00 web01 CRON[471]: pam_unix(cron:session): session closed for user root
+2026-09-29T08:17:13.196460+09:00 web01 sshd[480]: Accepted publickey for deploy from 127.0.0.1 port 44536 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:17:13.198228+09:00 web01 sshd[480]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:17:13.198567+09:00 web01 sshd[480]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:17:13.202965+09:00 web01 sshd[480]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:17:13.203044+09:00 web01 sshd[480]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:17:13.251527+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:17:13.251781+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:17:13.251866+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:17:13.253525+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:17:13.256313+09:00 web01 sshd[486]: Received disconnect from 127.0.0.1 port 44536:11: disconnected by user
+2026-09-29T08:17:13.256503+09:00 web01 sshd[486]: Disconnected from user deploy 127.0.0.1 port 44536
+2026-09-29T08:17:13.257112+09:00 web01 sshd[480]: pam_unix(sshd:session): session closed for user deploy
+2026-09-29T08:17:13.259972+09:00 web01 su[490]: (to deploy) root on none
+2026-09-29T08:17:13.260585+09:00 web01 su[490]: pam_env(su-l:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:17:13.260800+09:00 web01 su[490]: pam_unix(su-l:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:17:13.261078+09:00 web01 su[490]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:17:13.264856+09:00 web01 su[490]: pam_unix(su-l:session): session closed for user deploy
+2026-09-29T08:17:36.438468+09:00 web01 sshd[497]: Accepted publickey for deploy from 127.0.0.1 port 36332 ssh2: ED25519 SHA256:6faN04AJPg/SbXyGQWSMcsAFrkwSdrhLfUD/pY/RzEY
+2026-09-29T08:17:36.440359+09:00 web01 sshd[497]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-29T08:17:36.440680+09:00 web01 sshd[497]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-29T08:17:36.445129+09:00 web01 sshd[497]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-29T08:17:36.445301+09:00 web01 sshd[497]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-29T08:17:36.493055+09:00 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+2026-09-29T08:17:36.493372+09:00 web01 sudo: pam_limits(sudo:session): Could not set limit for 'core' to soft=0, hard=-1: Operation not permitted; uid=1000,euid=0
+2026-09-29T08:17:36.493467+09:00 web01 sudo: pam_unix(sudo:session): session opened for user root(uid=0) by (uid=1000)
+2026-09-29T08:17:36.494969+09:00 web01 sudo: pam_unix(sudo:session): session closed for user root
+2026-09-29T08:17:36.497305+09:00 web01 sshd[503]: Received disconnect from 127.0.0.1 port 36332:11: disconnected by user
+2026-09-29T08:17:36.497562+09:00 web01 sshd[503]: Disconnected from user deploy 127.0.0.1 port 36332
+2026-09-29T08:17:36.498056+09:00 web01 sshd[497]: pam_unix(sshd:session): session closed for user deploy

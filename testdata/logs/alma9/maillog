@@ -1,0 +1,34 @@
+Sep 28 07:51:22 web01 postfix/postfix-script[727]: starting the Postfix mail system
+Sep 28 07:51:22 web01 postfix/master[729]: daemon started -- version 3.5.25, configuration /etc/postfix
+Sep 28 07:51:52 web01 postfix/pickup[730]: C5410107B88: uid=1000 from=<deploy>
+Sep 28 07:51:52 web01 postfix/cleanup[818]: C5410107B88: message-id=<20260927225152.C5410107B88@web01.localdomain>
+Sep 28 07:51:52 web01 postfix/qmgr[731]: C5410107B88: from=<deploy@web01.localdomain>, size=473, nrcpt=1 (queue active)
+Sep 28 07:51:52 web01 postfix/pickup[730]: C86FB107B85: uid=0 from=<root>
+Sep 28 07:51:52 web01 postfix/cleanup[818]: C86FB107B85: message-id=<20260927225152.C86FB107B85@web01.localdomain>
+Sep 28 07:51:52 web01 postfix/qmgr[731]: C86FB107B85: from=<root@web01.localdomain>, size=263, nrcpt=1 (queue active)
+Sep 28 07:51:52 web01 postfix/local[822]: error: open database /etc/aliases.db: No such file or directory
+Sep 28 07:51:52 web01 postfix/local[822]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep 28 07:51:52 web01 postfix/local[822]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep 28 07:51:52 web01 postfix/local[822]: C5410107B88: to=<root@web01.localdomain>, orig_to=<root>, relay=local, delay=0.05, delays=0.03/0.01/0/0.01, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep 28 07:51:52 web01 postfix/smtp[823]: C86FB107B85: to=<ops@unreachable.invalid>, relay=none, delay=0.06, delays=0.02/0.03/0/0, dsn=5.4.4, status=bounced (Host or domain name not found. Name service error for name=unreachable.invalid type=AAAA: Host not found)
+Sep 28 07:51:52 web01 postfix/cleanup[818]: D46BC107B91: message-id=<20260927225152.D46BC107B91@web01.localdomain>
+Sep 28 07:51:52 web01 postfix/qmgr[731]: D46BC107B91: from=<>, size=2344, nrcpt=1 (queue active)
+Sep 28 07:51:52 web01 postfix/bounce[826]: C86FB107B85: sender non-delivery notification: D46BC107B91
+Sep 28 07:51:52 web01 postfix/qmgr[731]: C86FB107B85: removed
+Sep 28 07:51:52 web01 postfix/local[822]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep 28 07:51:52 web01 postfix/local[822]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep 28 07:51:52 web01 postfix/local[822]: D46BC107B91: to=<root@web01.localdomain>, relay=local, delay=0.01, delays=0/0/0/0, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep 28 07:52:01 web01 postfix/pickup[730]: A050D107B94: uid=0 from=<root>
+Sep 28 07:52:01 web01 postfix/cleanup[818]: A050D107B94: message-id=<20260927225201.A050D107B94@web01.localdomain>
+Sep 28 07:52:01 web01 postfix/qmgr[731]: A050D107B94: from=<root@web01.localdomain>, size=723, nrcpt=1 (queue active)
+Sep 28 07:52:01 web01 postfix/local[822]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep 28 07:52:01 web01 postfix/local[822]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep 28 07:52:01 web01 postfix/local[822]: A050D107B94: to=<root@web01.localdomain>, orig_to=<root>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep 28 07:53:01 web01 postfix/pickup[730]: A57CC107B98: uid=0 from=<root>
+Sep 28 07:53:01 web01 postfix/cleanup[818]: A57CC107B98: message-id=<20260927225301.A57CC107B98@web01.localdomain>
+Sep 28 07:53:01 web01 postfix/qmgr[731]: A57CC107B98: from=<root@web01.localdomain>, size=723, nrcpt=1 (queue active)
+Sep 28 07:53:01 web01 postfix/local[822]: warning: hash:/etc/aliases is unavailable. open database /etc/aliases.db: No such file or directory
+Sep 28 07:53:01 web01 postfix/local[822]: warning: hash:/etc/aliases: lookup of 'root' failed
+Sep 28 07:53:01 web01 postfix/local[822]: A57CC107B98: to=<root@web01.localdomain>, orig_to=<root>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=4.3.0, status=deferred (alias database unavailable)
+Sep 28 07:53:07 web01 postfix/postfix-script[845]: stopping the Postfix mail system
+Sep 28 07:53:07 web01 postfix/master[729]: terminating on signal 15

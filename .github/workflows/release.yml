@@ -1,0 +1,137 @@
+name: release
+
+# A version tag in the public repository builds the rpm and deb packages, the
+# source tarball and SHA256SUMS, signs SHA256SUMS with the key kept in the
+# repository secrets, checks the signature, and only then publishes the GitHub
+# release (created as a draft until then).
+# Run by hand (in the private repository where this file is maintained, before
+# publishing) it only builds and checks an unsigned snapshot.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SIGNING_FINGERPRINT: EE2D0814C5CE3F1F76CE4B2EB37604513E193961
+  PUBLISH: ${{ github.repository == 'takeshiue/jevtri' && github.ref_type == 'tag' }}
+
+jobs:
+  # Packages that build but do not install must never be published: install,
+  # run, rotate, upgrade and remove them in every supported distribution first.
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: alma8, kind: rpm, image: almalinux/8-minimal}
+          - {name: alma9, kind: rpm, image: almalinux/9-minimal}
+          - {name: alma10, kind: rpm, image: almalinux/10-minimal}
+          - {name: ubuntu2204, kind: deb, image: ubuntu:22.04}
+          - {name: ubuntu2404, kind: deb, image: ubuntu:24.04}
+          - {name: debian12, kind: deb, image: debian:12}
+    name: install (${{ matrix.name }})
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: stable
+      - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94
+        with:
+          version: v2.18.2
+          install-only: true
+      - name: Build two versions to test an upgrade
+        run: |
+          mkdir -p build pkg
+          git archive --format=tar.gz -o build/jevtri-source.tar.gz HEAD
+          for version in 0.0.1 0.0.2; do
+            JEVTRI_SNAPSHOT_VERSION=$version goreleaser release --snapshot --clean --skip=publish,sign
+            cp dist/jevtri_${version}_x86_64.rpm dist/jevtri_${version}_amd64.deb pkg/
+          done
+          cp tests/distro/check.sh pkg/
+      - name: Install, run, rotate, upgrade and remove
+        run: |
+          if [ "${{ matrix.kind }}" = rpm ]; then ext=x86_64.rpm; else ext=amd64.deb; fi
+          docker run --rm -v "$PWD/pkg:/pkg:ro" "${{ matrix.image }}" \
+            sh /pkg/check.sh ${{ matrix.kind }} /pkg/jevtri_0.0.1_$ext /pkg/jevtri_0.0.2_$ext 0.0.1 0.0.2
+
+  release:
+    needs: install
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # creates and publishes the release
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: stable
+      - name: Tag matches the version in the source
+        if: github.ref_type == 'tag'
+        run: |
+          source_version=$(sed -n 's/^var version = "\(.*\)"$/\1/p' cmd/jevtri/main.go)
+          if [ "v$source_version" != "$GITHUB_REF_NAME" ]; then
+            echo "tag $GITHUB_REF_NAME does not match version $source_version in cmd/jevtri/main.go" >&2
+            exit 1
+          fi
+          # The release notes are this version's section of CHANGELOG.md, which
+          # must carry a date, not "unreleased".
+          if ! grep -qE "^## $source_version - [0-9]{4}-[0-9]{2}-[0-9]{2}$" CHANGELOG.md; then
+            echo "CHANGELOG.md has no dated section for $source_version" >&2
+            exit 1
+          fi
+      - name: Check
+        run: |
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          test -z "$(gofmt -l .)"
+          go vet ./...
+          "$(go env GOPATH)/bin/staticcheck" ./...
+          go test ./...
+          TZ=UTC go test ./...
+          "$(go env GOPATH)/bin/govulncheck" ./...
+      - name: Source tarball
+        run: |
+          version=$(sed -n 's/^var version = "\(.*\)"$/\1/p' cmd/jevtri/main.go)
+          mkdir -p build
+          git archive --format=tar.gz --prefix="jevtri-$version/" -o "build/jevtri-$version.tar.gz" HEAD
+          awk -v v="$version" '/^## /{p=($2==v); next} p' CHANGELOG.md > build/notes.md
+      - name: Import the signing key
+        if: env.PUBLISH == 'true'
+        run: printf '%s\n' "$GPG_PRIVATE_KEY" | gpg --batch --import
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      # Pinned to the commit of v7.2.3.
+      - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94
+        with:
+          version: v2.18.2
+          args: ${{ env.PUBLISH == 'true' && 'release --clean --release-notes build/notes.md' || 'release --snapshot --clean --skip=sign' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_FINGERPRINT: ${{ env.SIGNING_FINGERPRINT }}
+      - name: Check the packages and the signature
+        run: |
+          cd dist
+          ls -l ./*.rpm ./*.deb
+          # SHA256SUMS also covers the source tarball, which is built in build/.
+          cp ../build/jevtri-*.tar.gz .
+          sha256sum -c SHA256SUMS
+          if [ "$PUBLISH" = true ]; then
+            # Any valid signature is not enough: it must be the published key.
+            signer=$(gpg --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null | awk '$2=="VALIDSIG"{print $3}')
+            test "$signer" = "$SIGNING_FINGERPRINT"
+          fi
+      - name: Publish the release
+        if: env.PUBLISH == 'true'
+        run: gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

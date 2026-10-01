@@ -1,0 +1,39 @@
+Sep 29 08:09:31 web01 postfix/postfix-script[104]: starting the Postfix mail system
+Sep 29 08:09:31 web01 postfix/master[106]: daemon started -- version 3.5.25, configuration /etc/postfix
+Sep 29 08:10:18 web01 postfix/pickup[107]: A70F7405E: uid=0 from=<root>
+Sep 29 08:10:18 web01 postfix/cleanup[213]: A70F7405E: message-id=<20260928231018.A70F7405E@web01.localdomain>
+Sep 29 08:10:18 web01 postfix/qmgr[108]: A70F7405E: from=<root@web01.localdomain>, size=339, nrcpt=1 (queue active)
+Sep 29 08:10:18 web01 postfix/local[216]: A70F7405E: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.05, delays=0.04/0.01/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:10:18 web01 postfix/qmgr[108]: A70F7405E: removed
+Sep 29 08:11:28 web01 postfix/pickup[107]: 5299C41A9: uid=0 from=<root>
+Sep 29 08:11:28 web01 postfix/cleanup[213]: 5299C41A9: message-id=<20260928231128.5299C41A9@web01.localdomain>
+Sep 29 08:11:28 web01 postfix/qmgr[108]: 5299C41A9: from=<root@web01.localdomain>, size=339, nrcpt=1 (queue active)
+Sep 29 08:11:28 web01 postfix/local[216]: 5299C41A9: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:11:28 web01 postfix/qmgr[108]: 5299C41A9: removed
+Sep 29 08:12:37 web01 postfix/pickup[107]: EA36B4270: uid=0 from=<root>
+Sep 29 08:12:37 web01 postfix/cleanup[213]: EA36B4270: message-id=<20260928231237.EA36B4270@web01.localdomain>
+Sep 29 08:12:37 web01 postfix/qmgr[108]: EA36B4270: from=<root@web01.localdomain>, size=339, nrcpt=1 (queue active)
+Sep 29 08:12:37 web01 postfix/local[216]: EA36B4270: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:12:37 web01 postfix/qmgr[108]: EA36B4270: removed
+Sep 29 08:13:47 web01 postfix/pickup[107]: 8372142CF: uid=0 from=<root>
+Sep 29 08:13:47 web01 postfix/cleanup[213]: 8372142CF: message-id=<20260928231347.8372142CF@web01.localdomain>
+Sep 29 08:13:47 web01 postfix/qmgr[108]: 8372142CF: from=<root@web01.localdomain>, size=340, nrcpt=1 (queue active)
+Sep 29 08:13:47 web01 postfix/local[216]: 8372142CF: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:13:47 web01 postfix/qmgr[108]: 8372142CF: removed
+Sep 29 08:14:57 web01 postfix/pickup[107]: 2F1E542D0: uid=0 from=<root>
+Sep 29 08:14:57 web01 postfix/cleanup[213]: 2F1E542D0: message-id=<20260928231457.2F1E542D0@web01.localdomain>
+Sep 29 08:14:57 web01 postfix/qmgr[108]: 2F1E542D0: from=<root@web01.localdomain>, size=340, nrcpt=1 (queue active)
+Sep 29 08:14:57 web01 postfix/local[216]: 2F1E542D0: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:14:57 web01 postfix/qmgr[108]: 2F1E542D0: removed
+Sep 29 08:16:06 web01 postfix/pickup[107]: CC69F42CF: uid=0 from=<root>
+Sep 29 08:16:06 web01 postfix/cleanup[213]: CC69F42CF: message-id=<20260928231606.CC69F42CF@web01.localdomain>
+Sep 29 08:16:06 web01 postfix/qmgr[108]: CC69F42CF: from=<root@web01.localdomain>, size=340, nrcpt=1 (queue active)
+Sep 29 08:16:06 web01 postfix/local[216]: CC69F42CF: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:16:06 web01 postfix/qmgr[108]: CC69F42CF: removed
+Sep 29 08:17:16 web01 postfix/pickup[107]: 6AFE22BA: uid=0 from=<root>
+Sep 29 08:17:16 web01 postfix/cleanup[213]: 6AFE22BA: message-id=<20260928231716.6AFE22BA@web01.localdomain>
+Sep 29 08:17:16 web01 postfix/qmgr[108]: 6AFE22BA: from=<root@web01.localdomain>, size=338, nrcpt=1 (queue active)
+Sep 29 08:17:16 web01 postfix/local[216]: 6AFE22BA: to=<deploy@web01.localdomain>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+Sep 29 08:17:16 web01 postfix/qmgr[108]: 6AFE22BA: removed
+Sep 29 08:17:39 web01 postfix/postfix-script[985]: stopping the Postfix mail system
+Sep 29 08:17:39 web01 postfix/master[106]: terminating on signal 15

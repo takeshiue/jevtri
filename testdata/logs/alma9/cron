@@ -1,0 +1,7 @@
+Sep 28 07:51:22 web01 crond[660]: (CRON) STARTUP (1.5.7)
+Sep 28 07:51:22 web01 crond[660]: (CRON) INFO (RANDOM_DELAY will be scaled with factor 46% if used.)
+Sep 28 07:51:22 web01 crond[660]: (CRON) INFO (running with inotify support)
+Sep 28 07:52:01 web01 CROND[829]: (root) CMD (/usr/local/bin/backup.sh)
+Sep 28 07:52:01 web01 CROND[828]: (root) CMDEND (/usr/local/bin/backup.sh)
+Sep 28 07:53:01 web01 CROND[834]: (root) CMD (/usr/local/bin/backup.sh)
+Sep 28 07:53:01 web01 CROND[833]: (root) CMDEND (/usr/local/bin/backup.sh)

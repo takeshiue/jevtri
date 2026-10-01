@@ -1,0 +1,257 @@
+Sep 29 08:19:14 web01 sshd[34]: Server listening on 0.0.0.0 port 22.
+Sep 29 08:19:14 web01 sshd[34]: Server listening on :: port 22.
+Sep 29 08:19:15 web01 sshd[114]: Accepted publickey for deploy from 127.0.0.1 port 55350 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:19:15 web01 sshd[114]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:19:15 web01 sshd[114]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:19:15 web01 sshd[114]: pam_lastlog(sshd:session): unable to open /var/log/lastlog: No such file or directory
+Sep 29 08:19:15 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:19:15 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:19:15 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:19:15 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:19:15 web01 sshd[117]: Received disconnect from 127.0.0.1 port 55350:11: disconnected by user
+Sep 29 08:19:15 web01 sshd[117]: Disconnected from user deploy 127.0.0.1 port 55350
+Sep 29 08:19:15 web01 sshd[114]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:19:38 web01 sshd[138]: Accepted publickey for deploy from 127.0.0.1 port 38562 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:19:38 web01 sshd[138]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:19:38 web01 sshd[138]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:19:38 web01 sshd[138]: pam_lastlog(sshd:session): unable to open /var/log/lastlog: No such file or directory
+Sep 29 08:19:38 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:19:38 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:19:38 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:19:38 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:19:38 web01 sshd[141]: Received disconnect from 127.0.0.1 port 38562:11: disconnected by user
+Sep 29 08:19:38 web01 sshd[141]: Disconnected from user deploy 127.0.0.1 port 38562
+Sep 29 08:19:38 web01 sshd[138]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:20:01 web01 sshd[162]: Accepted publickey for deploy from 127.0.0.1 port 41026 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:20:01 web01 sshd[162]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:01 web01 sshd[162]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:20:01 web01 sshd[162]: pam_lastlog(sshd:session): unable to open /var/log/lastlog: No such file or directory
+Sep 29 08:20:01 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:20:01 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:01 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:20:01 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:20:01 web01 sshd[165]: Received disconnect from 127.0.0.1 port 41026:11: disconnected by user
+Sep 29 08:20:01 web01 sshd[165]: Disconnected from user deploy 127.0.0.1 port 41026
+Sep 29 08:20:01 web01 sshd[162]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:20:24 web01 sshd[200]: Accepted publickey for deploy from 127.0.0.1 port 42838 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:20:24 web01 sshd[200]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:24 web01 sshd[200]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:20:24 web01 sshd[200]: pam_lastlog(sshd:session): unable to open /var/log/lastlog: No such file or directory
+Sep 29 08:20:24 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:20:24 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:24 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:20:24 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:20:24 web01 sshd[203]: Received disconnect from 127.0.0.1 port 42838:11: disconnected by user
+Sep 29 08:20:24 web01 sshd[203]: Disconnected from user deploy 127.0.0.1 port 42838
+Sep 29 08:20:24 web01 sshd[200]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:20:24 web01 su: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:24 web01 su: pam_unix(su-l:session): session opened for user deploy by (uid=0)
+Sep 29 08:20:24 web01 su: pam_lastlog(su-l:session): file /var/log/lastlog created
+Sep 29 08:20:24 web01 su: pam_lastlog(su-l:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:20:24 web01 su: pam_unix(su-l:session): session closed for user deploy
+Sep 29 08:20:47 web01 sshd[242]: Accepted publickey for deploy from 127.0.0.1 port 51430 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:20:47 web01 sshd[242]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:47 web01 sshd[242]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:20:47 web01 sshd[242]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:20:47 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:20:47 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:20:47 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:20:47 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:20:47 web01 sshd[245]: Received disconnect from 127.0.0.1 port 51430:11: disconnected by user
+Sep 29 08:20:47 web01 sshd[245]: Disconnected from user deploy 127.0.0.1 port 51430
+Sep 29 08:20:47 web01 sshd[242]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:21:01 web01 crond[263]: pam_systemd(crond:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:10 web01 sshd[273]: Accepted publickey for deploy from 127.0.0.1 port 43446 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:21:10 web01 sshd[273]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:10 web01 sshd[273]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:21:10 web01 sshd[273]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:21:10 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:21:10 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:10 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:21:10 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:21:10 web01 sshd[276]: Received disconnect from 127.0.0.1 port 43446:11: disconnected by user
+Sep 29 08:21:10 web01 sshd[276]: Disconnected from user deploy 127.0.0.1 port 43446
+Sep 29 08:21:10 web01 sshd[273]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:21:34 web01 sshd[301]: Accepted publickey for deploy from 127.0.0.1 port 39596 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:21:34 web01 sshd[301]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:34 web01 sshd[301]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:21:34 web01 sshd[301]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:21:34 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:21:34 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:34 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:21:34 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:21:34 web01 sshd[304]: Received disconnect from 127.0.0.1 port 39596:11: disconnected by user
+Sep 29 08:21:34 web01 sshd[304]: Disconnected from user deploy 127.0.0.1 port 39596
+Sep 29 08:21:34 web01 sshd[301]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:21:57 web01 sshd[325]: Accepted publickey for deploy from 127.0.0.1 port 51486 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:21:57 web01 sshd[325]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:57 web01 sshd[325]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:21:57 web01 sshd[325]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:21:57 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:21:57 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:57 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:21:57 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:21:57 web01 sshd[328]: Received disconnect from 127.0.0.1 port 51486:11: disconnected by user
+Sep 29 08:21:57 web01 sshd[328]: Disconnected from user deploy 127.0.0.1 port 51486
+Sep 29 08:21:57 web01 sshd[325]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:21:57 web01 su: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:21:57 web01 su: pam_unix(su-l:session): session opened for user deploy by (uid=0)
+Sep 29 08:21:57 web01 su: pam_lastlog(su-l:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:21:57 web01 su: pam_unix(su-l:session): session closed for user deploy
+Sep 29 08:22:20 web01 sshd[374]: Accepted publickey for deploy from 127.0.0.1 port 48216 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:22:20 web01 sshd[374]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:22:20 web01 sshd[374]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:22:20 web01 sshd[374]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:22:20 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:22:20 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:22:20 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:22:20 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:22:20 web01 sshd[377]: Received disconnect from 127.0.0.1 port 48216:11: disconnected by user
+Sep 29 08:22:20 web01 sshd[377]: Disconnected from user deploy 127.0.0.1 port 48216
+Sep 29 08:22:20 web01 sshd[374]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:22:43 web01 sshd[402]: Accepted publickey for deploy from 127.0.0.1 port 44772 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:22:43 web01 sshd[402]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:22:43 web01 sshd[402]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:22:43 web01 sshd[402]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:22:43 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:22:43 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:22:43 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:22:43 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:22:43 web01 sshd[405]: Received disconnect from 127.0.0.1 port 44772:11: disconnected by user
+Sep 29 08:22:43 web01 sshd[405]: Disconnected from user deploy 127.0.0.1 port 44772
+Sep 29 08:22:43 web01 sshd[402]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:23:06 web01 sshd[429]: Accepted publickey for deploy from 127.0.0.1 port 34724 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:23:06 web01 sshd[429]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:06 web01 sshd[429]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:23:06 web01 sshd[429]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:23:06 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:23:06 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:06 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:23:06 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:23:06 web01 sshd[432]: Received disconnect from 127.0.0.1 port 34724:11: disconnected by user
+Sep 29 08:23:06 web01 sshd[432]: Disconnected from user deploy 127.0.0.1 port 34724
+Sep 29 08:23:06 web01 sshd[429]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:23:29 web01 sshd[453]: Accepted publickey for deploy from 127.0.0.1 port 52520 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:23:29 web01 sshd[453]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:29 web01 sshd[453]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:23:29 web01 sshd[453]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:23:29 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:23:29 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:29 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:23:29 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:23:29 web01 sshd[456]: Received disconnect from 127.0.0.1 port 52520:11: disconnected by user
+Sep 29 08:23:29 web01 sshd[456]: Disconnected from user deploy 127.0.0.1 port 52520
+Sep 29 08:23:29 web01 sshd[453]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:23:29 web01 su: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:29 web01 su: pam_unix(su-l:session): session opened for user deploy by (uid=0)
+Sep 29 08:23:29 web01 su: pam_lastlog(su-l:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:23:30 web01 su: pam_unix(su-l:session): session closed for user deploy
+Sep 29 08:23:53 web01 sshd[499]: Accepted publickey for deploy from 127.0.0.1 port 39900 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:23:53 web01 sshd[499]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:53 web01 sshd[499]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:23:53 web01 sshd[499]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:23:53 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:23:53 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:23:53 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:23:53 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:23:53 web01 sshd[502]: Received disconnect from 127.0.0.1 port 39900:11: disconnected by user
+Sep 29 08:23:53 web01 sshd[502]: Disconnected from user deploy 127.0.0.1 port 39900
+Sep 29 08:23:53 web01 sshd[499]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:24:01 web01 crond[520]: pam_systemd(crond:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:24:16 web01 sshd[534]: Accepted publickey for deploy from 127.0.0.1 port 38682 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:24:16 web01 sshd[534]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:24:16 web01 sshd[534]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:24:16 web01 sshd[534]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:24:16 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:24:16 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:24:16 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:24:16 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:24:16 web01 sshd[537]: Received disconnect from 127.0.0.1 port 38682:11: disconnected by user
+Sep 29 08:24:16 web01 sshd[537]: Disconnected from user deploy 127.0.0.1 port 38682
+Sep 29 08:24:16 web01 sshd[534]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:24:39 web01 sshd[558]: Accepted publickey for deploy from 127.0.0.1 port 47860 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:24:39 web01 sshd[558]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:24:39 web01 sshd[558]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:24:39 web01 sshd[558]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:24:39 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:24:39 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:24:39 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:24:39 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:24:39 web01 sshd[561]: Received disconnect from 127.0.0.1 port 47860:11: disconnected by user
+Sep 29 08:24:39 web01 sshd[561]: Disconnected from user deploy 127.0.0.1 port 47860
+Sep 29 08:24:39 web01 sshd[558]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:25:02 web01 sshd[589]: Accepted publickey for deploy from 127.0.0.1 port 45232 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:25:02 web01 sshd[589]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:02 web01 sshd[589]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:25:02 web01 sshd[589]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:25:02 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:25:02 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:02 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:25:02 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:25:02 web01 sshd[592]: Received disconnect from 127.0.0.1 port 45232:11: disconnected by user
+Sep 29 08:25:02 web01 sshd[592]: Disconnected from user deploy 127.0.0.1 port 45232
+Sep 29 08:25:02 web01 sshd[589]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:25:02 web01 su: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:02 web01 su: pam_unix(su-l:session): session opened for user deploy by (uid=0)
+Sep 29 08:25:02 web01 su: pam_lastlog(su-l:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:25:02 web01 su: pam_unix(su-l:session): session closed for user deploy
+Sep 29 08:25:25 web01 sshd[631]: Accepted publickey for deploy from 127.0.0.1 port 49806 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:25:25 web01 sshd[631]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:25 web01 sshd[631]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:25:25 web01 sshd[631]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:25:25 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:25:25 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:25 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:25:25 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:25:25 web01 sshd[634]: Received disconnect from 127.0.0.1 port 49806:11: disconnected by user
+Sep 29 08:25:25 web01 sshd[634]: Disconnected from user deploy 127.0.0.1 port 49806
+Sep 29 08:25:25 web01 sshd[631]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:25:48 web01 sshd[655]: Accepted publickey for deploy from 127.0.0.1 port 43676 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:25:48 web01 sshd[655]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:48 web01 sshd[655]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:25:48 web01 sshd[655]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:25:49 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:25:49 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:25:49 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:25:49 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:25:49 web01 sshd[658]: Received disconnect from 127.0.0.1 port 43676:11: disconnected by user
+Sep 29 08:25:49 web01 sshd[658]: Disconnected from user deploy 127.0.0.1 port 43676
+Sep 29 08:25:49 web01 sshd[655]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:26:12 web01 sshd[690]: Accepted publickey for deploy from 127.0.0.1 port 35020 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:26:12 web01 sshd[690]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:12 web01 sshd[690]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:26:12 web01 sshd[690]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:26:12 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:26:12 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:12 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:26:12 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:26:12 web01 sshd[693]: Received disconnect from 127.0.0.1 port 35020:11: disconnected by user
+Sep 29 08:26:12 web01 sshd[693]: Disconnected from user deploy 127.0.0.1 port 35020
+Sep 29 08:26:12 web01 sshd[690]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:26:35 web01 sshd[714]: Accepted publickey for deploy from 127.0.0.1 port 51514 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:26:35 web01 sshd[714]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:35 web01 sshd[714]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:26:35 web01 sshd[714]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:26:35 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:26:35 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:35 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:26:35 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:26:35 web01 sshd[717]: Received disconnect from 127.0.0.1 port 51514:11: disconnected by user
+Sep 29 08:26:35 web01 sshd[717]: Disconnected from user deploy 127.0.0.1 port 51514
+Sep 29 08:26:35 web01 sshd[714]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:26:35 web01 su: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:35 web01 su: pam_unix(su-l:session): session opened for user deploy by (uid=0)
+Sep 29 08:26:35 web01 su: pam_lastlog(su-l:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:26:35 web01 su: pam_unix(su-l:session): session closed for user deploy
+Sep 29 08:26:58 web01 sshd[756]: Accepted publickey for deploy from 127.0.0.1 port 48552 ssh2: ED25519 SHA256:OaL0QiPmuHPLXxhstmKBnrrEgCzeUJWElsXgyLkfBCA
+Sep 29 08:26:58 web01 sshd[756]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:58 web01 sshd[756]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Sep 29 08:26:58 web01 sshd[756]: pam_lastlog(sshd:session): unable to open /var/log/btmp: No such file or directory
+Sep 29 08:26:58 web01 sudo:   deploy : PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/ls /root
+Sep 29 08:26:58 web01 sudo: pam_systemd(sudo:session): Failed to connect to system bus: No such file or directory
+Sep 29 08:26:58 web01 sudo: pam_unix(sudo:session): session opened for user root by (uid=1000)
+Sep 29 08:26:58 web01 sudo: pam_unix(sudo:session): session closed for user root
+Sep 29 08:26:58 web01 sshd[759]: Received disconnect from 127.0.0.1 port 48552:11: disconnected by user
+Sep 29 08:26:58 web01 sshd[759]: Disconnected from user deploy 127.0.0.1 port 48552
+Sep 29 08:26:58 web01 sshd[756]: pam_unix(sshd:session): session closed for user deploy
+Sep 29 08:27:01 web01 crond[781]: pam_systemd(crond:session): Failed to connect to system bus: No such file or directory

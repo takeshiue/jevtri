@@ -1,0 +1,49 @@
+2026-09-28T07:31:16.340582+09:00 web01 sshd[4381]: Server listening on :: port 22.
+2026-09-28T07:31:16.614211+09:00 web01 useradd[4474]: new group: name=deploy, GID=1000
+2026-09-28T07:31:16.614311+09:00 web01 useradd[4474]: new user: name=deploy, UID=1000, GID=1000, home=/home/deploy, shell=/bin/sh, from=none
+2026-09-28T07:31:16.667172+09:00 web01 chpasswd[4482]: pam_unix(chpasswd:chauthtok): password changed for deploy
+2026-09-28T07:31:17.825254+09:00 web01 sshd[4489]: Invalid user admin from 127.0.0.1 port 56690
+2026-09-28T07:31:17.847629+09:00 web01 sshd[4489]: pam_unix(sshd:auth): check pass; user unknown
+2026-09-28T07:31:17.847655+09:00 web01 sshd[4489]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1 
+2026-09-28T07:31:19.554615+09:00 web01 sshd[4489]: Failed password for invalid user admin from 127.0.0.1 port 56690 ssh2
+2026-09-28T07:31:20.117811+09:00 web01 sshd[4489]: Connection closed by invalid user admin 127.0.0.1 port 56690 [preauth]
+2026-09-28T07:31:20.269412+09:00 web01 sshd[4493]: Invalid user test from 127.0.0.1 port 56704
+2026-09-28T07:31:20.276319+09:00 web01 sshd[4493]: pam_unix(sshd:auth): check pass; user unknown
+2026-09-28T07:31:20.276399+09:00 web01 sshd[4493]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1 
+2026-09-28T07:31:22.394903+09:00 web01 sshd[4493]: Failed password for invalid user test from 127.0.0.1 port 56704 ssh2
+2026-09-28T07:31:24.066055+09:00 web01 sshd[4493]: Failed password for invalid user test from 127.0.0.1 port 56704 ssh2
+2026-09-28T07:31:24.074519+09:00 web01 sshd[4493]: Connection closed by invalid user test 127.0.0.1 port 56704 [preauth]
+2026-09-28T07:31:24.220543+09:00 web01 sshd[4497]: Invalid user oracle from 127.0.0.1 port 56720
+2026-09-28T07:31:24.226363+09:00 web01 sshd[4497]: pam_unix(sshd:auth): check pass; user unknown
+2026-09-28T07:31:24.226453+09:00 web01 sshd[4497]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1 
+2026-09-28T07:31:26.560796+09:00 web01 sshd[4497]: Failed password for invalid user oracle from 127.0.0.1 port 56720 ssh2
+2026-09-28T07:31:27.503949+09:00 web01 sshd[4497]: Connection closed by invalid user oracle 127.0.0.1 port 56720 [preauth]
+2026-09-28T07:31:27.705401+09:00 web01 sshd[4501]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+2026-09-28T07:31:29.783471+09:00 web01 sshd[4501]: Failed password for deploy from 127.0.0.1 port 45620 ssh2
+2026-09-28T07:31:30.989117+09:00 web01 sshd[4501]: Connection closed by authenticating user deploy 127.0.0.1 port 45620 [preauth]
+2026-09-28T07:31:31.190825+09:00 web01 sshd[4505]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+2026-09-28T07:31:33.485203+09:00 web01 sshd[4505]: Failed password for deploy from 127.0.0.1 port 45630 ssh2
+2026-09-28T07:31:34.475962+09:00 web01 sshd[4505]: Connection closed by authenticating user deploy 127.0.0.1 port 45630 [preauth]
+2026-09-28T07:31:34.675388+09:00 web01 sshd[4509]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=127.0.0.1  user=deploy
+2026-09-28T07:31:36.382507+09:00 web01 sshd[4509]: Failed password for deploy from 127.0.0.1 port 45642 ssh2
+2026-09-28T07:31:37.960278+09:00 web01 sshd[4509]: Connection closed by authenticating user deploy 127.0.0.1 port 45642 [preauth]
+2026-09-28T07:31:38.169649+09:00 web01 sshd[4513]: Accepted password for deploy from 127.0.0.1 port 48860 ssh2
+2026-09-28T07:31:38.171446+09:00 web01 sshd[4513]: pam_unix(sshd:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-28T07:31:38.171954+09:00 web01 sshd[4513]: pam_systemd(sshd:session): Failed to connect to system bus: No such file or directory
+2026-09-28T07:31:38.177852+09:00 web01 sshd[4513]: pam_env(sshd:session): deprecated reading of user environment enabled
+2026-09-28T07:31:38.177949+09:00 web01 sshd[4513]: pam_env(sshd:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-28T07:31:38.187287+09:00 web01 sshd[4519]: Received disconnect from 127.0.0.1 port 48860:11: disconnected by user
+2026-09-28T07:31:38.187452+09:00 web01 sshd[4519]: Disconnected from user deploy 127.0.0.1 port 48860
+2026-09-28T07:31:38.188170+09:00 web01 sshd[4513]: pam_unix(sshd:session): session closed for user deploy
+2026-09-28T07:31:38.193856+09:00 web01 su[4521]: (to deploy) root on none
+2026-09-28T07:31:38.194411+09:00 web01 su[4521]: pam_env(su-l:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-28T07:31:38.194622+09:00 web01 su[4521]: pam_unix(su-l:session): session opened for user deploy(uid=1000) by (uid=0)
+2026-09-28T07:31:38.194896+09:00 web01 su[4521]: pam_systemd(su-l:session): Failed to connect to system bus: No such file or directory
+2026-09-28T07:31:38.246156+09:00 web01 sudo: pam_unix(sudo:auth): authentication failure; logname= uid=1000 euid=0 tty= ruser=deploy rhost=  user=deploy
+2026-09-28T07:31:40.836491+09:00 web01 sudo: pam_unix(sudo:auth): conversation failed
+2026-09-28T07:31:40.836501+09:00 web01 sudo: pam_unix(sudo:auth): auth could not identify password for [deploy]
+2026-09-28T07:31:40.837978+09:00 web01 sudo:   deploy : user NOT in sudoers ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/true
+2026-09-28T07:31:40.839770+09:00 web01 su[4521]: pam_unix(su-l:session): session closed for user deploy
+2026-09-28T07:32:01.348535+09:00 web01 CRON[4542]: pam_env(cron:session): Unable to open env file: /etc/default/locale: No such file or directory
+2026-09-28T07:32:01.348704+09:00 web01 CRON[4542]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+2026-09-28T07:32:01.364427+09:00 web01 CRON[4542]: pam_unix(cron:session): session closed for user root

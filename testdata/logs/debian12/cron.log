@@ -1,0 +1,3 @@
+2026-09-28T07:31:16.345284+09:00 web01 cron[4384]: (CRON) STARTUP (fork ok)
+2026-09-28T07:31:16.346336+09:00 web01 cron[4384]: (CRON) INFO (Running @reboot jobs)
+2026-09-28T07:32:01.349139+09:00 web01 CRON[4543]: (root) CMD (/usr/local/bin/backup.sh)

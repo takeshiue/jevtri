@@ -1,0 +1,311 @@
+.TH JEVTRI 1 "2026-09-30" "jevtri 0.1.0" "User Commands"
+.SH NAME
+jevtri \- rank server logs by which to examine first after an incident
+.SH SYNOPSIS
+.B jevtri
+.RB [ \-t
+.IR TIME ]
+.RB [ \-m
+.IR N ]
+.RB [ \-i
+.IR TEXT ]
+.RB [ \-c
+.IR FILE ]
+.RB [ \-v ]
+.RB [ \-j ]
+.RB [ \-\-dry\-run ]
+.br
+.B jevtri init
+.br
+.B jevtri report
+.br
+.B jevtri
+.RB [ \-\-help " [" \-\-lang
+.IR LANG ]]
+.RB [ \-\-version ]
+.SH DESCRIPTION
+.B jevtri
+collects the lines around an incident time from the configured logs, masks
+secrets in them, and asks the Jev API how worth investigating each log is.
+It prints the logs in order of
+.IR "investigation priority" ,
+from 0 to 100.
+.PP
+The priority is not the probability that a log holds the cause.
+.B jevtri
+recommends where to start reading; it does not find the cause, repair
+anything, or watch the server.
+Some failures leave no trace in any log.
+When every log scores low,
+.B jevtri
+says so and suggests looking at logs that are not configured, at the
+application, or outside the host.
+.PP
+Run
+.B jevtri
+as root so that it can read the logs.
+.SH OPTIONS
+.TP
+.BR \-t ", " \-\-time " \fITIME\fR"
+Incident time, as
+.I HH:MM[:SS]
+(today, or yesterday if that is in the future) or
+.IR "YYYY-MM-DD HH:MM[:SS]" .
+The default is now.
+.TP
+.BR \-m ", " \-\-minutes " \fIN\fR"
+Minutes to look at: before and after the time given with
+.BR \-t ,
+or the last
+.I N
+minutes without it.
+The default is
+.B minutes
+in the configuration, 5.
+.TP
+.BR \-i ", " \-\-issue " \fITEXT\fR"
+The symptom, in any language, for example
+.IR "\(dqThe website returns 502\(dq" .
+It is sent to Jev with the logs.
+.TP
+.BR \-c ", " \-\-config " \fIFILE\fR"
+Configuration file. The default is
+.IR /etc/jevtri/jevtri.conf .
+.TP
+.BR \-v ", " \-\-verbose
+Also show the window, the lines and bytes read and sent per log, the number of
+masked values, and Jev's raw answer. Log contents are not shown.
+.TP
+.BR \-j ", " \-\-json
+Print JSON. Its
+.B priority
+is between 0 and 1.
+.TP
+.B \-\-dry\-run
+Show exactly what would be sent, and send nothing.
+.TP
+.BI \-\-lang " LANG"
+Language of
+.BR \-\-help :
+.BR en ,
+.B ja
+or
+.BR zh\-CN .
+Without it, the language follows
+.BR LC_ALL ,
+.B LC_MESSAGES
+or
+.BR LANG .
+Results and error messages are always in English.
+.TP
+.BR \-h ", " \-\-help
+Show the help.
+.TP
+.B \-\-version
+Show the version.
+.SH INIT
+.B jevtri init
+lists the known logs that exist on this server, lets you choose them by
+number (such as
+.B "1 3\-4" ;
+empty for all), and checks the time format of each against its last lines.
+Other paths can be added.
+For a log whose time format is not known, it shows the first 10 lines (masked)
+and asks before sending them to Jev to identify the format.
+The answer is only registered if the lines really read that way.
+.PP
+If the configuration exists,
+.B init
+only adds
+.B time_format
+to logs that lack it, and changes nothing else.
+Running
+.B jevtri
+without a configuration starts
+.B init
+in a terminal, and fails otherwise (cron, systemd timers, pipes).
+.PP
+.B jevtri report
+helps improve jevtri with real incidents.
+It lists the runs in the send log that Jev answered, asks which log really
+showed the cause and for a one-line note, and writes a Markdown report to
+.I case\-YYYYMMDD\-HHMMSS.md
+next to the send log (mode 0600).
+The host name, the user names of people (UID 1000 and above) and IP
+addresses are replaced with labels such as
+.BR [host\-1] ,
+.B [user\-1]
+and
+.BR [ip\-1] .
+Nothing is sent: the report is for the public issue form of the jevtri
+repository, whose address is printed.
+The issue is public, so read the report and remove other host names, system account names and
+anything else before posting it.
+.SH CONFIGURATION
+The configuration is an INI file:
+.B [general]
+and one
+.BI "[log " NAME ]
+section per log, with
+.I key
+=
+.I value
+lines. Lines starting with
+.B #
+are comments. Errors are reported with the line number.
+.PP
+.B [general]
+.TP
+.B minutes
+Default for
+.BR \-m .
+.TP
+.B max_bytes
+Bytes of log lines sent in one run, shared equally among the logs (default
+48000). Lines with ERROR, WARN, fail and similar words, and lines near the
+incident time, are kept first.
+.TP
+.B sent_log
+Where each run is recorded (default
+.IR /var/log/jevtri/sent.log ).
+.PP
+.BI "[log " NAME ]
+.TP
+.B path
+The log file.
+.BR * ,
+.B ?
+and
+.B [
+match files with a date in their name. Rotated files
+.RI ( .1 ,
+.IR \-20260928 )
+are read when the window reaches into them.
+.TP
+.B time_format
+A name from the list below, or a pattern with
+.B %
+directives.
+.TP
+.B timezone
+Time zone of a log written without one, such as
+.BR Asia/Tokyo .
+The default is the server's.
+.TP
+.B read_compressed
+.B yes
+to read rotated
+.I .gz
+files too.
+.TP
+.B mask
+An extra regular expression to mask before sending. May be repeated.
+.PP
+Time formats. Fractions of a second and a time zone may be present or not, and
+the time may be anywhere in the line. Lines without a time belong to the line
+before them.
+.PP
+.RS
+.nf
+syslog         Sep 28 07:51:24
+rfc3339        2026\-09\-28T07:29:16.929554+09:00
+iso\-space      2026\-09\-28 03:03:07.591 JST
+iso\-comma      2026\-09\-28 15:47:01,123
+slash\-ymd      2026/09/28 03:02:04
+apache\-access  [28/Sep/2026:09:44:10 +0900]
+apache\-error   [Mon Sep 28 03:02:10.715837 2026]
+dmy\-month      28\-Sep\-2026 09:44:02.397
+slash\-mdy      09/28/2026 15:47:01
+slash\-dmy      28/09/2026 15:47:01
+epoch          1790532211
+.fi
+.RE
+.PP
+Two shortcuts assume that a log is written in time order, oldest first. In an uncompressed file larger than 8 MiB, the start of the window is found by binary search, which assumes the timestamps increase through the file. Rotated files are taken newest first by modification time, and reading stops after the first file that has a line older than the window, which assumes older files hold older times. In a log written newest first, with times out of order, or with rotated files whose times overlap, lines in the window may be skipped, and such omissions may not produce a warning.
+.PP
+At most 64 MiB of text is kept per log, across its rotated files. Beyond that the oldest entries by time are left out, and a warning says so.
+.SH DATA SENT
+.B jevtri
+sends data only to Jev, a service of TypeSafe, at
+.IR https://api.typesafe.ai/v1/systemone .
+.PP
+A normal run sends, for each log with lines in the window, its path and those
+lines after masking, within
+.BR max_bytes ;
+the incident time; and the symptom.
+Times in the lines are rewritten to one time zone.
+Logs without lines in the window are not sent.
+.B jevtri init
+sends the first 10 lines of a log with an unknown time format, after masking,
+only after you agree.
+.PP
+Masked before sending: passwords and other key=value secrets, tokens,
+Authorization headers, cookies, private key blocks, credentials in URLs, known
+token formats, the local part of e\-mail addresses, card numbers, and the
+.B mask
+patterns. Masking works by pattern and can miss things.
+.B IP addresses, host names, user names and paths are not masked.
+Check with
+.BR \-\-dry\-run .
+.PP
+Every run, including those with \-\-dry\-run, is appended to the send log with
+what was sent and the answer. The API key is not recorded.
+.SH EXIT STATUS
+.TP
+.B 0
+Done, also when no log has lines in the window (nothing is sent).
+.TP
+.B 1
+Configuration or API key error, or no log could be read. Nothing is sent.
+.TP
+.B 2
+Done, but some logs could not be evaluated (unreadable, or no time found).
+They are listed and not ranked.
+.TP
+.B 3
+Jev could not be reached or refused the request. No priorities are made up.
+.SH FILES
+.TP
+.I /etc/jevtri/jevtri.conf
+The configuration, written by
+.BR "jevtri init" .
+.TP
+.I /etc/jevtri/api\-key
+The Jev API key alone on one line, owned by root with mode 0600.
+Nothing is sent if it is missing or its mode is looser.
+.TP
+.I /var/log/jevtri/sent.log
+The send log, one JSON line per run, mode 0600. Rotated daily and kept for 30
+days by
+.IR /etc/logrotate.d/jevtri .
+.TP
+.I /usr/share/jevtri/jevtri.conf.example
+An example configuration.
+.SH EXAMPLES
+Rank the logs around 03:02 today for a web outage:
+.PP
+.RS
+.nf
+sudo jevtri \-t 03:02 \-i "The website returns 502"
+.fi
+.RE
+.PP
+See what would be sent, without sending:
+.PP
+.RS
+.nf
+sudo jevtri \-t "2026\-09\-28 03:02" \-\-dry\-run
+.fi
+.RE
+.PP
+Run every 10 minutes from cron and keep the JSON:
+.PP
+.RS
+.nf
+*/10 * * * * root jevtri \-m 10 \-\-json >> /var/log/jevtri/runs.json
+.fi
+.RE
+.SH SEE ALSO
+.BR logrotate (8)
+.PP
+https://github.com/takeshiue/jevtri

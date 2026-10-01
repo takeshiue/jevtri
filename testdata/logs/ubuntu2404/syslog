@@ -1,0 +1,26 @@
+2026-09-28T07:29:15.491482+09:00 web01 cron[4241]: (CRON) INFO (pidfile fd = 3)
+2026-09-28T07:29:15.491931+09:00 web01 cron[4243]: (CRON) STARTUP (fork ok)
+2026-09-28T07:29:15.493835+09:00 web01 cron[4243]: (CRON) INFO (Running @reboot jobs)
+2026-09-28T07:29:15.697515+09:00 web01 postfix/postfix-script[4328]: starting the Postfix mail system
+2026-09-28T07:29:15.703900+09:00 web01 postfix/master[4330]: daemon started -- version 3.8.6, configuration /etc/postfix
+2026-09-28T07:29:16.481726+09:00 web01 rsyslogd: rsyslogd's groupid changed to 102
+2026-09-28T07:29:16.481818+09:00 web01 rsyslogd: rsyslogd's userid changed to 101
+2026-09-28T07:29:16.481852+09:00 web01 rsyslogd: [origin software="rsyslogd" swVersion="8.2312.0" x-pid="4237" x-info="https://www.rsyslog.com"] start
+2026-09-28T07:29:16.781568+09:00 web01 app: application started normally
+2026-09-28T07:29:35.215678+09:00 web01 postfix/pickup[4331]: 349A81057A2: uid=1001 from=<deploy>
+2026-09-28T07:29:35.221638+09:00 web01 postfix/cleanup[4400]: 349A81057A2: message-id=<20260927222935.349A81057A2@web01>
+2026-09-28T07:29:35.223691+09:00 web01 postfix/pickup[4331]: 3697B10579F: uid=0 from=<root>
+2026-09-28T07:29:35.223847+09:00 web01 postfix/qmgr[4333]: 349A81057A2: from=<deploy@web01.example.com>, size=453, nrcpt=1 (queue active)
+2026-09-28T07:29:35.224381+09:00 web01 postfix/cleanup[4400]: 3697B10579F: message-id=<20260927222935.3697B10579F@web01>
+2026-09-28T07:29:35.229325+09:00 web01 postfix/qmgr[4333]: 3697B10579F: from=<root@web01.example.com>, size=239, nrcpt=1 (queue active)
+2026-09-28T07:29:35.239657+09:00 web01 postfix/local[4404]: 349A81057A2: to=<root@web01.example.com>, orig_to=<root>, relay=local, delay=0.04, delays=0.02/0.01/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-28T07:29:35.239779+09:00 web01 postfix/qmgr[4333]: 349A81057A2: removed
+2026-09-28T07:29:35.257023+09:00 web01 postfix/smtp[4405]: 3697B10579F: to=<ops@unreachable.invalid>, relay=none, delay=0.04, delays=0.02/0.02/0/0, dsn=4.4.3, status=deferred (Host or domain name not found. Name service error for name=unreachable.invalid type=MX: Host not found, try again)
+2026-09-28T07:30:01.496899+09:00 web01 CRON[4409]: (root) CMD (/usr/local/bin/backup.sh)
+2026-09-28T07:30:01.512364+09:00 web01 postfix/pickup[4331]: 7D0F61057AD: uid=0 from=<root>
+2026-09-28T07:30:01.513758+09:00 web01 postfix/cleanup[4400]: 7D0F61057AD: message-id=<20260927223001.7D0F61057AD@web01>
+2026-09-28T07:30:01.515780+09:00 web01 postfix/qmgr[4333]: 7D0F61057AD: from=<root@web01.example.com>, size=626, nrcpt=1 (queue active)
+2026-09-28T07:30:01.517866+09:00 web01 postfix/local[4404]: 7D0F61057AD: to=<root@web01.example.com>, orig_to=<root>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-28T07:30:01.517967+09:00 web01 postfix/qmgr[4333]: 7D0F61057AD: removed
+2026-09-28T07:30:50.241939+09:00 web01 postfix/postfix-script[4420]: stopping the Postfix mail system
+2026-09-28T07:30:50.247011+09:00 web01 postfix/master[4330]: terminating on signal 15

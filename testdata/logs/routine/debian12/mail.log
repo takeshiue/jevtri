@@ -1,0 +1,38 @@
+2026-09-29T08:09:50.810292+09:00 web01 postfix/master[119]: daemon started -- version 3.7.11, configuration /etc/postfix
+2026-09-29T08:10:37.913072+09:00 web01 postfix/pickup[120]: DEE2D40D3: uid=0 from=<root>
+2026-09-29T08:10:37.917944+09:00 web01 postfix/cleanup[175]: DEE2D40D3: message-id=<20260928231037.DEE2D40D3@d8536d23a93c>
+2026-09-29T08:10:37.921054+09:00 web01 postfix/qmgr[121]: DEE2D40D3: from=<root@web01.example.com>, size=410, nrcpt=1 (queue active)
+2026-09-29T08:10:37.928991+09:00 web01 postfix/local[178]: DEE2D40D3: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.03, delays=0.02/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:10:37.929130+09:00 web01 postfix/qmgr[121]: DEE2D40D3: removed
+2026-09-29T08:11:47.639341+09:00 web01 postfix/pickup[120]: 9C10741AF: uid=0 from=<root>
+2026-09-29T08:11:47.640394+09:00 web01 postfix/cleanup[175]: 9C10741AF: message-id=<20260928231147.9C10741AF@d8536d23a93c>
+2026-09-29T08:11:47.642351+09:00 web01 postfix/qmgr[121]: 9C10741AF: from=<root@web01.example.com>, size=410, nrcpt=1 (queue active)
+2026-09-29T08:11:47.644304+09:00 web01 postfix/local[178]: 9C10741AF: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:11:47.644440+09:00 web01 postfix/qmgr[121]: 9C10741AF: removed
+2026-09-29T08:12:57.362320+09:00 web01 postfix/pickup[120]: 585644270: uid=0 from=<root>
+2026-09-29T08:12:57.363087+09:00 web01 postfix/cleanup[175]: 585644270: message-id=<20260928231257.585644270@d8536d23a93c>
+2026-09-29T08:12:57.365113+09:00 web01 postfix/qmgr[121]: 585644270: from=<root@web01.example.com>, size=410, nrcpt=1 (queue active)
+2026-09-29T08:12:57.367277+09:00 web01 postfix/local[178]: 585644270: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:12:57.367414+09:00 web01 postfix/qmgr[121]: 585644270: removed
+2026-09-29T08:14:07.086495+09:00 web01 postfix/pickup[120]: 1517D42D0: uid=0 from=<root>
+2026-09-29T08:14:07.087806+09:00 web01 postfix/cleanup[175]: 1517D42D0: message-id=<20260928231407.1517D42D0@d8536d23a93c>
+2026-09-29T08:14:07.091411+09:00 web01 postfix/qmgr[121]: 1517D42D0: from=<root@web01.example.com>, size=411, nrcpt=1 (queue active)
+2026-09-29T08:14:07.093905+09:00 web01 postfix/local[178]: 1517D42D0: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:14:07.094303+09:00 web01 postfix/qmgr[121]: 1517D42D0: removed
+2026-09-29T08:15:16.911941+09:00 web01 postfix/pickup[120]: DE9EB42CF: uid=0 from=<root>
+2026-09-29T08:15:16.912264+09:00 web01 postfix/cleanup[175]: DE9EB42CF: message-id=<20260928231516.DE9EB42CF@d8536d23a93c>
+2026-09-29T08:15:16.914021+09:00 web01 postfix/qmgr[121]: DE9EB42CF: from=<root@web01.example.com>, size=411, nrcpt=1 (queue active)
+2026-09-29T08:15:16.916030+09:00 web01 postfix/local[178]: DE9EB42CF: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:15:16.916149+09:00 web01 postfix/qmgr[121]: DE9EB42CF: removed
+2026-09-29T08:16:26.786537+09:00 web01 postfix/pickup[120]: C00042BA: uid=0 from=<root>
+2026-09-29T08:16:26.788337+09:00 web01 postfix/cleanup[175]: C00042BA: message-id=<20260928231626.C00042BA@d8536d23a93c>
+2026-09-29T08:16:26.790462+09:00 web01 postfix/qmgr[121]: C00042BA: from=<root@web01.example.com>, size=409, nrcpt=1 (queue active)
+2026-09-29T08:16:26.793333+09:00 web01 postfix/local[178]: C00042BA: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.04, delays=0.04/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:16:26.794278+09:00 web01 postfix/qmgr[121]: C00042BA: removed
+2026-09-29T08:17:36.511841+09:00 web01 postfix/pickup[120]: 7CC372BB: uid=0 from=<root>
+2026-09-29T08:17:36.512154+09:00 web01 postfix/cleanup[175]: 7CC372BB: message-id=<20260928231736.7CC372BB@d8536d23a93c>
+2026-09-29T08:17:36.514266+09:00 web01 postfix/qmgr[121]: 7CC372BB: from=<root@web01.example.com>, size=409, nrcpt=1 (queue active)
+2026-09-29T08:17:36.516283+09:00 web01 postfix/local[178]: 7CC372BB: to=<deploy@web01.example.com>, orig_to=<deploy>, relay=local, delay=0.01, delays=0.01/0/0/0, dsn=2.0.0, status=sent (delivered to mailbox)
+2026-09-29T08:17:36.516414+09:00 web01 postfix/qmgr[121]: 7CC372BB: removed
+2026-09-29T08:17:59.536563+09:00 web01 postfix/postfix-script[519]: stopping the Postfix mail system
+2026-09-29T08:17:59.539264+09:00 web01 postfix/master[119]: terminating on signal 15

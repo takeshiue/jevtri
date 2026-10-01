@@ -1,0 +1,1 @@
+[Mon Sep 28 10:38:31 2026] platform-python[13811]: segfault at 0 ip 00007fd57f2a6c22 sp 00007ffec47d6e18 error 4 in _ctypes.cpython-36m-x86_64-linux-gnu.so[7fd57f29f000+1b000]

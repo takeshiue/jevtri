@@ -1,0 +1,9 @@
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.0.2.100. Set the 'ServerName' directive globally to suppress this message
+[Mon Sep 28 03:02:08.573279 2026] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.68 (Unix) configured -- resuming normal operations
+[Mon Sep 28 03:02:08.573401 2026] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Mon Sep 28 03:02:10.715837 2026] [core:error] [pid 5:tid 18] (13)Permission denied: [client 10.0.2.100:46838] AH00132: file permissions deny server access: /usr/local/apache2/htdocs/private.html
+[Mon Sep 28 03:02:10.792696 2026] [mpm_event:notice] [pid 1:tid 1] AH00493: SIGUSR1 received.  Doing graceful restart
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 10.0.2.100. Set the 'ServerName' directive globally to suppress this message
+[Mon Sep 28 03:02:10.800649 2026] [mpm_event:notice] [pid 1:tid 1] AH00489: Apache/2.4.68 (Unix) configured -- resuming normal operations
+[Mon Sep 28 03:02:10.800656 2026] [core:notice] [pid 1:tid 1] AH00094: Command line: 'httpd -D FOREGROUND'
+[Mon Sep 28 03:02:11.873761 2026] [mpm_event:notice] [pid 1:tid 1] AH00492: caught SIGWINCH, shutting down gracefully

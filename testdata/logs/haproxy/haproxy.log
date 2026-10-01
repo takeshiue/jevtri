@@ -1,0 +1,10 @@
+[NOTICE]   (1) : New worker (3) forked
+[NOTICE]   (1) : Loading success.
+[WARNING]  (3) : Server app/app1 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 1 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+Server app/app1 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 1 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[WARNING]  (3) : Server app/app2 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+Server app/app2 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.
+[ALERT]    (3) : backend 'app' has no server available!
+backend app has no server available!
+10.0.2.100:56044 [28/Sep/2026:09:44:15.502] web app/<NOSRV> 0/-1/-1/-1/0 503 217 - - SC-- 1/1/0/0/0 0/0 "GET / HTTP/1.1"
+10.0.2.100:56058 [28/Sep/2026:09:44:15.510] web app/<NOSRV> 0/-1/-1/-1/0 503 217 - - SC-- 1/1/0/0/0 0/0 "GET /api HTTP/1.1"
