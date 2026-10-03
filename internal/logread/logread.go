@@ -329,6 +329,33 @@ func readFile(f file, src Source, w window.Window, zone *time.Location) ([]Entry
 		}
 	}
 
+	return readLines(reader, src, w, zone, stats)
+}
+
+// ReadStream extracts the window from text that is not a file, such as the
+// output of journalctl (spec 12.7.2). There are no rotated files to look at.
+func ReadStream(reader io.Reader, src Source, w window.Window, zone *time.Location) (Result, error) {
+	result := Result{Source: src}
+	entries, stats, err := readLines(reader, src, w, zone, fileStats{})
+	if err != nil {
+		return result, fmt.Errorf("%w: %v", ErrUnreadable, err)
+	}
+	result.BytesRead = stats.bytesRead
+	result.Truncated = stats.longLine || stats.trimmed
+	if stats.sawText && !stats.sawTimestamp {
+		return result, fmt.Errorf("%w (time_format %s); not sent", ErrNoTimestamps, src.Format.Name)
+	}
+	result.Entries = entries
+	if len(result.Entries) > maxEntries {
+		result.Entries = keepNewest(result.Entries, maxEntries)
+		result.Truncated = true
+	}
+	return result, nil
+}
+
+// readLines turns lines into entries of the window. stats carries what the
+// caller already learned (such as having skipped older lines by seeking).
+func readLines(reader io.Reader, src Source, w window.Window, zone *time.Location, stats fileStats) ([]Entry, fileStats, error) {
 	counter := &countingReader{reader: reader}
 	scanner := bufio.NewScanner(counter)
 	scanner.Buffer(make([]byte, 64*1024), maxLineBytes)

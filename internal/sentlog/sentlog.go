@@ -7,8 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
-	"syscall"
 	"time"
 
 	"github.com/takeshiue/jevtri/internal/jev"
@@ -76,9 +74,6 @@ func FormatEntry(now time.Time, request jev.FormatRequest, result *jev.FormatRes
 // and file (0600) when missing. Existing files with looser permissions are
 // tightened, because masking can miss secrets.
 func Append(path string, record Record) error {
-	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
-		return fmt.Errorf("cannot create %s: %v", filepath.Dir(path), err)
-	}
 	line, err := json.Marshal(record)
 	if err != nil {
 		return err
@@ -102,7 +97,7 @@ func Append(path string, record Record) error {
 // an existing file. O_NOFOLLOW: sent_log comes from the configuration, and a
 // link there would make root write the file it points at (SEC-007).
 func open(path string) (*os.File, error) {
-	handle, err := os.OpenFile(path, os.O_WRONLY|os.O_APPEND|os.O_CREATE|syscall.O_NOFOLLOW, 0o600)
+	handle, err := openPinned(path)
 	if err != nil {
 		return nil, fmt.Errorf("cannot write the send log %s: %v", path, err)
 	}
@@ -127,9 +122,6 @@ func open(path string) (*os.File, error) {
 // CheckWritable makes sure a record can be appended, so that a run does not
 // send logs that it cannot record afterwards (spec 12.2).
 func CheckWritable(path string) error {
-	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
-		return fmt.Errorf("cannot create %s: %v", filepath.Dir(path), err)
-	}
 	handle, err := open(path)
 	if err != nil {
 		return err

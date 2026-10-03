@@ -51,8 +51,8 @@ func Custom(layout string) (*Format, error) {
 		pattern.WriteString(fragment)
 		i++
 	}
-	if !seen['s'] && !(seen['H'] && seen['M'] && (seen['d'])) {
-		return nil, fmt.Errorf("time_format %q needs at least %%d, %%H and %%M, or %%s", layout)
+	if !seen['s'] && !(seen['H'] && seen['M'] && seen['d'] && (seen['m'] || seen['b'])) {
+		return nil, fmt.Errorf("time_format %q needs %%m or %%b, %%d, %%H and %%M, or %%s", layout)
 	}
 	compiled, err := regexp.Compile(pattern.String())
 	if err != nil {

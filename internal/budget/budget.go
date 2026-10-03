@@ -13,7 +13,7 @@ import (
 )
 
 // DefaultLimit is the default total size of log text sent to Jev (spec 12.1).
-const DefaultLimit = 48000
+const DefaultLimit = 40000
 
 // Entry is one log event after masking.
 type Entry struct {

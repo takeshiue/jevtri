@@ -12,6 +12,7 @@ import (
 var helpTexts = map[string]string{
 	"en": `Usage: jevtri [options]
        jevtri init
+       jevtri --config-update
        jevtri report
 
 Rank the configured logs by how worth they are to examine first.
@@ -25,6 +26,11 @@ Rank the configured logs by how worth they are to examine first.
       --dry-run        show what would be sent; send nothing
       --lang LANG      language of this help: en, ja or zh-CN
       --version        show the version
+      --config-update  look for new logs and containers and ask whether
+                       to add each to the configuration
+      --group NAME     rank only this group and the system logs (repeatable);
+                       without it, Jev first chooses the group when there are
+                       two or more
   -h, --help           show this help
 
   init                 choose the logs and write the configuration
@@ -45,6 +51,7 @@ See jevtri(1).
 `,
 	"ja": `使い方: jevtri [オプション]
         jevtri init
+        jevtri --config-update
         jevtri report
 
 設定したログを、最初に調べる価値の高い順に並べます。
@@ -58,6 +65,10 @@ See jevtri(1).
       --dry-run        送る内容を表示し、何も送らない
       --lang LANG      このヘルプの言語: en、ja、zh-CN
       --version        版数を表示する
+      --config-update  新しいログやコンテナを探し、設定に加えるか
+                       1件ずつ尋ねる
+      --group NAME     このグループと system のログだけを順位づけする（複数可）。
+                       無ければ、グループが2つ以上のとき Jev が先にグループを選ぶ
   -h, --help           このヘルプを表示する
 
   init                 ログを選び、設定ファイルを書く
@@ -78,6 +89,7 @@ IP アドレスとホスト名は伏せ字にしません。--dry-run で確か�
 `,
 	"zh-CN": `用法: jevtri [选项]
       jevtri init
+      jevtri --config-update
       jevtri report
 
 按照最值得优先检查的顺序，对已配置的日志进行排序。
@@ -91,6 +103,10 @@ IP アドレスとホスト名は伏せ字にしません。--dry-run で確か�
       --dry-run        显示将要发送的内容，但不发送
       --lang LANG      本帮助的语言: en、ja 或 zh-CN
       --version        显示版本
+      --config-update  查找新的日志和容器，并逐个询问是否
+                       加入配置文件
+      --group NAME     仅对该组和 system 日志排序（可重复）；未指定时，
+                       若有两个以上的组，Jev 会先选出组
   -h, --help           显示本帮助
 
   init                 选择日志并写入配置文件

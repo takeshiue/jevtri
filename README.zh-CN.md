@@ -26,13 +26,13 @@ jevtri 会给出提示，并建议检查未配置的日志、应用程序本身�
 AlmaLinux、Rocky Linux、RHEL 8、9、10:
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_x86_64.rpm
 ```
 
 Ubuntu 22.04、24.04，Debian 12:
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_amd64.deb && sudo apt install ./jevtri_0.1.0_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_amd64.deb && sudo apt install ./jevtri_0.2.0_amd64.deb
 ```
 
 在 arm64 服务器上，请将 `x86_64` 替换为 `aarch64`，将 `amd64` 替换为 `arm64`。
@@ -47,23 +47,23 @@ curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.
 AlmaLinux、Rocky Linux、RHEL 8、9、10:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
-curl -fL --remote-name-all $base/jevtri_0.1.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
+curl -fL --remote-name-all $base/jevtri_0.2.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.1.0_x86_64.rpm
+sudo dnf install ./jevtri_0.2.0_x86_64.rpm
 ```
 
 Ubuntu 22.04、24.04，Debian 12:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
-curl -fL --remote-name-all $base/jevtri_0.1.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
+curl -fL --remote-name-all $base/jevtri_0.2.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.1.0_amd64.deb
+sudo apt install ./jevtri_0.2.0_amd64.deb
 ```
 
 ### 支持的平台和安装的文件
@@ -77,14 +77,9 @@ arm64 软件包以相同方式构建，但尚未在 arm64 服务器上测试。
 
 ## 初始设置
 
-1. 将 Jev API 密钥单独写在 `/etc/jevtri/api-key` 的一行中：
-
-   ```sh
-   sudo install -m 0600 -o root -g root /dev/null /etc/jevtri/api-key
-   sudo vi /etc/jevtri/api-key
-   ```
-
-   如果该文件不存在，或其权限比 `0600` 更宽松，jevtri 不会发送任何内容。
+1. `sudo jevtri init` 首先会询问 Jev API 密钥：粘贴后按 Enter。密钥保存在
+   `/etc/jevtri/api-key`（仅 root 可读，权限 `0600`）；为便于发现粘贴错误，粘贴的密钥会显示在屏幕上。
+   只按 Enter 则跳过。密钥不存在或权限比 `0600` 更宽松时，jevtri 不会发送任何内容。
 
 2. 生成配置：
 
@@ -107,6 +102,7 @@ arm64 软件包以相同方式构建，但尚未在 arm64 服务器上测试。
 ```
 jevtri [options]
 jevtri init
+jevtri --config-update
 ```
 
 | 选项 | 含义 |
@@ -119,6 +115,8 @@ jevtri init
 | `-j`, `--json` | 以 JSON 格式输出。`priority` 为 0 到 1 之间的值 |
 | `--dry-run` | 显示将要发送的内容，但不发送任何内容 |
 | `--lang LANG` | `--help` 的语言：`en`、`ja` 或 `zh-CN` |
+| `--group NAME` | 仅对该组和 system 日志排序（可重复）。未指定时，若时间范围内有日志行的服务组有两个以上，Jev 会先选出要检查的组 |
+| `--config-update` | 查找配置中尚未包含的日志和 Docker 容器，并逐个询问：`y` 添加，`all` 添加该项及其后全部，按 Enter 不添加。添加容器或软件后运行 |
 | `--version`, `-h`, `--help` | 版本和帮助 |
 
 请先使用 `--dry-run` 确认哪些内容会离开服务器。
@@ -153,10 +151,12 @@ jevtri 可以通过 cron 或 systemd 定时器运行。不指定 `-t` 时，它�
 `/etc/jevtri/jevtri.conf` 为 INI 文件，错误会带行号报告。
 另请参阅 `/usr/share/jevtri/jevtri.conf.example` 和 `man jevtri`。
 
+生成的配置在开头包含已注释的填写示例。`#` 可用于整行注释，也可在空白后用于行末注释。如果值本身含有 ` #`，请用引号包住整个值，例如 `path = "/srv/app #1/error.log"`。更新会保留用户注释。已验证的 Docker 路径和格式变更可用 `all` 一次确认；未设置的组也可在查看默认值列表后一起登记。
+
 ```ini
 [general]
 minutes = 5
-max_bytes = 48000
+max_bytes = 40000
 sent_log = /var/log/jevtri/sent.log
 
 [log nginx-error]
@@ -174,9 +174,13 @@ mask = order-\d+
 | 键 | 含义 |
 |---|---|
 | `minutes` | `-m` 的默认值 |
-| `max_bytes` | 一次运行中发送的日志行字节数，在各日志之间分配。优先保留包含 ERROR、WARN、fail 等词的行以及接近故障时间的行 |
+| `max_bytes` | 每次请求的序列化 JSON state 的总字节数，包括日志片段、来源名称、故障信息及 JSON 转义。日志片段的预算在各日志之间分配，优先保留包含 ERROR、WARN、fail 等词的行及接近故障时间的行 |
 | `sent_log` | 记录每次运行的位置 |
 | `path` | 日志文件。可用 `*`、`?`、`[` 匹配文件名中带日期的日志。当时间范围回溯到已轮转的文件（`.1`、`-20260928`）时也会读取 |
+| `docker_container` | 与 `path` 同时填写的容器名称。注册和 `--config-update` 会验证并保存实际 json-file 日志的绝对路径。正常运行只读取已保存的路径；重新创建后需要更新配置。注册时也明确写入 `time_format = docker-json` |
+| `docker_project` | Docker Compose 项目的标识信息。注册时整体选择项目，为每个容器保存 `path`、`docker_container` 和 `group`。新增或重新创建的容器通过 `--config-update` 确认并注册 |
+| `journal_unit` | 代替 `path`：用 `journalctl` 读取的 systemd 单元（例如 `docker.service`），`*` 表示整个 journal。无需 `time_format`。仅在既没有 `/var/log/syslog` 也没有 `/var/log/messages` 的服务器上，`init` 才会列出 `*` |
+| `group` | 日志所属的组；写多行即可属于多个组。`init` 和 `--config-update` 为主机日志写入 `system`，为容器写入 Docker Compose 项目名（非 Compose 则为容器名）。可修改或自建组 |
 | `time_format` | 下表中的名称，或使用 `%` 指令的模式 |
 | `timezone` | 未写明时区的日志所使用的时区。默认为服务器的时区 |
 | `read_compressed` | 设为 `yes` 时也读取已轮转的 `.gz` 文件 |
@@ -197,12 +201,15 @@ mask = order-\d+
 | `slash-mdy` | `09/28/2026 15:47:01` |
 | `slash-dmy` | `28/09/2026 15:47:01` |
 | `epoch` | `1790532211` |
+| `docker-json` | `"time":"2026-10-01T10:00:05.987654321Z"`（Docker json-file） |
 
 没有时间的行（例如堆栈跟踪）视为上一行的延续。
 
 有两项加速处理假定日志按时间顺序（从旧到新）写入。对于大于 8 MiB 的未压缩文件，使用二分查找确定读取起始位置，这假定文件内的时间戳按升序排列。已轮转的文件按修改时间从新到旧读取，在遇到含有早于时间范围的行的文件后停止读取，这假定越旧的文件包含越早的时间。对于倒序写入、时间戳顺序混乱或已轮转文件时间范围重叠的日志，可能会跳过时间范围内的记录，这种遗漏不一定会触发截断警告。
 
 每个日志（包括其已轮转的文件）最多保留 64 MiB 的文本。超出部分按时间从旧到新省略，并显示警告。
+
+如果已注册的日志文件不存在，jevtri 会显示路径、说明无法将其纳入调查，并提示使用 `--config-update` 检查配置。此规则适用于主机和容器日志。正常运行不会查找新增容器或修改配置。
 
 ## 发送哪些数据，发送到哪里
 
@@ -227,7 +234,7 @@ jevtri 只向 TypeSafe 提供的服务 Jev（`https://api.typesafe.ai/v1/systemo
 
 Jev 的费用为每百万输入令牌约 0.28 元人民币（0.042 美元），输出免费
 （[models](https://docs.typesafe.ai/models)，2026-09-28 查阅；按 1 美元 = 6.70 元人民币换算）。
-即使发送量达到默认上限（48,000 字节），一次运行的费用也不到 0.02 元人民币。
+即使发送量达到默认上限（40,000 字节），一次运行的费用也不到 0.02 元人民币。
 
 ## 帮助和手册
 
@@ -241,7 +248,7 @@ Jev 的费用为每百万输入令牌约 0.28 元人民币（0.042 美元），�
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.1.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.2.0" -o jevtri ./cmd/jevtri
 ```
 
 ## 许可证

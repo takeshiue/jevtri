@@ -28,13 +28,13 @@ One command:
 AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_x86_64.rpm
 ```
 
 Ubuntu 22.04, 24.04, Debian 12:
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_amd64.deb && sudo apt install ./jevtri_0.1.0_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_amd64.deb && sudo apt install ./jevtri_0.2.0_amd64.deb
 ```
 
 On arm64 servers, replace `x86_64` with `aarch64` and `amd64` with `arm64`.
@@ -49,23 +49,23 @@ Check that `gpg --verify` prints `Good signature` and the fingerprint
 AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
-curl -fL --remote-name-all $base/jevtri_0.1.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
+curl -fL --remote-name-all $base/jevtri_0.2.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.1.0_x86_64.rpm
+sudo dnf install ./jevtri_0.2.0_x86_64.rpm
 ```
 
 Ubuntu 22.04, 24.04, Debian 12:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
-curl -fL --remote-name-all $base/jevtri_0.1.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
+curl -fL --remote-name-all $base/jevtri_0.2.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.1.0_amd64.deb
+sudo apt install ./jevtri_0.2.0_amd64.deb
 ```
 
 ### Platforms and installed files
@@ -81,14 +81,11 @@ package leaves your configuration, API key and send log in place.
 
 ## Set up
 
-1. Put your Jev API key alone on one line in `/etc/jevtri/api-key`:
-
-   ```sh
-   sudo install -m 0600 -o root -g root /dev/null /etc/jevtri/api-key
-   sudo vi /etc/jevtri/api-key
-   ```
-
-   jevtri sends nothing if the file is missing or its mode is looser than `0600`.
+1. `sudo jevtri init` starts by asking for your Jev API key: paste it and press
+   Enter. It is stored in `/etc/jevtri/api-key` (root only, mode `0600`); the
+   pasted key shows on the screen so that you can check it. Enter alone skips
+   this step. jevtri sends nothing while the key is missing or its mode is
+   looser than `0600`.
 
 2. Write the configuration:
 
@@ -113,6 +110,7 @@ Run jevtri as root, so that it can read the logs.
 ```
 jevtri [options]
 jevtri init
+jevtri --config-update
 ```
 
 | Option | Meaning |
@@ -125,6 +123,8 @@ jevtri init
 | `-j`, `--json` | JSON output. `priority` is between 0 and 1 |
 | `--dry-run` | Show exactly what would be sent, and send nothing |
 | `--lang LANG` | Language of `--help`: `en`, `ja` or `zh-CN` |
+| `--group NAME` | Rank only this group and the system logs (repeatable). Without it, when two or more groups of services have lines in the window, Jev first chooses the group to examine |
+| `--config-update` | Look for logs and Docker containers that are not in the configuration yet, and ask about each: `y` adds it, `all` adds it and the rest, Enter skips it. Run it after adding containers or software |
 | `--version`, `-h`, `--help` | Version and help |
 
 Use `--dry-run` first to see what leaves the server.
@@ -164,10 +164,12 @@ tests, and each release states how many of them it ranks correctly.
 `/etc/jevtri/jevtri.conf` is an INI file. Errors are reported with the line number.
 See `/usr/share/jevtri/jevtri.conf.example`.
 
+Generated configuration starts with an inactive writing sample. Use `#` for a full-line comment or after whitespace for an end-of-line comment. Quote the whole value if it contains a literal ` #`, for example `path = "/srv/app #1/error.log"`. Updates keep your comments. Verified Docker path and format changes accept `all`; missing groups can be assigned together after reviewing their defaults.
+
 ```ini
 [general]
 minutes = 5
-max_bytes = 48000
+max_bytes = 40000
 sent_log = /var/log/jevtri/sent.log
 
 [log nginx-error]
@@ -185,9 +187,13 @@ mask = order-\d+
 | Key | Meaning |
 |---|---|
 | `minutes` | Default for `-m` |
-| `max_bytes` | Bytes of log lines sent in one run, shared among the logs. Lines with ERROR, WARN, fail and similar words, and lines near the incident time, are kept first |
+| `max_bytes` | Bytes of the serialized JSON state in each request, including excerpts, source names, incident metadata and JSON escaping. The excerpt budget is shared among logs. Lines with ERROR, WARN, fail and similar words, and lines near the incident time, are kept first |
 | `sent_log` | Where each run is recorded |
 | `path` | The log. `*`, `?` and `[` match files with a date in their name. Rotated files (`.1`, `-20260928`) are read when the window reaches into them |
+| `docker_container` | Container name alongside `path`. Registration and `--config-update` verify and save the actual absolute json-file log path. Normal runs read only the saved path; recreation requires a configuration update. Registration also writes `time_format = docker-json` explicitly |
+| `docker_project` | Docker Compose project metadata. Select a project together at registration; each container has its own saved `path`, `docker_container` and `group`. Use `--config-update` to review and register added or recreated containers |
+| `journal_unit` | Instead of `path`: a systemd unit read with `journalctl` (such as `docker.service`), or `*` for the whole journal. No `time_format` needed. `init` offers `*` only on a server without `/var/log/syslog` and `/var/log/messages` |
+| `group` | A group the log is in; repeat the line for several groups. `init` and `--config-update` write `system` for logs on the host, the project for a Compose project, and its own name for another container. Change them or add your own. |
 | `time_format` | A name from the table below, or a pattern with `%` directives |
 | `timezone` | Time zone of a log written without one. Default: the server's |
 | `read_compressed` | `yes` to read rotated `.gz` files too |
@@ -209,12 +215,15 @@ present or not, and the time may be anywhere in the line.
 | `slash-mdy` | `09/28/2026 15:47:01` |
 | `slash-dmy` | `28/09/2026 15:47:01` |
 | `epoch` | `1790532211` |
+| `docker-json` | `"time":"2026-10-01T10:00:05.987654321Z"` (Docker json-file) |
 
 Lines without a time (such as stack traces) belong to the line before them.
 
 Two shortcuts assume that a log is written in time order, oldest first. In an uncompressed file larger than 8 MiB, the start of the window is found by binary search, which assumes the timestamps increase through the file. Rotated files are taken newest first by modification time, and reading stops after the first file that has a line older than the window, which assumes older files hold older times. In a log written newest first, with times out of order, or with rotated files whose times overlap, lines in the window may be skipped, and such omissions may not produce a warning.
 
 At most 64 MiB of text is kept per log, across its rotated files. Beyond that the oldest entries by time are left out, and a warning says so.
+
+If a registered file log is missing, jevtri reports its path, excludes it from the investigation and advises `--config-update`. This applies to host and container logs. Normal runs do not discover added containers or change configuration.
 
 ## What is sent, and where
 
@@ -254,7 +263,7 @@ the tests send nothing to Jev.
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.1.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.2.0" -o jevtri ./cmd/jevtri
 ```
 
 ## Help and manual

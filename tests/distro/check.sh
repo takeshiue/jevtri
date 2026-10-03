@@ -115,6 +115,13 @@ printf '# changed by the test\n' >> /etc/logrotate.d/jevtri
 printf 'dummy\n' > /etc/jevtri/api-key && chmod 600 /etc/jevtri/api-key
 check "PK-02 upgrade" install_package "$new"
 check "PK-02 --version is $new_version" sh -c "jevtri --version | grep -qx 'jevtri $new_version'"
+# The release version must run after the package manager has replaced it.
+now=$(date '+%b %e %H:%M:%S')
+printf '%s host app[1]: error: disk full password=PACKAGE-TEST-CANARY\n' "$now" > /tmp/app.log
+check "PK-02 upgraded dry-run exits 0" sh -c 'jevtri --dry-run </dev/null >/tmp/upgraded-dry.out'
+check "PK-02 upgraded dry-run reads log" grep -q 'disk full' /tmp/upgraded-dry.out
+check "PK-02 upgraded dry-run masks secret" sh -c '! grep -q PACKAGE-TEST-CANARY /tmp/upgraded-dry.out && grep -q MASKED /tmp/upgraded-dry.out'
+check "PK-02 upgraded rejects unknown group" sh -c 'jevtri --dry-run --group unknown </dev/null >/tmp/unknown-group.out 2>/tmp/unknown-group.err; result=$?; [ "$result" = 64 ] && [ ! -s /tmp/unknown-group.out ]'
 check "PK-02 changed logrotate kept on upgrade" grep -q 'changed by the test' /etc/logrotate.d/jevtri
 check "PK-02 jevtri.conf kept on upgrade" grep -q 'path = /tmp/app.log' /etc/jevtri/jevtri.conf
 check "PK-02 remove" remove_package

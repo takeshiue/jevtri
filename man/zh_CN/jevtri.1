@@ -1,7 +1,7 @@
 .\" Left-aligned: justifying CJK text without word spaces opens wide gaps.
 .\" groff 1.23 reads AD at each paragraph; 1.22 (EL8, EL9) keeps .ad l.
 .ds AD l
-.TH JEVTRI 1 "2026-09-30" "jevtri 0.1.0" "用户命令"
+.TH JEVTRI 1 "2026-10-03" "jevtri 0.2.0" "用户命令"
 .ad l
 .SH 名称
 jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
@@ -20,6 +20,8 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 .RB [ \-\-dry\-run ]
 .br
 .B jevtri init
+.br
+.B jevtri \-\-config\-update
 .br
 .B jevtri report
 .br
@@ -103,9 +105,31 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 .BR \-h ", " \-\-help
 显示帮助。
 .TP
+.BI \-\-group " NAME"
+仅对该组的日志以及始终检查的日志（
+.B system
+组和没有组的日志）排序。可以多次指定。
+未指定时，若时间范围内有日志行的服务组有两个以上，jevtri 会先让 Jev 判断要检查哪个组，再把该组（以及与第一名相差 10 分以内的组）的日志与 system 日志一起排序；其他组的日志只列出，不发送。
+.TP
+.B \-\-config\-update
+查找配置中尚未包含的日志和 Docker 容器，并逐个询问：
+.B y
+添加该项，
+.B all
+添加该项及其后的全部，按 Enter 或
+.B n
+则不添加。
+新项追加到文件末尾。容器重新创建后发生变化的 Docker 日志路径，经验证和确认后更新；保留已有的 mask、timezone、group、注释和文件权限。
+.TP
 .B \-\-version
 显示版本。
 .SH INIT
+.B jevtri init
+首先询问 Jev API 密钥：粘贴后按 Enter（为便于发现粘贴错误会显示在屏幕上；只按 Enter 则跳过）。
+密钥以 0600 权限保存在
+.I /etc/jevtri/api\-key
+中。
+然后，
 .B jevtri init
 列出本服务器上存在的已知日志，让用户按编号选择（例如
 .BR "1 3\-4" ；
@@ -125,6 +149,18 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 时，如果在终端中运行则会启动
 .BR init ，
 否则（cron、systemd 定时器、管道）以错误结束。
+.PP
+除日志文件外，
+.B init
+和
+.B \-\-config\-update
+还会列出日志驱动为 json\-file 的 Docker 容器；在既没有
+.I /var/log/syslog
+也没有
+.I /var/log/messages
+的服务器上，还会列出 systemd journal。
+添加容器或软件后，请运行
+.BR "jevtri \-\-config\-update" 。
 .PP
 .B jevtri report
 用于通过真实故障案例改进 jevtri。
@@ -152,7 +188,10 @@ Issue 对所有人公开，提交前请阅读报告，并删除其他主机名�
 的行。
 以
 .B #
-开头的行为注释。错误会带行号报告。
+开头的行为注释。引号外空白后的 # 表示行末注释。
+如果值本身含有空格后接 #，请用引号包住整个值。
+生成的配置在开头包含已注释的填写示例，更新会保留用户注释。
+错误会带行号报告。
 .PP
 .B [general]
 .TP
@@ -161,7 +200,9 @@ Issue 对所有人公开，提交前请阅读报告，并删除其他主机名�
 的默认值。
 .TP
 .B max_bytes
-一次运行中发送的日志行字节数，在各日志之间平均分配（默认为 48000）。
+每次请求的序列化 JSON state 的总字节数（默认为 40000）。
+包括日志片段、来源名称、故障信息及 JSON 转义。
+日志片段的预算在各日志之间平均分配。
 优先保留包含 ERROR、WARN、fail 等词的行以及接近故障时间的行。
 .TP
 .B sent_log
@@ -182,6 +223,48 @@ Issue 对所有人公开，提交前请阅读报告，并删除其他主机名�
 .IR \-20260928 ）
 时，也会读取这些文件。
 .TP
+.B docker_container
+与
+.B path
+一起保存的容器名，用于
+.B \-\-config\-update
+时匹配容器。
+注册时从本地 Docker 获取实际 json\-file 日志的具体绝对路径，验证可读后保存；支持自定义数据目录。
+时间格式为 docker\-json，无需填写。
+正常运行只读取已保存的路径，不查询 Docker。
+重新创建容器后，请用
+.B \-\-config\-update
+注册新的日志路径。旧 Docker 配置没有
+.B path
+时，正常运行会停止并提示更新。
+.TP
+.B docker_project
+与每个容器的
+.B path
+和
+.B docker_container
+一起保存的 Docker Compose 项目名。
+注册时选择一个 Compose 项目，会为每个容器保存一个日志节，并将项目名作为组名候选。
+发送时的名称为
+.BI docker: 名称 。
+新的成员和项目只有通过
+.B \-\-config\-update
+注册后才会被读取。
+Docker 无法发现日志时，请手动注册具体绝对路径；保留已有配置。
+.TP
+.B journal_unit
+代替
+.BR path ，
+填写 systemd 单元（例如
+.BR docker.service ），
+或填写
+.B *
+表示整个 journal。
+使用
+.I /usr/bin/journalctl
+读取。
+时间格式为 rfc3339，无需填写。
+.TP
 .B time_format
 下表中的名称，或使用
 .B %
@@ -198,6 +281,17 @@ Issue 对所有人公开，提交前请阅读报告，并删除其他主机名�
 时也读取已轮转的
 .I .gz
 文件。
+.TP
+.B group
+日志所属的组。可以写多行，使一个日志属于多个组。
+.B init
+和
+.B \-\-config\-update
+会为每个选中的候选项询问组名，包括用
+.B all
+添加的项。Compose 按项目填写。每行输入一个组，以空行确认；首次输入空行时使用建议值：主机日志为 system，Docker 为 Compose 项目名或独立容器名。更新路径时保留已有组。没有组的日志会包含在每次选择中，并显示警告。
+组决定运行时检查的范围（见
+.BR \-\-group ）。
 .TP
 .B mask
 发送前额外脱敏的正则表达式。可以重复。
@@ -218,12 +312,17 @@ dmy\-month      28\-Sep\-2026 09:44:02.397
 slash\-mdy      09/28/2026 15:47:01
 slash\-dmy      28/09/2026 15:47:01
 epoch          1790532211
+docker\-json    "time":"2026\-10\-01T10:00:05.987654321Z"
 .fi
 .RE
 .PP
 有两项加速处理假定日志按时间顺序（从旧到新）写入。\:对于大于 8 MiB 的未压缩文件，\:使用二分查找确定读取起始位置，\:这假定文件内的时间戳按升序排列。\:已轮转的文件按修改时间从新到旧读取，\:在遇到含有早于时间范围的行的文件后停止读取，\:这假定越旧的文件包含越早的时间。\:对于倒序写入、\:时间戳顺序混乱或已轮转文件时间范围重叠的日志，\:可能会跳过时间范围内的记录，\:这种遗漏不一定会触发截断警告。
 .PP
 每个日志（包括其已轮转的文件）最多保留 64 MiB 的文本。\:超出部分按时间从旧到新省略，\:并显示警告。
+.PP
+如果已注册的日志文件不存在，jevtri 会说明无法将其纳入调查，显示路径，并提示使用
+.B \-\-config\-update
+检查配置。此规则适用于主机和容器日志。正常运行不会查找新增容器或修改配置。
 .SH 发送的数据
 .B jevtri
 只向 TypeSafe 提供的服务 Jev

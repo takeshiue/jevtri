@@ -6,7 +6,7 @@
 //	# comment
 //	[general]
 //	minutes = 5
-//	max_bytes = 48000
+//	max_bytes = 40000
 //	sent_log = /var/log/jevtri/sent.log
 //
 //	[log nginx-error]
@@ -16,7 +16,17 @@
 //	read_compressed = yes
 //	mask = order-\d+
 //
-// mask may be given several times.
+//	[log web]
+//	path = /srv/docker/containers/web/web-json.log
+//	docker_container = web
+//	time_format = docker-json
+//
+//	[log docker-daemon]
+//	journal_unit = docker.service
+//
+//	group = system
+//
+// mask and group may be given several times; a log may be in several groups.
 package config
 
 import (
@@ -24,10 +34,12 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"syscall"
 	"time"
+	"unicode"
 
 	"github.com/takeshiue/jevtri/internal/budget"
 	"github.com/takeshiue/jevtri/internal/timefmt"
@@ -51,16 +63,46 @@ type Config struct {
 
 // Log is one [log name] section.
 type Log struct {
-	Name           string
-	Path           string
+	Name            string
+	Path            string
+	DockerContainer string
+	// JournalUnit is a systemd unit read through journalctl, or "*" for the
+	// whole journal (spec 12.7.2).
+	JournalUnit    string
+	DockerProject  string
 	TimeFormat     string // empty until detected by jevtri init
 	Format         *timefmt.Format
 	Timezone       string
 	Location       *time.Location
 	ReadCompressed bool
 	Masks          []string
-	Line           int // line of the section header, for messages
+	// Groups are the groups the log is in (spec 12.7.4), in file order.
+	Groups []string
+	Line   int // line of the section header, for messages
 }
+
+// Label names the log in messages, reports and what is sent: the path, or
+// docker:NAME, or journal:UNIT.
+func (l Log) Label() string {
+	switch {
+	case l.DockerContainer != "":
+		return "docker:" + l.DockerContainer
+	case l.JournalUnit != "":
+		return "journal:" + l.JournalUnit
+	case l.DockerProject != "":
+		return "compose:" + l.DockerProject
+	}
+	return l.Path
+}
+
+// Names that are passed to other programs or matched against Docker's data;
+// anything else is refused so that no option or path can be smuggled in.
+var (
+	containerName = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9_.-]*$`)
+	unitName      = regexp.MustCompile(`^(\*|[A-Za-z0-9][A-Za-z0-9@._:-]*)$`)
+	// GroupName is the same set of characters as a [log NAME].
+	GroupName = regexp.MustCompile(`^[A-Za-z0-9_.-]+$`)
+)
 
 // Error points at a line of the configuration file.
 type Error struct {
@@ -122,7 +164,11 @@ func Parse(reader io.Reader, name string) (*Config, error) {
 	}
 	for scanner.Scan() {
 		number++
-		line := strings.TrimSpace(scanner.Text())
+		content, err := StripComment(scanner.Text())
+		if err != nil {
+			return nil, fail("%v", err)
+		}
+		line := strings.TrimSpace(content)
 		if line == "" || strings.HasPrefix(line, "#") || strings.HasPrefix(line, ";") {
 			continue
 		}
@@ -151,6 +197,7 @@ func Parse(reader io.Reader, name string) (*Config, error) {
 			return nil, fail("expected key = value")
 		}
 		key, value = strings.TrimSpace(key), strings.TrimSpace(value)
+		value = unquoteValue(value)
 		switch section {
 		case "general":
 			if err := setGeneral(cfg, key, value); err != nil {
@@ -220,17 +267,64 @@ func setLog(log *Log, key, value string) error {
 		default:
 			return fmt.Errorf("read_compressed must be yes or no")
 		}
+	case "docker_container":
+		if !containerName.MatchString(value) {
+			return fmt.Errorf("docker_container must be a container name (letters, digits, _ . -)")
+		}
+		log.DockerContainer = value
+	case "docker_project":
+		if !GroupName.MatchString(value) {
+			return fmt.Errorf("docker_project must be a Compose project name (letters, digits, _ . -)")
+		}
+		log.DockerProject = value
+	case "journal_unit":
+		if !unitName.MatchString(value) {
+			return fmt.Errorf("journal_unit must be a unit name (letters, digits, @ . _ : -) or *")
+		}
+		log.JournalUnit = value
 	case "mask":
 		log.Masks = append(log.Masks, value)
+	case "group":
+		if !GroupName.MatchString(value) {
+			return fmt.Errorf("group must be a name of letters, digits, _ . and -")
+		}
+		for _, existing := range log.Groups {
+			if existing == value {
+				return fmt.Errorf("group %s is given twice", value)
+			}
+		}
+		log.Groups = append(log.Groups, value)
 	default:
-		return fmt.Errorf("unknown key %q in [log %s]; known keys: path, time_format, timezone, read_compressed, mask", key, log.Name)
+		return fmt.Errorf("unknown key %q in [log %s]; known keys: path, docker_container, docker_project, journal_unit, time_format, timezone, read_compressed, mask, group", key, log.Name)
 	}
 	return nil
 }
 
 func finishLog(log *Log) error {
-	if log.Path == "" {
-		return fmt.Errorf("[log %s] has no path", log.Name)
+	dockerMetadata := log.DockerContainer != "" || log.DockerProject != ""
+	switch {
+	case log.Path == "" && !dockerMetadata && log.JournalUnit == "":
+		return fmt.Errorf("[log %s] has no path, docker_container, docker_project or journal_unit", log.Name)
+	case log.JournalUnit != "" && (log.Path != "" || dockerMetadata):
+		return fmt.Errorf("[log %s] journal_unit cannot be combined with path or Docker metadata", log.Name)
+	case log.Path == "" && log.DockerContainer != "" && log.DockerProject != "":
+		return fmt.Errorf("[log %s] must have only one of docker_container and docker_project when path is absent", log.Name)
+	}
+	if log.Path != "" && dockerMetadata {
+		if strings.ContainsAny(log.Path, "*?[]") || strings.ContainsFunc(log.Path, unicode.IsControl) {
+			return fmt.Errorf("[log %s] Docker path must be a concrete absolute path without glob or control characters", log.Name)
+		}
+	}
+	// Legacy sections retain defaults so update can migrate their policies.
+	legacyDocker := log.Path == "" && dockerMetadata
+	if legacyDocker && log.DockerProject != "" && len(log.Groups) == 0 {
+		log.Groups = []string{log.DockerProject}
+	}
+	if log.TimeFormat == "" && dockerMetadata {
+		log.TimeFormat = "docker-json"
+	}
+	if log.TimeFormat == "" && log.JournalUnit != "" {
+		log.TimeFormat = "rfc3339"
 	}
 	if log.TimeFormat != "" {
 		format, err := timefmt.Resolve(log.TimeFormat)

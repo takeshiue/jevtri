@@ -33,6 +33,12 @@ const (
 const task = "These are log excerpts collected from one Linux server around the time of an incident. " +
 	"Decide which log an engineer should examine in detail first to find the cause."
 
+// groupTask is the first stage of the ranking by group (spec 12.7.4): each
+// entry of logs is a group of logs, such as the containers of one service.
+const groupTask = "These are log excerpts collected from one Linux server around the time of an incident, " +
+	"put together by group: each group holds the logs of one service or of the host, and each excerpt starts with the log's name. " +
+	"Decide which group an engineer should examine in detail first to find the cause."
+
 var scoreLevels = []string{
 	"Nothing related to the incident; can be skipped",
 	"Only indirect or routine information",
@@ -54,6 +60,8 @@ type Query struct {
 	Minutes     int
 	Symptom     string
 	Logs        []Log
+	// Groups is set for the first stage: each Log is a group, Path its name.
+	Groups bool
 }
 
 // Score is the result for one log, in the order of Query.Logs.
@@ -104,7 +112,7 @@ func BuildRequest(q Query) Request {
 	request := Request{
 		Model: Model,
 		State: State{
-			Task:          task,
+			Task:          taskOf(q),
 			IncidentTime:  q.Reference.Format(time.RFC3339),
 			WindowStart:   q.WindowStart.Format(time.RFC3339),
 			WindowEnd:     q.WindowEnd.Format(time.RFC3339),
@@ -114,18 +122,55 @@ func BuildRequest(q Query) Request {
 		},
 		Questions: map[string]Question{},
 	}
+	seen := map[string]bool{}
+	duplicate := false
+	for _, log := range q.Logs {
+		duplicate = duplicate || seen[log.Path]
+		seen[log.Path] = true
+	}
 	for i, log := range q.Logs {
-		request.State.Logs[log.Path] = log.Text
+		key := log.Path
+		if duplicate {
+			// Keep evidence distinct even if a caller omitted validation.
+			key = questionName(i) + ": " + log.Path
+		}
+		request.State.Logs[key] = log.Text
 		request.Questions[questionName(i)] = Question{
 			Type:         "score",
-			Instructions: fmt.Sprintf("How valuable is it to examine %s first to find the cause of the incident?", log.Path),
+			Instructions: instructions(q, key),
 			Criteria:     scoreLevels,
 		}
 	}
 	return request
 }
 
+// ValidateQuery rejects ambiguous sources before either preview or sending.
+func ValidateQuery(q Query) error {
+	seen := map[string]bool{}
+	for _, log := range q.Logs {
+		if seen[log.Path] {
+			return fmt.Errorf("%w: duplicate log source %q", ErrRejected, log.Path)
+		}
+		seen[log.Path] = true
+	}
+	return nil
+}
+
 func questionName(i int) string { return "log" + strconv.Itoa(i+1) }
+
+func taskOf(q Query) string {
+	if q.Groups {
+		return groupTask
+	}
+	return task
+}
+
+func instructions(q Query, path string) string {
+	if q.Groups {
+		return fmt.Sprintf("How valuable is it to examine the logs of %s first to find the cause of the incident?", path)
+	}
+	return fmt.Sprintf("How valuable is it to examine %s first to find the cause of the incident?", path)
+}
 
 // Failure kinds, used for exit codes and messages.
 var (
@@ -159,6 +204,9 @@ func NewClient(apiKey string) *Client {
 // Ask sends the query and parses the scores. Network failures, timeouts,
 // 429 and 5xx are retried once; other failures are not (spec 12.3).
 func (c *Client) Ask(ctx context.Context, q Query) (Result, error) {
+	if err := ValidateQuery(q); err != nil {
+		return Result{}, err
+	}
 	body, err := json.Marshal(BuildRequest(q))
 	if err != nil {
 		return Result{}, err
@@ -215,9 +263,9 @@ func summarize(payload []byte) string {
 type response struct {
 	Model   string `json:"model"`
 	Answers map[string]struct {
-		Type       string  `json:"type"`
-		Score      float64 `json:"score"`
-		Confidence float64 `json:"confidence"`
+		Type       string   `json:"type"`
+		Score      *float64 `json:"score"`
+		Confidence float64  `json:"confidence"`
 	} `json:"answers"`
 	Usage struct {
 		InputTokens int `json:"input_tokens"`
@@ -233,14 +281,14 @@ func parse(payload []byte, q Query) (Result, error) {
 	top := float64(len(scoreLevels) - 1)
 	for i, log := range q.Logs {
 		answer, ok := decoded.Answers[questionName(i)]
-		if !ok || answer.Type != "score" {
+		if !ok || answer.Type != "score" || answer.Score == nil {
 			// Never invent a priority for a log that was not scored.
 			return Result{}, fmt.Errorf("%w: no score for %s", ErrRejected, log.Path)
 		}
-		if answer.Score < 0 || answer.Score > top {
-			return Result{}, fmt.Errorf("%w: score %v out of range for %s", ErrRejected, answer.Score, log.Path)
+		if *answer.Score < 0 || *answer.Score > top {
+			return Result{}, fmt.Errorf("%w: score %v out of range for %s", ErrRejected, *answer.Score, log.Path)
 		}
-		result.Scores = append(result.Scores, Score{Path: log.Path, Raw: answer.Score, Priority: answer.Score / top, Confidence: answer.Confidence})
+		result.Scores = append(result.Scores, Score{Path: log.Path, Raw: *answer.Score, Priority: *answer.Score / top, Confidence: answer.Confidence})
 	}
 	return result, nil
 }

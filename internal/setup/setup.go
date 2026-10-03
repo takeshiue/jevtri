@@ -14,6 +14,9 @@ import (
 	"time"
 
 	"github.com/takeshiue/jevtri/internal/config"
+	"github.com/takeshiue/jevtri/internal/containers"
+	"github.com/takeshiue/jevtri/internal/docker"
+	"github.com/takeshiue/jevtri/internal/journal"
 	"github.com/takeshiue/jevtri/internal/logread"
 	"github.com/takeshiue/jevtri/internal/safeopen"
 	"github.com/takeshiue/jevtri/internal/timefmt"
@@ -32,12 +35,28 @@ type Options struct {
 	NewDetector func(apiKey string) Detector
 	// SentLog records what was sent to Jev (spec 12.2).
 	SentLog string
+	// KeyPath is where 'jevtri init' stores the API key (spec 12.7.5); empty
+	// skips that step.
+	KeyPath string
 }
 
 // Candidate is a log that may go into the configuration.
 type Candidate struct {
-	Name       string
-	Path       string // as written to the configuration (a glob for dated logs)
+	Name string
+	Path string // as written to the configuration (a glob for dated logs)
+	// DockerContainer and JournalUnit replace Path for those sources (spec 12.7).
+	DockerContainer string
+	DockerProject   string
+	JournalUnit     string
+	// Members are the container names of a DockerProject candidate, for display
+	// and to replace containers registered one by one.
+	Members    []string
+	MemberLogs []containers.Member
+	Groups     []string
+	Masks      []string
+	// Group is the default group (spec 12.7.4): the Compose project for a
+	// container, the container name without one, and system for host logs.
+	Group      string
 	TimeFormat string // empty when no known format reads the file
 	// Assumed is set when the log and its rotated files were empty, so
 	// TimeFormat is the usual format of that location, not a checked one.
@@ -49,6 +68,11 @@ type Candidate struct {
 var ErrExists = errors.New("configuration file already exists")
 
 const notSetComment = "# time_format is not set: this log is skipped until it is."
+
+// Label is what the user sees for the candidate.
+func (c Candidate) Label() string {
+	return config.Log{Path: c.Path, DockerContainer: c.DockerContainer, DockerProject: c.DockerProject, JournalUnit: c.JournalUnit}.Label()
+}
 
 // DetectFamily reads ID and ID_LIKE of an os-release file.
 func DetectFamily(osRelease string) Family {
@@ -83,6 +107,11 @@ func (f Family) String() string {
 // Find returns the known logs that exist and can be read, the given
 // family's locations first (spec 12.4).
 func Find(family Family, root string) []Candidate {
+	offers, _ := containers.Discover(root)
+	return findWithOffers(family, root, offers)
+}
+
+func findWithOffers(family Family, root string, offers []containers.Offer) []Candidate {
 	type place struct {
 		name    string
 		path    string
@@ -122,7 +151,7 @@ func Find(family Family, root string) []Candidate {
 			name = fmt.Sprintf("%s-%d", name, seenName[name])
 		}
 		format, assumed := detectFormat(sample, formats)
-		found = append(found, Candidate{Name: name, Path: path, TimeFormat: format, Assumed: assumed})
+		found = append(found, Candidate{Name: name, Path: path, Group: SystemGroup, TimeFormat: format, Assumed: assumed})
 	}
 	for _, p := range places {
 		if !logread.IsPattern(p.path) {
@@ -147,8 +176,38 @@ func Find(family Family, root string) []Candidate {
 			appendCandidate(name, match, p.formats, filepath.Join(root, match))
 		}
 	}
+	return append(found, findOthers(root, seenName, offers)...)
+}
+
+// findOthers returns the Docker containers with a json-file log and, on a
+// host without rsyslog files, the whole journal (spec 12.7).
+func findOthers(root string, seenName map[string]int, offers []containers.Offer) []Candidate {
+	var found []Candidate
+	name := func(base string) string {
+		seenName[base]++
+		if seenName[base] > 1 {
+			return fmt.Sprintf("%s-%d", base, seenName[base])
+		}
+		return base
+	}
+	for _, offer := range offers {
+		c := Candidate{Path: offer.Path, DockerProject: offer.Project, DockerContainer: offer.Container, Members: offer.Members, MemberLogs: offer.MemberLogs, Group: offer.Group, TimeFormat: "docker-json"}
+		if offer.Project != "" {
+			c.Name = name(offer.Project)
+		} else {
+			c.Name = name("docker-" + offer.Container)
+		}
+		found = append(found, c)
+	}
+	if _, err := journal.Find(root); err == nil && !readable(filepath.Join(root, "/var/log/syslog")) && !readable(filepath.Join(root, "/var/log/messages")) {
+		found = append(found, Candidate{Name: name("journal"), JournalUnit: "*", Group: SystemGroup, TimeFormat: "rfc3339"})
+	}
 	return found
 }
+
+// SystemGroup is the default group of every log on the host itself (spec
+// 12.7.4): the OS logs and the software installed directly on the host.
+const SystemGroup = "system"
 
 func contains(list []string, value string) bool {
 	for _, item := range list {
@@ -190,7 +249,10 @@ func readableMatches(root, pattern string) []string {
 		if strings.HasSuffix(m, ".gz") || !readable(m) {
 			continue
 		}
-		info, _ := os.Stat(m)
+		info, err := os.Stat(m)
+		if err != nil || !info.Mode().IsRegular() {
+			continue
+		}
 		list = append(list, match{path: strings.TrimPrefix(m, root), modified: info.ModTime()})
 	}
 	sort.SliceStable(list, func(i, j int) bool { return list[i].modified.After(list[j].modified) })
@@ -329,12 +391,22 @@ func ParseSelection(answer string, count int) ([]int, error) {
 // Run asks the user which logs to use and writes the configuration.
 func Run(in io.Reader, out io.Writer, opts Options) error {
 	reader := bufio.NewReader(in)
+	// Registration starts with the API key, so that the steps that ask Jev
+	// (time formats, groups) can use it (spec 12.7.5).
+	if err := askAPIKey(reader, out, opts); err != nil {
+		return err
+	}
 	if _, err := os.Stat(opts.ConfigPath); err == nil {
 		return completeExisting(reader, out, opts)
 	}
 	osRelease, _ := os.ReadFile(filepath.Join(opts.Root, "/etc/os-release"))
 	family := DetectFamily(string(osRelease))
-	candidates := Find(family, opts.Root)
+	inventory, discoveryError := docker.List(opts.Root)
+	if discoveryError != nil {
+		fmt.Fprintf(out, "Docker discovery is unavailable: %v. Register an absolute log path manually.\n", discoveryError)
+	}
+	showInventoryIssues(out, inventory)
+	candidates := findWithOffers(family, opts.Root, containers.FromInventory(inventory, opts.Root))
 	if opts.SentLog == "" {
 		opts.SentLog = config.DefaultSentLog
 	}
@@ -347,17 +419,10 @@ func Run(in io.Reader, out io.Writer, opts Options) error {
 		fmt.Fprintf(out, "Found %d logs:\n", len(candidates))
 		width := 0
 		for _, c := range candidates {
-			width = max(width, len(c.Path))
+			width = max(width, len(c.Label()))
 		}
 		for i, c := range candidates {
-			format := c.TimeFormat
-			switch {
-			case format == "":
-				format = "time format unknown"
-			case c.Assumed:
-				format += ", assumed: the log is empty"
-			}
-			fmt.Fprintf(out, "  %2d. %-*s  (%s)\n", i+1, width, c.Path, format)
+			fmt.Fprintf(out, "  %2d. %-*s  (%s)\n", i+1, width, c.Label(), describeFormat(c))
 		}
 		for {
 			fmt.Fprintf(out, "Logs to use (e.g. \"1 3-4\"; empty for all): ")
@@ -402,7 +467,7 @@ func Run(in io.Reader, out io.Writer, opts Options) error {
 				name = fmt.Sprintf("%s-%d", stem(path), n)
 			}
 			names[name] = true
-			selected = append(selected, Candidate{Name: name, Path: path})
+			selected = append(selected, Candidate{Name: name, Path: path, Group: SystemGroup})
 		}
 		if err != nil {
 			break
@@ -411,15 +476,42 @@ func Run(in io.Reader, out io.Writer, opts Options) error {
 	if len(selected) == 0 {
 		return errors.New("no log was selected; nothing was written")
 	}
+	validated, validationError := flattenCandidates(selected, nil)
+	if validationError != nil {
+		return validationError
+	}
+	if err := validateCandidates(validated, opts.Root); err != nil {
+		return err
+	}
 	var unknownFormats []*Candidate
 	for i := range selected {
 		if selected[i].TimeFormat == "" {
 			unknownFormats = append(unknownFormats, &selected[i])
 		}
 	}
-	detectWithJev(reader, out, unknownFormats, opts)
+	if err := detectWithJev(reader, out, unknownFormats, opts); err != nil {
+		return err
+	}
 
-	if err := write(opts.ConfigPath, Render(selected, opts.Now)); err != nil {
+	if err := chooseCandidateGroups(reader, out, selected); err != nil {
+		return err
+	}
+	selected, flattenError := flattenCandidates(selected, nil)
+	if flattenError != nil {
+		return flattenError
+	}
+	if err := validateCandidates(selected, opts.Root); err != nil {
+		return err
+	}
+	content := Render(selected, opts.Now)
+	parsed, err := config.Parse(strings.NewReader(content), opts.ConfigPath)
+	if err != nil {
+		return err
+	}
+	if err := validateSerializedCandidates(parsed, selected); err != nil {
+		return err
+	}
+	if err := write(opts.ConfigPath, content); err != nil {
 		return err
 	}
 	noun := "logs"
@@ -443,6 +535,19 @@ func Run(in io.Reader, out io.Writer, opts Options) error {
 	return nil
 }
 
+func describeFormat(c Candidate) string {
+	if c.DockerProject != "" {
+		return fmt.Sprintf("%d containers: %s", len(c.Members), strings.Join(c.Members, ", "))
+	}
+	switch {
+	case c.TimeFormat == "":
+		return "time format unknown"
+	case c.Assumed:
+		return c.TimeFormat + ", assumed: the log is empty"
+	}
+	return c.TimeFormat
+}
+
 // completeExisting is 'jevtri init' on an existing configuration: it looks
 // for the time format of logs added without one (spec O-05) and changes
 // nothing else.
@@ -457,15 +562,17 @@ func completeExisting(reader *bufio.Reader, out io.Writer, opts Options) error {
 	var missing []*Candidate
 	for _, log := range cfg.Logs {
 		if log.TimeFormat == "" {
-			missing = append(missing, &Candidate{Name: log.Name, Path: log.Path})
+			missing = append(missing, &Candidate{Name: log.Name, Path: log.Path, Masks: append([]string(nil), log.Masks...)})
 		}
 	}
 	if len(missing) == 0 {
 		fmt.Fprintf(out, "%s exists and every log in it has a time_format; nothing to do.\n", opts.ConfigPath)
-		fmt.Fprintln(out, "To add a log, add a [log NAME] section with its path and run 'jevtri init' again.")
+		fmt.Fprintln(out, "To look for new logs and containers, run 'jevtri --config-update'.")
 		return nil
 	}
-	detectWithJev(reader, out, missing, opts)
+	if err := detectWithJev(reader, out, missing, opts); err != nil {
+		return err
+	}
 	formats := map[string]string{}
 	for _, c := range missing {
 		if c.TimeFormat != "" {
@@ -479,6 +586,15 @@ func completeExisting(reader *bufio.Reader, out io.Writer, opts Options) error {
 	if err := updateTimeFormats(opts.ConfigPath, formats); err != nil {
 		return err
 	}
+	updated, err := config.Load(opts.ConfigPath)
+	if err != nil {
+		return fmt.Errorf("cannot verify updated time formats: %w", err)
+	}
+	for _, log := range updated.Logs {
+		if expected, changed := formats[log.Name]; changed && log.TimeFormat != expected {
+			return fmt.Errorf("time format for [log %s] was not updated", log.Name)
+		}
+	}
 	fmt.Fprintf(out, "Added time_format for %d of %d logs to %s.\n", len(formats), len(missing), opts.ConfigPath)
 	return nil
 }
@@ -488,46 +604,98 @@ func Render(logs []Candidate, now time.Time) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "# jevtri configuration, written by 'jevtri init' on %s.\n", now.Format("2006-01-02"))
 	b.WriteString("# See jevtri(1). Lines starting with # are comments.\n\n")
-	b.WriteString("[general]\n# minutes = 5\n# max_bytes = 48000\n# sent_log = /var/log/jevtri/sent.log\n")
+	b.WriteString(configurationSample)
+	b.WriteString("[general]\n# minutes = 5\n# max_bytes = 40000\n# sent_log = /var/log/jevtri/sent.log\n")
+	b.WriteString(renderLogs(logs))
+	return b.String()
+}
+
+// renderLogs writes the [log] sections.
+func renderLogs(logs []Candidate) string {
+	var b strings.Builder
 	for _, c := range logs {
-		fmt.Fprintf(&b, "\n[log %s]\npath = %s\n", c.Name, c.Path)
+		switch {
+		case c.DockerContainer != "":
+			fmt.Fprintf(&b, "\n[log %s]\npath = %s\ndocker_container = %s\n", c.Name, formattedValue(c.Path), formattedValue(c.DockerContainer))
+			if c.DockerProject != "" {
+				fmt.Fprintf(&b, "docker_project = %s\n", formattedValue(c.DockerProject))
+			}
+			format := c.TimeFormat
+			if format == "" {
+				format = "docker-json"
+			}
+			fmt.Fprintf(&b, "time_format = %s\n", formattedValue(format))
+			writeGroup(&b, c)
+			continue
+		case c.DockerProject != "":
+			members, err := flattenCandidates([]Candidate{c}, nil)
+			if err == nil {
+				b.WriteString(renderLogs(members))
+			} else {
+				// An unresolved selection must fail Parse instead of disappearing.
+				fmt.Fprintf(&b, "\n[log %s]\n", c.Name)
+			}
+			continue
+		case c.JournalUnit != "":
+			fmt.Fprintf(&b, "\n[log %s]\njournal_unit = %s\n", c.Name, formattedValue(c.JournalUnit))
+			writeGroup(&b, c)
+			continue
+		}
+		fmt.Fprintf(&b, "\n[log %s]\npath = %s\n", c.Name, formattedValue(c.Path))
 		if c.Assumed {
 			b.WriteString("# The log was empty when this was written; time_format is the usual one, not a checked one.\n")
 		}
 		if c.TimeFormat != "" {
-			fmt.Fprintf(&b, "time_format = %s\n", c.TimeFormat)
+			fmt.Fprintf(&b, "time_format = %s\n", formattedValue(c.TimeFormat))
 		} else {
 			b.WriteString(notSetComment + "\n")
 		}
+		writeGroup(&b, c)
 	}
 	return b.String()
+}
+
+func writeGroup(b *strings.Builder, c Candidate) {
+	groups := c.Groups
+	if len(groups) == 0 && c.Group != "" {
+		groups = []string{c.Group}
+	}
+	for _, group := range groups {
+		fmt.Fprintf(b, "group = %s\n", formattedValue(group))
+	}
 }
 
 func write(path, content string) error {
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return fmt.Errorf("cannot create %s: %v", filepath.Dir(path), err)
 	}
-	handle, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o644)
-	if errors.Is(err, os.ErrExist) {
-		return fmt.Errorf("%w: %s", ErrExists, path)
-	}
+	handle, err := os.CreateTemp(filepath.Dir(path), filepath.Base(path)+".tmp*")
 	if err != nil {
 		return fmt.Errorf("cannot write %s: %v", path, err)
+	}
+	temporary := handle.Name()
+	defer os.Remove(temporary)
+	if err := handle.Chmod(0o644); err != nil {
+		handle.Close()
+		return err
 	}
 	if _, err := handle.WriteString(content); err != nil {
 		handle.Close()
 		// A half-written configuration would be found by the next init and fail
 		// to parse, so leave nothing behind.
-		os.Remove(path)
 		return fmt.Errorf("cannot write %s: %v", path, err)
 	}
 	if err := handle.Sync(); err != nil {
 		handle.Close()
-		os.Remove(path)
 		return fmt.Errorf("cannot write %s: %v", path, err)
 	}
 	if err := handle.Close(); err != nil {
-		os.Remove(path)
+		return fmt.Errorf("cannot write %s: %v", path, err)
+	}
+	if err := installNewConfig(temporary, path); err != nil {
+		if errors.Is(err, os.ErrExist) {
+			return fmt.Errorf("%w: %s", ErrExists, path)
+		}
 		return fmt.Errorf("cannot write %s: %v", path, err)
 	}
 	return nil

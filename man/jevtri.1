@@ -1,4 +1,4 @@
-.TH JEVTRI 1 "2026-09-30" "jevtri 0.1.0" "User Commands"
+.TH JEVTRI 1 "2026-10-03" "jevtri 0.2.0" "User Commands"
 .SH NAME
 jevtri \- rank server logs by which to examine first after an incident
 .SH SYNOPSIS
@@ -16,6 +16,8 @@ jevtri \- rank server logs by which to examine first after an incident
 .RB [ \-\-dry\-run ]
 .br
 .B jevtri init
+.br
+.B jevtri \-\-config\-update
 .br
 .B jevtri report
 .br
@@ -101,10 +103,37 @@ Results and error messages are always in English.
 .BR \-h ", " \-\-help
 Show the help.
 .TP
+.BI \-\-group " NAME"
+Rank only the logs of this group and the logs that are always examined (the
+.B system
+group and logs without a group). May be repeated.
+Without it, when two or more groups of services have lines in the window,
+jevtri first asks Jev which group to examine, then ranks the logs of that
+group (and of any group within 10 points of it) with the system logs; the logs of the other groups are listed but not sent.
+.TP
+.B \-\-config\-update
+Look for logs and Docker containers that are not in the configuration yet,
+and ask about each one:
+.B y
+adds it,
+.B all
+adds it and every one after it, and Enter or
+.B n
+skips it.
+New sections are added at the end. Docker paths changed by recreation are
+verified and updated after confirmation; existing masks, timezones, groups,
+comments and file permissions are preserved.
+.TP
 .B \-\-version
 Show the version.
 .SH INIT
 .B jevtri init
+first asks for the Jev API key: paste it and press Enter (it shows on the
+screen so that a wrong paste can be seen; Enter alone skips).
+It is stored in
+.I /etc/jevtri/api\-key
+with mode 0600.
+Then it
 lists the known logs that exist on this server, lets you choose them by
 number (such as
 .B "1 3\-4" ;
@@ -124,6 +153,20 @@ Running
 without a configuration starts
 .B init
 in a terminal, and fails otherwise (cron, systemd timers, pipes).
+.PP
+Besides log files,
+.B init
+and
+.B \-\-config\-update
+offer Docker containers whose log driver is json\-file and, on a server with
+neither
+.I /var/log/syslog
+nor
+.IR /var/log/messages ,
+the systemd journal.
+Run
+.B jevtri \-\-config\-update
+after adding containers or software.
 .PP
 .B jevtri report
 helps improve jevtri with real incidents.
@@ -152,7 +195,10 @@ section per log, with
 .I value
 lines. Lines starting with
 .B #
-are comments. Errors are reported with the line number.
+are comments. A # after whitespace starts an end-of-line comment, except inside
+a quoted value. Quote the whole value when it contains a literal space followed
+by #. Generated configuration starts with an inactive writing sample; updates
+preserve user comments. Errors are reported with the line number.
 .PP
 .B [general]
 .TP
@@ -161,8 +207,9 @@ Default for
 .BR \-m .
 .TP
 .B max_bytes
-Bytes of log lines sent in one run, shared equally among the logs (default
-48000). Lines with ERROR, WARN, fail and similar words, and lines near the
+Bytes of the serialized JSON state in each request, including excerpts,
+source names, incident metadata and JSON escaping (default 40000).
+The excerpt budget is shared equally among logs. Lines with ERROR, WARN, fail and similar words, and lines near the
 incident time, are kept first.
 .TP
 .B sent_log
@@ -182,6 +229,47 @@ match files with a date in their name. Rotated files
 .IR \-20260928 )
 are read when the window reaches into them.
 .TP
+.B docker_container
+The container name, stored alongside
+.BR path ,
+is metadata for matching the container during
+.BR \-\-config\-update .
+Registration verifies and saves its concrete absolute json\-file log path
+from the local Docker daemon, including a custom data directory.
+The time format is docker\-json and need not be written.
+Normal runs read only the registered path and do not query Docker.
+After recreating a container, run
+.B \-\-config\-update
+before reading its new log. Legacy Docker sections without
+.B path
+stop normal execution and request this update.
+.TP
+.B docker_project
+The Docker Compose project, stored with each container's
+.B path
+and
+.BR docker_container .
+Selecting a Compose project during registration adds one log section per
+container and offers the project name as its group.
+Each container is sent as
+.BI docker: NAME .
+New members and projects are read only after registration with
+.BR \-\-config\-update .
+If Docker discovery is unavailable, register the concrete absolute log path
+manually; existing configuration is preserved.
+.TP
+.B journal_unit
+Instead of
+.BR path ,
+a systemd unit such as
+.BR docker.service ,
+or
+.B *
+for the whole journal.
+It is read with
+.IR /usr/bin/journalctl .
+The time format is rfc3339 and need not be written.
+.TP
 .B time_format
 A name from the list below, or a pattern with
 .B %
@@ -197,6 +285,21 @@ The default is the server's.
 to read rotated
 .I .gz
 files too.
+.TP
+.B group
+A group the log is in. May be repeated, so that a log is in several groups.
+.B init
+and
+.B \-\-config\-update
+ask for groups for each selected candidate, including candidates added with
+.BR all .
+For Compose this applies to the project as a whole. Enter one group per line
+and finish with an empty line; an initial empty line keeps the suggested
+group: system for host logs, the Compose project or standalone container name
+for Docker logs. Existing groups are preserved when paths are updated.
+Logs without a group are included in every selection and produce a warning.
+Groups decide what a run examines; see
+.BR \-\-group .
 .TP
 .B mask
 An extra regular expression to mask before sending. May be repeated.
@@ -218,12 +321,17 @@ dmy\-month      28\-Sep\-2026 09:44:02.397
 slash\-mdy      09/28/2026 15:47:01
 slash\-dmy      28/09/2026 15:47:01
 epoch          1790532211
+docker\-json    "time":"2026\-10\-01T10:00:05.987654321Z"
 .fi
 .RE
 .PP
 Two shortcuts assume that a log is written in time order, oldest first. In an uncompressed file larger than 8 MiB, the start of the window is found by binary search, which assumes the timestamps increase through the file. Rotated files are taken newest first by modification time, and reading stops after the first file that has a line older than the window, which assumes older files hold older times. In a log written newest first, with times out of order, or with rotated files whose times overlap, lines in the window may be skipped, and such omissions may not produce a warning.
 .PP
 At most 64 MiB of text is kept per log, across its rotated files. Beyond that the oldest entries by time are left out, and a warning says so.
+.PP
+If a registered file log is missing, it cannot be included. jevtri reports its path and advises
+.B \-\-config\-update
+to review the configuration. This applies to host and container logs. Normal runs do not discover new containers or change the configuration.
 .SH DATA SENT
 .B jevtri
 sends data only to Jev, a service of TypeSafe, at

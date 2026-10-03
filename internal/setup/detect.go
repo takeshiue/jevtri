@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/takeshiue/jevtri/internal/config"
 	"github.com/takeshiue/jevtri/internal/jev"
 	"github.com/takeshiue/jevtri/internal/logread"
 	"github.com/takeshiue/jevtri/internal/mask"
@@ -37,6 +38,7 @@ var formatExamples = map[string]string{
 	"slash-mdy":     "09/28/2026 15:47:01 (month first)",
 	"slash-dmy":     "28/09/2026 15:47:01 (day first)",
 	"epoch":         "1790532211 or msg=audit(1790532211.123:456) (seconds since 1970)",
+	"docker-json":   `{"log":"...","stream":"stdout","time":"2026-09-28T07:29:16.929554123Z"} (Docker json-file)`,
 }
 
 func formatChoices() []jev.FormatChoice {
@@ -55,7 +57,7 @@ const (
 // headLines returns the first non-blank lines of a log, masked, for the
 // format question. A pattern is sampled from its newest file and an empty
 // log from its newest rotated file.
-func headLines(root, path string) []string {
+func headLines(root, path string, masks ...string) []string {
 	file := filepath.Join(root, path)
 	if logread.IsPattern(path) {
 		matches := readableMatches(root, path)
@@ -68,16 +70,17 @@ func headLines(root, path string) []string {
 	if len(lines) == 0 {
 		lines = firstLines(newestRotated(file))
 	}
-	masker, err := mask.New(nil)
+	masker, err := mask.New(masks)
 	if err != nil {
 		return nil
 	}
 	for i, line := range lines {
+		line = masker.Apply(line).Text
 		if len(line) > maxLineLength {
 			line = line[:maxLineLength]
 		}
 		// Escape control characters: a sampled line goes straight to the terminal.
-		lines[i] = printsafe.Line(masker.Apply(line).Text)
+		lines[i] = printsafe.Line(line)
 	}
 	return lines
 }
@@ -125,31 +128,36 @@ func readsLines(name string, lines []string, now time.Time) bool {
 
 // detectWithJev fills TimeFormat of the given logs where Jev's answer can be
 // verified. Nothing is sent before the user agrees to it.
-func detectWithJev(reader *bufio.Reader, out io.Writer, logs []*Candidate, opts Options) {
+func detectWithJev(reader *bufio.Reader, out io.Writer, logs []*Candidate, opts Options) error {
 	if len(logs) == 0 {
-		return
+		return nil
+	}
+	for _, candidate := range logs {
+		if _, err := mask.New(candidate.Masks); err != nil {
+			return fmt.Errorf("invalid mask for %s: %w", candidate.Path, err)
+		}
 	}
 	// The spec requires showing the logs and the lines themselves before the
 	// consent, so read them now and ask about what will really be sent.
-	heads := make(map[string][]string, len(logs))
+	heads := make(map[*Candidate][]string, len(logs))
 	var ready []*Candidate
 	for _, c := range logs {
-		lines := headLines(opts.Root, c.Path)
+		lines := headLines(opts.Root, c.Path, c.Masks...)
 		if len(lines) == 0 {
 			fmt.Fprintf(out, "  %s: the log is empty; run 'jevtri init' again once it has lines\n", c.Path)
 			continue
 		}
-		heads[c.Path] = lines
+		heads[c] = lines
 		ready = append(ready, c)
 	}
 	if len(ready) == 0 {
-		return
+		return nil
 	}
 	fmt.Fprintf(out, "\nThe time format of these logs is not known. jevtri can ask Jev (%s)\n", jev.Endpoint)
 	fmt.Fprintf(out, "to identify it. Exactly these lines would be sent (%d per log at most, already masked):\n", sampleLines)
 	for _, c := range ready {
 		fmt.Fprintf(out, "\n  %s:\n", c.Path)
-		for _, line := range heads[c.Path] {
+		for _, line := range heads[c] {
 			fmt.Fprintf(out, "    | %s\n", line)
 		}
 	}
@@ -159,24 +167,29 @@ func detectWithJev(reader *bufio.Reader, out io.Writer, logs []*Candidate, opts 
 	// No answer at all (end of input, closed terminal) is not consent.
 	if rerr != nil && strings.TrimSpace(answer) == "" {
 		fmt.Fprintln(out, "\nNo answer; nothing was sent.")
-		return
+		return nil
 	}
 	if strings.HasPrefix(strings.ToLower(strings.TrimSpace(answer)), "n") {
 		fmt.Fprintln(out, "Nothing was sent.")
-		return
+		return nil
 	}
 	if opts.LoadAPIKey == nil || opts.NewDetector == nil {
 		fmt.Fprintln(out, "Jev is not available here; nothing was sent.")
-		return
+		return nil
 	}
 	key, err := opts.LoadAPIKey()
 	if err != nil {
 		fmt.Fprintf(out, "Cannot ask Jev: %v\nPut the key there and run 'jevtri init' again. Nothing was sent.\n", err)
-		return
+		return nil
+	}
+	if opts.SentLog != "" {
+		if err := sentlog.CheckWritable(opts.SentLog); err != nil {
+			return fmt.Errorf("cannot record time format request: %w", err)
+		}
 	}
 	detector := opts.NewDetector(key)
 	for _, c := range ready {
-		lines := heads[c.Path]
+		lines := heads[c]
 		request := jev.BuildFormatRequest(c.Path, strings.Join(lines, "\n"), formatChoices())
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		result, err := detector.AskFormat(ctx, request)
@@ -187,7 +200,7 @@ func detectWithJev(reader *bufio.Reader, out io.Writer, logs []*Candidate, opts 
 		}
 		if opts.SentLog != "" {
 			if werr := sentlog.Append(opts.SentLog, sentlog.FormatEntry(opts.Now, request, recorded, err)); werr != nil {
-				fmt.Fprintf(out, "  warning: %v\n", werr)
+				return fmt.Errorf("cannot record time format request: %w", werr)
 			}
 		}
 		if err != nil {
@@ -205,11 +218,17 @@ func detectWithJev(reader *bufio.Reader, out io.Writer, logs []*Candidate, opts 
 			fmt.Fprintf(out, "  %s: %s (checked on the first lines)\n", c.Path, best.Name)
 		}
 	}
+	return nil
 }
 
 // updateTimeFormats writes time_format into the named [log] sections of an
 // existing configuration, keeping every other line as it is.
 func updateTimeFormats(path string, formats map[string]string) error {
+	for _, format := range formats {
+		if _, err := config.FormatValue(format); err != nil {
+			return err
+		}
+	}
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -218,25 +237,80 @@ func updateTimeFormats(path string, formats map[string]string) error {
 	if err != nil {
 		return err
 	}
-	var out []string
-	section := ""
-	for _, line := range strings.Split(strings.TrimSuffix(string(data), "\n"), "\n") {
-		trimmed := strings.TrimSpace(line)
-		if strings.HasPrefix(trimmed, "[") && strings.HasSuffix(trimmed, "]") {
-			section = ""
-			if fields := strings.Fields(trimmed[1 : len(trimmed)-1]); len(fields) == 2 && fields[0] == "log" {
-				section = fields[1]
+	var builder strings.Builder
+	for _, block := range splitConfigBlocks(string(data)) {
+		format, target := formats[block.Name]
+		found := false
+		var lines []string
+		for _, line := range block.Lines {
+			if target && strings.TrimSpace(line) == notSetComment {
+				continue
+			}
+			content, err := config.StripComment(line)
+			if err != nil {
+				return err
+			}
+			key, _, ok := strings.Cut(strings.TrimSpace(content), "=")
+			if target && ok && strings.TrimSpace(key) == "time_format" {
+				if found {
+					_, comment, _ := config.SplitComment(line)
+					if comment != "" {
+						comment = strings.TrimLeft(comment, " \t")
+						if !strings.HasSuffix(comment, "\n") {
+							comment += "\n"
+						}
+						lines = append(lines, comment)
+					}
+					continue
+				}
+				line = updatedConfigLine(line, "time_format = "+formattedValue(format))
+				found = true
+			}
+			lines = append(lines, line)
+		}
+		if target && !found {
+			inserted := false
+			for index, line := range lines {
+				content, _ := config.StripComment(line)
+				key, _, ok := strings.Cut(strings.TrimSpace(content), "=")
+				if ok && strings.TrimSpace(key) == "path" {
+					if !strings.HasSuffix(lines[index], "\n") {
+						lines[index] += "\n"
+					}
+					lines = append(lines[:index+1], append([]string{"time_format = " + formattedValue(format) + "\n"}, lines[index+1:]...)...)
+					inserted = true
+					break
+				}
+			}
+			if !inserted {
+				lines = ensureLine(lines, "time_format", formattedValue(format))
 			}
 		}
-		format, target := formats[section]
-		if target && trimmed == notSetComment {
-			continue
-		}
-		out = append(out, line)
-		if key, _, ok := strings.Cut(trimmed, "="); target && ok && strings.TrimSpace(key) == "path" {
-			out = append(out, "time_format = "+format)
+		builder.WriteString(strings.Join(lines, ""))
+	}
+	content := builder.String()
+	parsed, err := config.Parse(strings.NewReader(content), path)
+	if err != nil {
+		return err
+	}
+	verified := map[string]bool{}
+	for _, log := range parsed.Logs {
+		if expected, changed := formats[log.Name]; changed {
+			if log.TimeFormat != expected {
+				return fmt.Errorf("time format for [log %s] was not preserved", log.Name)
+			}
+			verified[log.Name] = true
 		}
 	}
+	if len(verified) != len(formats) {
+		return fmt.Errorf("time format target was not found; configuration was not changed")
+	}
+	return replaceFile(path, content, info.Mode().Perm())
+}
+
+// replaceFile writes content to path through a temporary file and a rename,
+// keeping mode.
+func replaceFile(path, content string, mode os.FileMode) error {
 	// A fresh file each time (O_EXCL), flushed before the rename, so a leftover
 	// .tmp cannot lend its permissions and a crash cannot leave a half file.
 	temporary, err := os.CreateTemp(filepath.Dir(path), filepath.Base(path)+".tmp*")
@@ -244,12 +318,12 @@ func updateTimeFormats(path string, formats map[string]string) error {
 		return fmt.Errorf("cannot write next to %s: %v", path, err)
 	}
 	name := temporary.Name()
-	if err := temporary.Chmod(info.Mode().Perm()); err != nil {
+	if err := temporary.Chmod(mode); err != nil {
 		temporary.Close()
 		os.Remove(name)
 		return fmt.Errorf("cannot set the mode of %s: %v", name, err)
 	}
-	if _, err := temporary.WriteString(strings.Join(out, "\n") + "\n"); err != nil {
+	if _, err := temporary.WriteString(content); err != nil {
 		temporary.Close()
 		os.Remove(name)
 		return fmt.Errorf("cannot write %s: %v", name, err)

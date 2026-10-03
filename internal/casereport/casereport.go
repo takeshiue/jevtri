@@ -56,6 +56,7 @@ type record struct {
 	DryRun  bool   `json:"dry_run"`
 	Request struct {
 		State struct {
+			Task        string            `json:"task"`
 			WindowStart string            `json:"window_start"`
 			WindowEnd   string            `json:"window_end"`
 			Symptom     string            `json:"symptom"`
@@ -122,7 +123,7 @@ func loadFile(path string) ([]Run, error) {
 		if json.Unmarshal(scanner.Bytes(), &r) != nil {
 			continue // a damaged line only loses that run
 		}
-		if r.Purpose != "" || r.DryRun || r.Error != "" || len(r.Scores) == 0 {
+		if (r.Purpose != "" && r.Purpose != "log_ranking") || legacyGroupRanking(r) || r.DryRun || r.Error != "" || len(r.Scores) == 0 {
 			continue
 		}
 		when, err := time.Parse(time.RFC3339Nano, r.Time)
@@ -136,10 +137,10 @@ func loadFile(path string) ([]Run, error) {
 			Model:   r.Model,
 			Logs:    r.Request.State.Logs,
 		}
+		sort.SliceStable(r.Scores, func(i, j int) bool { return r.Scores[i].Score > r.Scores[j].Score })
 		for _, score := range r.Scores {
 			run.Rankings = append(run.Rankings, Ranking{Path: score.Log, Priority: int(score.Score/3*100 + 0.5)})
 		}
-		sort.SliceStable(run.Rankings, func(i, j int) bool { return run.Rankings[i].Priority > run.Rankings[j].Priority })
 		runs = append(runs, run)
 	}
 	if err := scanner.Err(); err != nil {
@@ -362,4 +363,9 @@ func OSName(osRelease string) string {
 		}
 	}
 	return ""
+}
+
+// Old first-stage records had no purpose, but used a distinct task prompt.
+func legacyGroupRanking(r record) bool {
+	return r.Purpose == "" && strings.Contains(r.Request.State.Task, "Decide which group an engineer should examine in detail first to find the cause.")
 }

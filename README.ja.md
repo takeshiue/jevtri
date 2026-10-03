@@ -28,13 +28,13 @@ jevtri は、最初にどのログを読むかを決める手助けをします�
 AlmaLinux、Rocky Linux、RHEL 8・9・10：
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_x86_64.rpm
 ```
 
 Ubuntu 22.04・24.04、Debian 12：
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.1.0/jevtri_0.1.0_amd64.deb && sudo apt install ./jevtri_0.1.0_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_amd64.deb && sudo apt install ./jevtri_0.2.0_amd64.deb
 ```
 
 arm64 のサーバーでは、`x86_64` を `aarch64` に、`amd64` を `arm64` に置き換えます。
@@ -49,23 +49,23 @@ arm64 のサーバーでは、`x86_64` を `aarch64` に、`amd64` を `arm64` �
 AlmaLinux、Rocky Linux、RHEL 8・9・10：
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
-curl -fL --remote-name-all $base/jevtri_0.1.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
+curl -fL --remote-name-all $base/jevtri_0.2.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.1.0_x86_64.rpm
+sudo dnf install ./jevtri_0.2.0_x86_64.rpm
 ```
 
 Ubuntu 22.04・24.04、Debian 12：
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.1.0
-curl -fL --remote-name-all $base/jevtri_0.1.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
+curl -fL --remote-name-all $base/jevtri_0.2.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.1.0_amd64.deb
+sudo apt install ./jevtri_0.2.0_amd64.deb
 ```
 
 ### 対象と入るもの
@@ -79,14 +79,10 @@ arm64 のパッケージは同じ方法で作っていますが、arm64 のサ�
 
 ## 初期設定
 
-1. Jev の API キーを、`/etc/jevtri/api-key` に1行だけ書きます。
-
-   ```sh
-   sudo install -m 0600 -o root -g root /dev/null /etc/jevtri/api-key
-   sudo vi /etc/jevtri/api-key
-   ```
-
-   このファイルが無い場合や、権限が `0600` より緩い場合、jevtri は何も送りません。
+1. `sudo jevtri init` は、最初に Jev の API キーを尋ねます。貼り付けて Enter を押してください。
+   キーは `/etc/jevtri/api-key`（root だけが読める `0600`）に保存されます。貼り間違いに気づけるよう、
+   貼り付けたキーは画面に表示されます。Enter だけなら飛ばします。キーが無い場合や、
+   権限が `0600` より緩い場合、jevtri は何も送りません。
 
 2. 設定を書きます。
 
@@ -110,6 +106,7 @@ arm64 のパッケージは同じ方法で作っていますが、arm64 のサ�
 ```
 jevtri [options]
 jevtri init
+jevtri --config-update
 ```
 
 | オプション | 意味 |
@@ -122,6 +119,8 @@ jevtri init
 | `-j`, `--json` | JSON で出力する。`priority` は 0〜1 の値 |
 | `--dry-run` | 送る内容をそのまま表示し、何も送らない |
 | `--lang LANG` | `--help` の言語: `en`、`ja`、`zh-CN` |
+| `--group NAME` | このグループと system のログだけを順位づけする（複数可）。無ければ、時間帯に行のあるサービスのグループが2つ以上のとき、先に Jev が調べるグループを選ぶ |
+| `--config-update` | 設定にまだ無いログや Docker のコンテナを探し、1件ずつ尋ねる。`y` で追加、`all` でそれと残りすべてを追加、Enter で追加しない。コンテナやソフトを追加したら実行する |
 | `--version`, `-h`, `--help` | 版数とヘルプ |
 
 最初は `--dry-run` で、サーバーの外へ出る内容を確かめてください。
@@ -158,10 +157,12 @@ Issue は公開されるため、ほかのホスト名などは先に消して�
 `/etc/jevtri/jevtri.conf` は INI 形式です。誤りは行番号つきで示します。
 `/usr/share/jevtri/jevtri.conf.example` も参照してください。
 
+生成する設定の冒頭には、無効化した記載サンプルを入れます。`#` は行頭、または空白の後に書くと行末コメントになります。値そのものに ` #` を含める場合は、`path = "/srv/app #1/error.log"` のように値全体を引用符で囲んでください。設定更新でも利用者のコメントを保持します。検証済みのDockerパス・形式の変更は `all` でまとめて承認でき、未設定のグループも既定値の一覧を確認してまとめて登録できます。
+
 ```ini
 [general]
 minutes = 5
-max_bytes = 48000
+max_bytes = 40000
 sent_log = /var/log/jevtri/sent.log
 
 [log nginx-error]
@@ -179,9 +180,13 @@ mask = order-\d+
 | キー | 意味 |
 |---|---|
 | `minutes` | `-m` の既定値 |
-| `max_bytes` | 1回に送るログの行のバイト数。ログの間で分ける。ERROR・WARN・fail などを含む行と、障害時刻に近い行を優先して残す |
+| `max_bytes` | 各リクエストのJSON state全体のバイト数。ログの抜粋・名前・障害情報・JSONのエスケープを含む。抜粋の予算はログの間で分け、ERROR・WARN・failなどを含む行と障害時刻に近い行を優先して残す |
 | `sent_log` | 実行ごとの記録を書く場所 |
 | `path` | ログ。`*`・`?`・`[` でファイル名に日付の入ったログに一致させられる。時間帯がさかのぼる場合は回転済みのファイル（`.1`、`-20260928`）も読む |
+| `docker_container` | `path` と併記するコンテナ名。登録・`--config-update`時に実在する json-file ログの絶対パスを検証して保存する。通常実行は保存したパスだけを読む。再作成後は設定更新が必要。登録時に `time_format = docker-json` も明記する |
+| `docker_project` | 所属する Docker Compose のプロジェクト名。登録ではプロジェクトをまとめて選び、コンテナごとの `path`・`docker_container`・`group` を保存する。追加・再作成したコンテナは `--config-update` で確認して反映する |
+| `journal_unit` | `path` の代わりに、`journalctl` で読む systemd のユニット（例: `docker.service`）。`*` は journal の全体。`time_format` は不要。`init` が `*` を候補に出すのは `/var/log/syslog` も `/var/log/messages` も無いサーバーだけ |
+| `group` | ログが属するグループ。複数行で複数のグループに入れられる。`init` と `--config-update` は、ホストのログに `system`、Compose のプロジェクトにはプロジェクト名、ほかのコンテナにはコンテナ名を書く。書き換えや独自のグループの追加は自由 |
 | `time_format` | 下の表の名前か、`%` 記号によるパターン |
 | `timezone` | タイムゾーンの書かれていないログのタイムゾーン。既定はサーバーのもの |
 | `read_compressed` | `yes` なら回転済みの `.gz` も読む |
@@ -203,12 +208,15 @@ mask = order-\d+
 | `slash-mdy` | `09/28/2026 15:47:01` |
 | `slash-dmy` | `28/09/2026 15:47:01` |
 | `epoch` | `1790532211` |
+| `docker-json` | `"time":"2026-10-01T10:00:05.987654321Z"`（Docker の json-file） |
 
 時刻の無い行（スタックトレースなど）は、直前の行の続きとして扱います。
 
 2つの高速化は、ログが古い順に時刻順で書かれていることを前提とします。8MiB を超える非圧縮のファイルでは、読み取りの開始位置を二分探索で探します。ファイル内で時刻が昇順に並ぶことが前提です。回転済みのファイルは更新日時の新しい順に読み、時間帯より古い行があったファイルで読むのをやめます。古いファイルほど古い時刻であることが前提です。新しい順に書くログ、時刻が乱れたログ、時刻の範囲が重なる回転済みのファイルでは、時間帯の記録を読み飛ばすことがあります。この欠落は、省略の警告に必ずしも表示されません。
 
 1つのログで保持するテキストは、回転済みのファイルを合わせて 64MiB までです。超えた分は時刻の古いものから省き、警告を表示します。
+
+登録済みのログファイルが見つからなければ、パスと調査対象に含められないことを示し、`--config-update`で設定を見直すよう案内します。ホストとコンテナのログに共通です。通常実行で追加コンテナを探索したり、設定を変更したりしません。
 
 ## 何をどこへ送るか
 
@@ -236,7 +244,7 @@ TypeSafe の[プライバシーポリシー](https://typesafe.ai/legal/privacy-p
 
 Jev の料金は入力100万トークンあたり約 6.6 円（0.042 米ドル）で、出力は無料です
 （[models](https://docs.typesafe.ai/models)、2026-09-28 に確認。1 米ドル = 157 円で換算）。
-1回の実行は、送る量が既定の上限（48,000 バイト）いっぱいでも 1 円未満です。
+1回の実行は、送る量が既定の上限（40,000 バイト）いっぱいでも 1 円未満です。
 
 ## ソースからのビルド
 
@@ -245,7 +253,7 @@ Go の標準ライブラリだけを使っています。ビルドと試験に�
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.1.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.2.0" -o jevtri ./cmd/jevtri
 ```
 
 ## ヘルプとマニュアル

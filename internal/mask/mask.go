@@ -22,13 +22,6 @@ type rule struct {
 
 var defaultRules = []rule{
 	{kind: "private-key", pattern: regexp.MustCompile(`(?s)-----BEGIN [A-Z ]*PRIVATE KEY-----.*?(?:-----END [A-Z ]*PRIVATE KEY-----|$)`)},
-	{kind: "authorization", pattern: regexp.MustCompile(`(?i)(\b(?:proxy-)?authorization\s*[:=]\s*(?:(?:bearer|basic|token|digest)\s+)?)[^\s,;"']+`), keep: 1},
-	{kind: "secret", pattern: regexp.MustCompile(`(?i)(\b[A-Za-z0-9_]*?(?:password|passwd|pass|secret|token|api[_-]?key|access[_-]?key|secret[_-]?key|client[_-]?secret|private[_-]?key|session[_-]?id)\b(?:"?\s*=\s*"?|"?\s*:\s+"?|":"))([^\s,;"'&)]+)`), keep: 1,
-		accept: func(value string) bool {
-			// "(using password: YES)" in MySQL/MariaDB is evidence, not a secret.
-			upper := strings.ToUpper(value)
-			return upper != "YES" && upper != "NO" && strings.Trim(value, "*") != ""
-		}},
 	{kind: "url-credential", pattern: regexp.MustCompile(`(\b[a-z][a-z0-9+.-]*://[^/\s:@]+:)[^/\s@]+(@)`), keep: 1},
 	{kind: "query-token", pattern: regexp.MustCompile(`(?i)([?&](?:token|access_token|api_key|apikey|key|sig|signature|password|auth)=)[^&\s"]+`), keep: 1},
 	{kind: "known-token", pattern: regexp.MustCompile(`\b(?:AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36,}|xox[baprs]-[A-Za-z0-9-]{10,}|eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]+)\b`)},
@@ -48,7 +41,7 @@ var defaultRules = []rule{
 
 // Masker applies the default rules and any extra patterns.
 type Masker struct {
-	rules []rule
+	processors []processor
 }
 
 // Result is masked text with the number of replacements per kind.
@@ -61,27 +54,30 @@ type Result struct {
 // regular expressions from the log's mask setting; each whole match is
 // replaced.
 func New(extra []string) (*Masker, error) {
-	rules := append([]rule(nil), defaultRules...)
+	processors := []processor{defaultRules[0], authorizationProcessor{}, secretProcessor{}}
+	for _, r := range defaultRules[1:] {
+		processors = append(processors, r)
+	}
 	for _, expression := range extra {
 		compiled, err := regexp.Compile(expression)
 		if err != nil {
 			return nil, fmt.Errorf("mask %q: %w", expression, err)
 		}
-		rules = append(rules, rule{kind: "custom", pattern: compiled})
+		processors = append(processors, rule{kind: "custom", pattern: compiled})
 	}
-	return &Masker{rules: rules}, nil
+	return &Masker{processors: processors}, nil
 }
 
 // Apply masks text.
 func (m *Masker) Apply(text string) Result {
 	counts := map[string]int{}
-	for _, r := range m.rules {
-		text = r.apply(text, counts)
+	for _, p := range m.processors {
+		text = p.process(text, counts)
 	}
 	return Result{Text: text, Counts: counts}
 }
 
-func (r rule) apply(text string, counts map[string]int) string {
+func (r rule) process(text string, counts map[string]int) string {
 	placeholder := "[MASKED:" + r.kind + "]"
 	var out strings.Builder
 	last := 0

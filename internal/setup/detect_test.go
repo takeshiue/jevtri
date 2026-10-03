@@ -103,7 +103,10 @@ func TestDetectRejectsUnverifiedAnswers(t *testing.T) {
 		if err := Run(strings.NewReader("/opt/app/app.log\n\n\n"), &out, opts); err != nil {
 			t.Fatal(err)
 		}
-		cfg, _ := config.Load(opts.ConfigPath)
+		cfg, loadError := config.Load(opts.ConfigPath)
+		if loadError != nil {
+			t.Fatalf("cannot load generated config: %v\n%s", loadError, out.String())
+		}
 		if cfg.Logs[0].TimeFormat != "" || !strings.Contains(out.String(), "% directives") {
 			t.Errorf("%s: got %q\n%s", answer, cfg.Logs[0].TimeFormat, out.String())
 		}

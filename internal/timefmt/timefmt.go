@@ -74,6 +74,8 @@ func catalogPatterns() map[string]string {
 		"slash-mdy":     `\b(?P<m>\d{2})/(?P<d>\d{2})/(?P<Y>\d{4})[ T:]` + clock + anyTZ,
 		"slash-dmy":     `\b(?P<d>\d{2})/(?P<m>\d{2})/(?P<Y>\d{4})[ T:]` + clock + anyTZ,
 		"epoch":         `\b(?P<epoch>1\d{9})(?:\.(?P<frac>\d{1,9}))?\b`,
+		// Docker's json-file driver: the "time" field, not a timestamp inside "log".
+		"docker-json": `"time":\s*"(?P<ts>(?P<Y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})T` + clock + `(?P<tz>` + numericTZ + `)?)"`,
 	}
 }
 
@@ -118,11 +120,31 @@ func (f *Format) Find(line string, defaultLocation *time.Location) (Match, bool)
 		}
 		groups[name] = line[indexes[2*i]:indexes[2*i+1]]
 	}
+	// A malformed adjacent offset must not become a zone-less timestamp.
+	if f.pattern.SubexpIndex("tz") >= 0 {
+		end := indexes[1]
+		if i := f.pattern.SubexpIndex("ts"); i > 0 && indexes[2*i] >= 0 {
+			end = indexes[2*i+1]
+		}
+		trailing := strings.TrimLeft(line[end:], " \t")
+		if groups["tz"] == "" && len(trailing) > 1 && (trailing[0] == '+' || trailing[0] == '-') && trailing[1] >= '0' && trailing[1] <= '9' {
+			return Match{}, false
+		}
+		if groups["tz"] != "" && end < len(line) && (line[end] == ':' || line[end] >= '0' && line[end] <= '9') {
+			return Match{}, false
+		}
+	}
 	t, hasYear, hasZone, err := assemble(groups, defaultLocation)
 	if err != nil {
 		return Match{}, false
 	}
-	return Match{Time: t, Start: indexes[0], End: indexes[1], HasYear: hasYear, HasZone: hasZone}, true
+	start, end := indexes[0], indexes[1]
+	// A pattern that needs context around the timestamp marks the timestamp
+	// itself as "ts", so that Rewrite replaces only that part.
+	if i := f.pattern.SubexpIndex("ts"); i > 0 && indexes[2*i] >= 0 {
+		start, end = indexes[2*i], indexes[2*i+1]
+	}
+	return Match{Time: t, Start: start, End: end, HasYear: hasYear, HasZone: hasZone}, true
 }
 
 func assemble(groups map[string]string, defaultLocation *time.Location) (time.Time, bool, bool, error) {
@@ -180,7 +202,12 @@ func zone(text string, defaultLocation *time.Location) (*time.Location, bool, er
 		if len(digits) != 4 {
 			return nil, false, fmt.Errorf("bad zone offset %q", text)
 		}
-		offset := atoi(digits[:2])*3600 + atoi(digits[2:])*60
+		hours, hourErr := strconv.Atoi(digits[:2])
+		minutes, minuteErr := strconv.Atoi(digits[2:])
+		if hourErr != nil || minuteErr != nil || hours > 23 || minutes > 59 {
+			return nil, false, fmt.Errorf("bad zone offset %q", text)
+		}
+		offset := hours*3600 + minutes*60
 		if text[0] == '-' {
 			offset = -offset
 		}

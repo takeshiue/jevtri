@@ -290,7 +290,7 @@ func TestInitFromTerminal(t *testing.T) {
 		t.Fatalf("exit %d: %s", code, f.stderr.String())
 	}
 	data, _ := os.ReadFile(f.conf)
-	if !strings.Contains(string(data), "[log nginx-error]\npath = /var/log/nginx/error.log\ntime_format = slash-ymd\n") {
+	if !strings.Contains(string(data), "[log nginx-error]\npath = /var/log/nginx/error.log\ntime_format = slash-ymd\ngroup = system\n") {
 		t.Errorf("unexpected configuration:\n%s", data)
 	}
 }
