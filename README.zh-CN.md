@@ -26,13 +26,13 @@ jevtri 会给出提示，并建议检查未配置的日志、应用程序本身�
 AlmaLinux、Rocky Linux、RHEL 8、9、10:
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.3.2/jevtri_0.3.2_x86_64.rpm
 ```
 
 Ubuntu 22.04、24.04，Debian 12:
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_amd64.deb && sudo apt install ./jevtri_0.3.1_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.2/jevtri_0.3.2_amd64.deb && sudo apt install ./jevtri_0.3.2_amd64.deb
 ```
 
 在 arm64 服务器上，请将 `x86_64` 替换为 `aarch64`，将 `amd64` 替换为 `arm64`。
@@ -47,23 +47,23 @@ curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.
 AlmaLinux、Rocky Linux、RHEL 8、9、10:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
-curl -fL --remote-name-all $base/jevtri_0.3.1_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.2
+curl -fL --remote-name-all $base/jevtri_0.3.2_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.3.1_x86_64.rpm
+sudo dnf install ./jevtri_0.3.2_x86_64.rpm
 ```
 
 Ubuntu 22.04、24.04，Debian 12:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
-curl -fL --remote-name-all $base/jevtri_0.3.1_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.2
+curl -fL --remote-name-all $base/jevtri_0.3.2_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.3.1_amd64.deb
+sudo apt install ./jevtri_0.3.2_amd64.deb
 ```
 
 ### 支持的平台和安装的文件
@@ -81,7 +81,7 @@ RPM/deb将 `ca-certificates`、`logrotate`、`gzip` 和 `tzdata` 声明为依赖
 由 `apt` 或 `dnf` 一同安装。CA证书用于验证HTTPS连接，tzdata支持
 `Asia/Tokyo`等时区名称，logrotate和gzip用于轮转和压缩发送日志。
 每日轮转要求操作系统的logrotate定时器或cron任务实际运行。
-仅在容器内安装软件包不会启动定期轮转。这些依赖声明从0.3.1版本开始提供。
+仅在容器内安装软件包不会启动定期轮转。这些依赖声明从0.3.2版本开始提供。
 
 ## 初始设置
 
@@ -311,7 +311,7 @@ Jev 的费用为每百万输入令牌约 0.28 元人民币（0.042 美元），�
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.1" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.2" -o jevtri ./cmd/jevtri
 ```
 
 ## 许可证

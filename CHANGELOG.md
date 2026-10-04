@@ -2,7 +2,11 @@
 
 ## Unreleased
 
-## 0.3.1 - 2026-10-04
+## 0.3.2 - 2026-10-05
+
+- Linux process-exit tests now accept ESRCH from an already exited process and reject unrelated read errors.
+
+## 0.3.1 - 2026-10-04 (not distributed)
 
 - Declare `logrotate` and `tzdata` dependencies for send-log rotation and IANA timezone settings on minimal systems.
 - Declare `ca-certificates` as an RPM/deb dependency so minimal installations can verify HTTPS connections.

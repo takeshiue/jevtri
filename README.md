@@ -28,13 +28,13 @@ One command:
 AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.3.2/jevtri_0.3.2_x86_64.rpm
 ```
 
 Ubuntu 22.04, 24.04, Debian 12:
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_amd64.deb && sudo apt install ./jevtri_0.3.1_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.2/jevtri_0.3.2_amd64.deb && sudo apt install ./jevtri_0.3.2_amd64.deb
 ```
 
 On arm64 servers, replace `x86_64` with `aarch64` and `amd64` with `arm64`.
@@ -49,23 +49,23 @@ Check that `gpg --verify` prints `Good signature` and the fingerprint
 AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
-curl -fL --remote-name-all $base/jevtri_0.3.1_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.2
+curl -fL --remote-name-all $base/jevtri_0.3.2_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.3.1_x86_64.rpm
+sudo dnf install ./jevtri_0.3.2_x86_64.rpm
 ```
 
 Ubuntu 22.04, 24.04, Debian 12:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
-curl -fL --remote-name-all $base/jevtri_0.3.1_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.2
+curl -fL --remote-name-all $base/jevtri_0.3.2_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.3.1_amd64.deb
+sudo apt install ./jevtri_0.3.2_amd64.deb
 ```
 
 ### Platforms and installed files
@@ -86,7 +86,7 @@ as dependencies; `apt` or `dnf` installs them. CA certificates verify HTTPS
 connections, tzdata supports named zones such as `Asia/Tokyo`, and logrotate
 with gzip rotates and compresses the send log. Daily rotation requires the
 OS logrotate timer or cron job to run. Installing the package in a container
-does not start scheduled rotation. These dependencies are declared starting with version 0.3.1.
+does not start scheduled rotation. These dependencies are declared starting with version 0.3.2.
 
 ## Set up
 
@@ -334,7 +334,7 @@ the tests send nothing to Jev.
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.1" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.2" -o jevtri ./cmd/jevtri
 ```
 
 ## Help and manual

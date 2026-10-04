@@ -478,14 +478,59 @@ func TestCLILimitsAndChildren(t *testing.T) {
 			t.Fatal(err)
 		}
 		stat, readErr := os.ReadFile(fmt.Sprintf("/proc/%d/stat", pid))
-		if readErr == nil {
-			closing := strings.LastIndex(string(stat), ")")
-			state := strings.Fields(string(stat)[closing+1:])
-			if len(state) == 0 || state[0] != "Z" {
-				t.Fatalf("descendant remains active: %s", state)
-			}
-		} else if !errors.Is(readErr, os.ErrNotExist) {
-			t.Fatal(readErr)
+		stopped, err := descendantStopped(stat, readErr)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !stopped {
+			t.Fatalf("descendant remains active: %s", stat)
 		}
 	})
+}
+
+func descendantStopped(stat []byte, readErr error) (bool, error) {
+	if readErr != nil {
+		// An opened proc file can return ESRCH if the process exits before read.
+		if errors.Is(readErr, os.ErrNotExist) || errors.Is(readErr, syscall.ESRCH) {
+			return true, nil
+		}
+		return false, readErr
+	}
+	closing := strings.LastIndex(string(stat), ")")
+	if closing < 0 {
+		return false, errors.New("invalid descendant process stat")
+	}
+	state := strings.Fields(string(stat)[closing+1:])
+	if len(state) == 0 {
+		return false, errors.New("missing descendant process state")
+	}
+	return state[0] == "Z", nil
+}
+
+func TestDescendantStopped(t *testing.T) {
+	tests := []struct {
+		name    string
+		stat    string
+		readErr error
+		stopped bool
+		wantErr bool
+	}{
+		{name: "removed before open", readErr: &os.PathError{Op: "open", Path: "/proc/1/stat", Err: syscall.ENOENT}, stopped: true},
+		{name: "exited before read", readErr: &os.PathError{Op: "read", Path: "/proc/1/stat", Err: syscall.ESRCH}, stopped: true},
+		{name: "zombie", stat: "1 (child (worker)) Z 0", stopped: true},
+		{name: "running", stat: "1 (child) R 0"},
+		{name: "sleeping", stat: "1 (child) S 0"},
+		{name: "permission denied", readErr: syscall.EACCES, wantErr: true},
+		{name: "io error", readErr: syscall.EIO, wantErr: true},
+		{name: "missing name", stat: "1 Z 0", wantErr: true},
+		{name: "missing state", stat: "1 (child)", wantErr: true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			stopped, err := descendantStopped([]byte(test.stat), test.readErr)
+			if stopped != test.stopped || (err != nil) != test.wantErr {
+				t.Fatalf("stopped=%v err=%v; want stopped=%v error=%v", stopped, err, test.stopped, test.wantErr)
+			}
+		})
+	}
 }
