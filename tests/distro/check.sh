@@ -110,11 +110,114 @@ else
     fail "RP-01 script(1) is missing; checks not run"
 fi
 
+# This smoke runs only in the disposable installation container, never a host.
+new_configuration_smoke() {
+    sh -s <<'PACKAGE_SMOKE'
+    set -eu
+    mode_is() { [ "$(stat -c %a "$1" 2>/dev/null)" = "$2" ]; }
+    same_bytes() {
+        left=$(sha256sum "$1") || return 1
+        right=$(sha256sum "$2") || return 1
+        test "${left%% *}" = "${right%% *}"
+    }
+    smoke=$(mktemp -d /tmp/jevtri-package.XXXXXX)
+    chmod 700 "$smoke"
+    stub_created=no
+    cleanup_smoke() {
+        if [ "$stub_created" = yes ]; then rm -f /usr/local/bin/docker; fi
+        rm -rf "$smoke"
+    }
+    trap cleanup_smoke EXIT HUP INT TERM
+    printf '2026-10-04 00:00:00 package fixture\n' > "$smoke/app.log"
+    chmod 600 "$smoke/app.log"
+    printf '[general]\nminutes = 7\nsent_log = %s/audit.log\n[log package-smoke]\npath = %s/app.log\ntime_format = iso-space\ngroup = smoke\nmask = SHOW-PACKAGE-PRIVATE-CANARY\n' "$smoke" "$smoke" > "$smoke/config.conf"
+    chmod 600 "$smoke/config.conf"
+    cp "$smoke/config.conf" "$smoke/config.original"
+    cp "$smoke/app.log" "$smoke/app.original"
+    for language in en ja zh-CN; do
+        jevtri --help --lang "$language" > "$smoke/help-$language.out"
+        grep -q '/etc/jevtri/jevtri.conf' "$smoke/help-$language.out"
+        grep -q -- '--show' "$smoke/help-$language.out"
+    done
+    for directory in /usr/share/man/man1 /usr/share/man/ja/man1 /usr/share/man/zh_CN/man1; do
+        grep -q '/etc/jevtri/jevtri.conf' "$directory/jevtri.1"
+        grep -q 'show' "$directory/jevtri.1"
+    done
+    jevtri --show -c "$smoke/config.conf" > "$smoke/show.out"
+    jevtri --show -c "$smoke/config.conf" --json > "$smoke/show.json"
+    grep -qF "$smoke/config.conf" "$smoke/show.out"
+    grep -qF "$smoke/app.log" "$smoke/show.out"
+    grep -q '"config_file":' "$smoke/show.json"
+    grep -q '"mask_rules": 1' "$smoke/show.json"
+    ! grep -q SHOW-PACKAGE-PRIVATE-CANARY "$smoke/show.out" "$smoke/show.json"
+    same_bytes "$smoke/config.conf" "$smoke/config.original"
+    mode_is "$smoke/config.conf" 600
+    test ! -e "$smoke/audit.log"
+    result=0
+    jevtri --show -c "$smoke/config.conf" --dry-run > "$smoke/mixed.out" 2> "$smoke/mixed.err" || result=$?
+    test "$result" = 64 && test ! -s "$smoke/mixed.out"
+    result=0
+    jevtri --show -c "$smoke/missing.conf" > "$smoke/missing.out" 2> "$smoke/missing.err" || result=$?
+    test "$result" = 1 && test ! -s "$smoke/missing.out"
+    test ! -e "$smoke/missing.conf"
+    # A known-empty local inventory permits a separate deletion decision.
+    # Refuse to replace any existing CLI, even a nonexecutable or broken link.
+    for existing in /usr/bin/docker /bin/docker /usr/local/bin/docker; do
+        if [ -e "$existing" ] || [ -L "$existing" ]; then
+            printf 'Docker CLI already exists; package fixture refuses to overwrite it\n' >&2
+            exit 1
+        fi
+    done
+    mkdir -p /usr/local/bin
+    cat > /usr/local/bin/docker <<'DOCKER_STUB'
+#!/bin/sh
+case "$1 $2 $3" in
+    'context show ') printf 'default\n' ;;
+    'context inspect --format') printf '"unix:///var/run/docker.sock"\n' ;;
+    '--host unix:///var/run/docker.sock info') printf '"/var/lib/jevtri-package-docker"\n' ;;
+    '--host unix:///var/run/docker.sock container') test "$4" = ls ;;
+    *) exit 64 ;;
+esac
+DOCKER_STUB
+    chmod 755 /usr/local/bin/docker
+    stub_created=yes
+    # Package-manager logs vary by distro; count offered additions and decline
+    # them before selecting the one synthetic registration for removal.
+    index=0
+    while [ "$index" -lt 100 ]; do printf '\n'; index=$((index + 1)); done > "$smoke/probe.in"
+    script -qec "jevtri --config-update -c '$smoke/config.conf'" /dev/null < "$smoke/probe.in" > "$smoke/probe.out"
+    grep -q 'Registrations to remove' "$smoke/probe.out"
+    ! grep -q 'Docker discovery is unavailable' "$smoke/probe.out"
+    fresh_count=$(grep -o 'Add it?' "$smoke/probe.out" | wc -l)
+    test "$fresh_count" -lt 100
+    index=0
+    while [ "$index" -lt "$fresh_count" ]; do printf 'n\n'; index=$((index + 1)); done > "$smoke/remove.in"
+    printf 'all\ny\n\n' >> "$smoke/remove.in"
+    script -qec "jevtri --config-update -c '$smoke/config.conf'" /dev/null < "$smoke/remove.in" > "$smoke/remove.out"
+    ! grep -q '^\[log package-smoke\]' "$smoke/config.conf"
+    grep -q 'Delete log file' "$smoke/remove.out"
+    same_bytes "$smoke/app.log" "$smoke/app.original"
+    mode_is "$smoke/app.log" 600
+    cp "$smoke/config.original" "$smoke/config.conf"
+    index=0
+    while [ "$index" -lt "$fresh_count" ]; do printf 'n\n'; index=$((index + 1)); done > "$smoke/delete.in"
+    printf 'all\ny\ny\n' >> "$smoke/delete.in"
+    script -qec "jevtri --config-update -c '$smoke/config.conf'" /dev/null < "$smoke/delete.in" > "$smoke/delete.out"
+    ! grep -q '^\[log package-smoke\]' "$smoke/config.conf"
+    grep -qF "Deleted log file $smoke/app.log." "$smoke/delete.out"
+    test ! -e "$smoke/app.log"
+    mode_is "$smoke/config.conf" 600
+    test ! -e "$smoke/audit.log"
+    printf 'show/default-keep/explicit-delete smoke passed with synthetic Docker inventory\n'
+PACKAGE_SMOKE
+}
+
 # PK-02: changed settings survive an upgrade and removal.
 printf '# changed by the test\n' >> /etc/logrotate.d/jevtri
 printf 'dummy\n' > /etc/jevtri/api-key && chmod 600 /etc/jevtri/api-key
 check "PK-02 upgrade" install_package "$new"
 check "PK-02 --version is $new_version" sh -c "jevtri --version | grep -qx 'jevtri $new_version'"
+check "PK-04 upgraded show and explicit registration/file deletion smoke" new_configuration_smoke
 # The release version must run after the package manager has replaced it.
 now=$(date '+%b %e %H:%M:%S')
 printf '%s host app[1]: error: disk full password=PACKAGE-TEST-CANARY\n' "$now" > /tmp/app.log

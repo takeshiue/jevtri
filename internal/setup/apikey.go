@@ -13,7 +13,7 @@ import (
 )
 
 // maxKeyBytes bounds a pasted key; a longer line is a paste of something else.
-const maxKeyBytes = 4096
+const maxKeyBytes = config.MaxAPIKeyBytes
 
 // askAPIKey is the first step of 'jevtri init' (spec 12.7.5): it stores a
 // pasted Jev API key in opts.KeyPath as root:root 0600, or keeps the one that
@@ -59,16 +59,25 @@ func askAPIKey(reader *bufio.Reader, out io.Writer, opts Options) error {
 	}
 }
 
-// readPastedKey reads one line; the end of the input is an empty answer.
+// Stop on overflow instead of draining a potentially endless pasted line.
 func readPastedKey(reader *bufio.Reader) (string, error) {
-	line, err := reader.ReadString('\n')
-	if err != nil && line == "" {
-		if errors.Is(err, io.EOF) {
-			return "", nil
+	line := make([]byte, 0, maxKeyBytes+2)
+	for {
+		value, err := reader.ReadByte()
+		if err != nil {
+			if errors.Is(err, io.EOF) {
+				return strings.TrimSpace(string(line)), nil
+			}
+			return "", err
 		}
-		return "", err
+		if value == '\n' {
+			return strings.TrimSpace(string(line)), nil
+		}
+		if len(line) >= maxKeyBytes && (len(line) != maxKeyBytes || value != '\r') {
+			return "", fmt.Errorf("that is too long for an API key")
+		}
+		line = append(line, value)
 	}
-	return strings.TrimSpace(line), nil
 }
 
 // keyProblem says what is wrong with a pasted key, without repeating it.

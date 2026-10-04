@@ -95,8 +95,8 @@ package leaves your configuration, API key and send log in place.
 
    `init` lists the known logs that exist on this server (for example
    `/var/log/messages`, `/var/log/nginx/error.log`, PostgreSQL and Tomcat logs),
-   lets you pick them by number, and checks the time format of each against its
-   last lines. You can add other paths. For a log whose time format jevtri does
+   lets you pick them by number, or type `all` to select every candidate (Enter
+   alone also selects all), and checks the time format of each against its last lines. You can add other paths. For a log whose time format jevtri does
    not know, it asks before sending the first 10 lines (masked) to Jev to identify
    the format, and only registers the answer if the lines really read that way.
 
@@ -122,10 +122,72 @@ jevtri --config-update
 | `-v`, `--verbose` | Also show the window, lines and bytes per log, masked values, and Jev's raw answer |
 | `-j`, `--json` | JSON output. `priority` is between 0 and 1 |
 | `--dry-run` | Show exactly what would be sent, and send nothing |
-| `--lang LANG` | Language of `--help`: `en`, `ja` or `zh-CN` |
-| `--group NAME` | Rank only this group and the system logs (repeatable). Without it, when two or more groups of services have lines in the window, Jev first chooses the group to examine |
+| `--lang LANG` | Language of `--help` and `--show`: `en`, `ja` or `zh-CN` |
+| `--show` | Show the selected configuration path and effective settings, then exit. Reads no logs or API key; supports `--json` and `-c FILE` |
+| `--group NAMES` | Directly rank the named groups, `system` and ungrouped logs. Separate names with commas; the option can also be repeated |
+| `--all-groups` | Skip group selection and directly rank all configured logs. Cannot be combined with `--group` |
 | `--config-update` | Look for logs and Docker containers that are not in the configuration yet, and ask about each: `y` adds it, `all` adds it and the rest, Enter skips it. Run it after adding containers or software |
 | `--version`, `-h`, `--help` | Version and help |
+
+To remove unwanted registrations, run `jevtri --config-update`. At the final
+registered-log list, select numbers, ranges or `all`, then confirm with `y`.
+Enter or end of input keeps the registrations. Still-existing logs can also be
+unregistered. After the configuration is saved, you can separately delete an
+eligible log file: its path is shown and only `y` confirms permanent deletion.
+Enter, end of input or `n` keeps the file. Docker-managed logs, shared files and
+unsafe paths are protected; use Docker to manage its own logs. File deletion is
+available on Linux and requires successful Docker discovery to check overlap. A retained file
+may be offered again on the next update; adding it still requires consent.
+
+Use `jevtri --show` to check the configuration file location and registered logs.
+The default file is `/etc/jevtri/jevtri.conf`; use `jevtri --show -c /path/to/jevtri.conf`
+for another file, or `jevtri --show --json` for JSON. The display includes effective
+defaults, groups and time formats. Additional mask expressions are represented
+by their count, because a rule can contain a secret. It does not update the
+configuration or contact Jev.
+
+Docker Compose logs are grouped **by Compose project**. At registration, jevtri
+reads the actual `com.docker.compose.project` label and suggests that project
+name as the group for its containers. It does not guess the project from an
+application or directory name. A usable group name contains only ASCII letters,
+digits, `_`, `.` or `-`. A standalone container uses its container name; host
+logs use `system`. You can also set your own groups, so not every group is a
+Compose project.
+
+`init` and `--config-update` verify each container's actual absolute json-file
+log path and save `path`, `docker_container`, `docker_project`,
+`time_format = docker-json` and the approved `group`. Normal runs read the saved
+paths. Run `--config-update` after adding or recreating containers, changing
+Docker storage or changing Compose projects; review the proposed changes before
+registration. The update also offers removal of registrations whose logs are gone.
+
+Start with a normal run to narrow the investigation across groups, then use the
+registered project name to examine its logs directly. For example, if the actual
+Compose project is `shop`:
+
+```sh
+sudo jevtri -i "The website returns 502"
+sudo jevtri --group shop -i "The website returns 502"
+```
+
+In 0.3.0, choose several groups or all groups at run time:
+
+```sh
+sudo jevtri --group wordpress,database
+sudo jevtri --group wordpress,database --group web
+sudo jevtri --all-groups
+```
+
+Group names must already be configured. Surrounding spaces are ignored; quote
+names containing spaces around the commas, for example `--group "wordpress, database"`.
+Repeated names are evaluated once. Empty names such as `wordpress,,database` and
+invalid names are rejected. A log belonging to several selected groups is evaluated once.
+
+Without either option, the existing automatic selection stays the same: when two
+or more service groups have lines in the window, Jev first evaluates the groups,
+then evaluates logs from the highest-scoring group and groups within 0.10 of its
+score, together with `system` and ungrouped logs. With either option, group
+selection is skipped; the time window, masking and send-size limit still apply.
 
 Use `--dry-run` first to see what leaves the server.
 
@@ -197,7 +259,7 @@ mask = order-\d+
 | `time_format` | A name from the table below, or a pattern with `%` directives |
 | `timezone` | Time zone of a log written without one. Default: the server's |
 | `read_compressed` | `yes` to read rotated `.gz` files too |
-| `mask` | An extra regular expression to mask. May repeat |
+| `mask` | An extra regular expression to mask. Write one `mask` line per pattern in the same log section. See the [example](guide/masking.md#additional-masks) |
 
 Time formats. Fractions of a second and a time zone (`+09:00`, `Z`, `JST`) may be
 present or not, and the time may be anywhere in the line.
@@ -263,7 +325,7 @@ the tests send nothing to Jev.
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.2.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.0" -o jevtri ./cmd/jevtri
 ```
 
 ## Help and manual

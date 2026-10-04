@@ -83,6 +83,16 @@ func Update(in io.Reader, out io.Writer, opts Options) error {
 	}
 	gone = filteredGone
 	if !manualAvailable && len(fresh) == 0 && len(gone) == 0 && len(groupless(cfg, nil, inventory)) == 0 && len(changes.Paths) == 0 && len(changes.Projects) == 0 && len(changes.Formats) == 0 {
+		removed := chooseRegisteredRemovals(reader, out, cfg, nil)
+		if len(removed) > 0 {
+			pruneRemovedChanges(removed, nil, changes)
+			if err := saveRegisteredUpdate(opts.ConfigPath, removed, nil, nil, changes, opts.Root); err != nil {
+				return err
+			}
+			fmt.Fprintf(out, "Removed %s from %s.\n", count(len(removed), "log"), opts.ConfigPath)
+			deleteRemovedHostLogs(reader, out, cfg, removed, inventory, discoveryError, opts)
+			return nil
+		}
 		if err := ensureRegisteredSample(opts.ConfigPath, out); err != nil {
 			return err
 		}
@@ -180,13 +190,6 @@ func Update(in io.Reader, out io.Writer, opts Options) error {
 		}
 		chosen = append(chosen, manual...)
 	}
-	if len(chosen) == 0 && len(removed) == 0 && len(groups) == 0 && len(changes.Paths) == 0 && len(changes.Projects) == 0 && len(changes.Formats) == 0 {
-		if err := ensureRegisteredSample(opts.ConfigPath, out); err != nil {
-			return err
-		}
-		fmt.Fprintf(out, "No registered log changes were selected in %s.\n", opts.ConfigPath)
-		return nil
-	}
 
 	var unknownFormats []*Candidate
 	preview, previewError := flattenCandidates(chosen, nil)
@@ -208,6 +211,16 @@ func Update(in io.Reader, out io.Writer, opts Options) error {
 	if err := chooseCandidateGroups(reader, out, chosen); err != nil {
 		return err
 	}
+	explicitlyRemoved := chooseRegisteredRemovals(reader, out, cfg, removed)
+	removed = append(removed, explicitlyRemoved...)
+	if len(chosen) == 0 && len(removed) == 0 && len(groups) == 0 && len(changes.Paths) == 0 && len(changes.Projects) == 0 && len(changes.Formats) == 0 {
+		if err := ensureRegisteredSample(opts.ConfigPath, out); err != nil {
+			return err
+		}
+		fmt.Fprintf(out, "No registered log changes were selected in %s.\n", opts.ConfigPath)
+		return nil
+	}
+
 	var kept []config.Log
 	drop := map[string]bool{}
 	for _, name := range removed {
@@ -222,6 +235,7 @@ func Update(in io.Reader, out io.Writer, opts Options) error {
 	if err != nil {
 		return err
 	}
+	pruneRemovedChanges(removed, groups, changes)
 	if err := saveRegisteredUpdate(opts.ConfigPath, removed, groups, chosen, changes, opts.Root); err != nil {
 		return err
 	}
@@ -240,6 +254,7 @@ func Update(in io.Reader, out io.Writer, opts Options) error {
 	if len(changes.Formats) > 0 {
 		fmt.Fprintf(out, "Wrote explicit Docker time_format settings in %s.\n", opts.ConfigPath)
 	}
+	deleteRemovedHostLogs(reader, out, cfg, explicitlyRemoved, inventory, discoveryError, opts)
 	for _, c := range chosen {
 		if c.TimeFormat == "" {
 			fmt.Fprintf(out, "  %s has no time_format yet and is skipped until it is set.\n", c.Label())

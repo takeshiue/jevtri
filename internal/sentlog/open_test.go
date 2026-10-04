@@ -121,3 +121,77 @@ func TestFinalSymlinkAndParentLinkLoopsAreRejected(t *testing.T) {
 		t.Fatal("link loop accepted")
 	}
 }
+
+func TestWritableOrdinaryParentIsRejectedBeforeFileMutation(t *testing.T) {
+	for _, existing := range []bool{false, true} {
+		parent := t.TempDir()
+		path := filepath.Join(parent, "sent.log")
+		if existing {
+			if err := os.WriteFile(path, []byte("original"), 0o644); err != nil {
+				t.Fatal(err)
+			}
+			if err := os.Chmod(path, 0o644); err != nil {
+				t.Fatal(err)
+			}
+		}
+		if err := os.Chmod(parent, 0o777); err != nil {
+			t.Fatal(err)
+		}
+		if err := CheckWritable(path); err == nil {
+			t.Fatal("shared writable parent accepted")
+		}
+		if err := Append(path, Record{Time: "x"}); err == nil {
+			t.Fatal("shared writable parent append accepted")
+		}
+		if existing {
+			data, err := os.ReadFile(path)
+			if err != nil || string(data) != "original" {
+				t.Fatalf("file changed: %q %v", data, err)
+			}
+			info, err := os.Stat(path)
+			if err != nil || info.Mode().Perm() != 0o644 {
+				t.Fatalf("mode changed: %v %v", info, err)
+			}
+		} else if _, err := os.Stat(path); !os.IsNotExist(err) {
+			t.Fatalf("file created: %v", err)
+		}
+	}
+}
+
+func TestPrivateParentUnderWritableAncestorIsSupported(t *testing.T) {
+	ancestor := t.TempDir()
+	if err := os.Chmod(ancestor, 0o777); err != nil {
+		t.Fatal(err)
+	}
+	parent := filepath.Join(ancestor, "private")
+	if err := os.Mkdir(parent, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := Append(filepath.Join(parent, "sent.log"), Record{Time: "x"}); err != nil {
+		t.Fatal(err)
+	}
+}
+
+type ownerFileInfo struct {
+	os.FileInfo
+	owner uint32
+}
+
+func (info ownerFileInfo) Sys() any { return &syscall.Stat_t{Uid: info.owner} }
+
+func TestFileOwnershipPolicyRejectsOtherUID(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "sent.log")
+	if err := os.WriteFile(path, nil, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	info, err := os.Stat(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := validateFileOwner(ownerFileInfo{info, uint32(os.Geteuid())}); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateFileOwner(ownerFileInfo{info, uint32(os.Geteuid()) + 1}); err == nil {
+		t.Fatal("other UID accepted")
+	}
+}

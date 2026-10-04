@@ -165,8 +165,8 @@ jobs:
           fi
       - name: Check
         run: |
-          go install honnef.co/go/tools/cmd/staticcheck@latest
-          go install golang.org/x/vuln/cmd/govulncheck@latest
+          go install honnef.co/go/tools/cmd/staticcheck@v0.8.1
+          go install golang.org/x/vuln/cmd/govulncheck@v1.8.0
           test -z "$(gofmt -l .)"
           go vet ./...
           "$(go env GOPATH)/bin/staticcheck" ./...
@@ -178,6 +178,9 @@ jobs:
         run: |
           version=$(sed -n 's/^var version = "\(.*\)"$/\1/p' cmd/jevtri/main.go)
           mkdir -p build
+          if [ "$PUBLISH" != true ]; then
+            echo "JEVTRI_SNAPSHOT_VERSION=$version" >> "$GITHUB_ENV"
+          fi
           # The public repository has no .gitignore; without this GoReleaser
           # sees build/ as a dirty tree and refuses to release.
           echo /build/ >> .git/info/exclude
@@ -209,6 +212,43 @@ jobs:
             signer=$(gpg --status-fd 1 --verify SHA256SUMS.asc SHA256SUMS 2>/dev/null | awk '$2=="VALIDSIG"{print $3}')
             test "$signer" = "$SIGNING_FINGERPRINT"
           fi
+      - name: Prepare the private package verification artifact
+        if: ${{ success() && github.event.repository.private == true }}
+        run: |
+          mkdir -p build/private-packages
+          cp dist/*.rpm dist/*.deb build/private-packages/
+          python3 - <<'PYCODE'
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import subprocess
+          directory = pathlib.Path("build/private-packages")
+          packages = sorted(directory.glob("*.rpm")) + sorted(directory.glob("*.deb"))
+          if len(packages) != 4:
+              raise SystemExit("expected four candidate packages")
+          manifest = {
+              "source_commit": os.environ["GITHUB_SHA"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "version": os.environ["JEVTRI_SNAPSHOT_VERSION"],
+              "go_version": subprocess.check_output(["go", "version"], text=True).strip(),
+              "packages": {item.name: hashlib.sha256(item.read_bytes()).hexdigest() for item in packages},
+          }
+          (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+          PYCODE
+          cd build/private-packages
+          sha256sum *.rpm *.deb manifest.json > SHA256SUMS
+      - name: Store the private package verification artifact
+        if: ${{ success() && github.event.repository.private == true }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: jevtri-package-candidate-${{ github.sha }}-${{ github.run_attempt }}
+          path: build/private-packages/
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 7
+          compression-level: 0
       - name: Publish the release
         if: env.PUBLISH == 'true'
         run: gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false

@@ -1,7 +1,7 @@
 .\" Left-aligned: justifying CJK text without word spaces opens wide gaps.
 .\" groff 1.23 reads AD at each paragraph; 1.22 (EL8, EL9) keeps .ad l.
 .ds AD l
-.TH JEVTRI 1 "2026-10-03" "jevtri 0.2.0" "用户命令"
+.TH JEVTRI 1 "2026-10-03" "jevtri 0.3.0" "用户命令"
 .ad l
 .SH 名称
 jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
@@ -85,11 +85,21 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 .B priority
 为 0 到 1 之间的值。
 .TP
+.B \-\-show
+显示配置文件的位置和有效设置。
+不读取日志或 API 密钥，不发送数据，也不修改文件。
+不显示脱敏规则内容，仅显示数量。支持
+.B \-\-json
+和
+.BR \-c " FILE" 。
+.TP
 .B \-\-dry\-run
 显示将要发送的内容，但不发送任何内容。
 .TP
 .BI \-\-lang " LANG"
 .B \-\-help
+和
+.B \-\-show
 的语言：
 .BR en 、
 .B ja
@@ -100,16 +110,25 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 .BR LC_MESSAGES 、
 .B LANG
 决定。
-结果和错误信息始终为英文。
+分析结果和错误信息始终为英文。
 .TP
 .BR \-h ", " \-\-help
 显示帮助。
 .TP
-.BI \-\-group " NAME"
-仅对该组的日志以及始终检查的日志（
+.BI \-\-group " NAMES"
+直接评估指定组、
 .B system
-组和没有组的日志）排序。可以多次指定。
-未指定时，若时间范围内有日志行的服务组有两个以上，jevtri 会先让 Jev 判断要检查哪个组，再把该组（以及与第一名相差 10 分以内的组）的日志与 system 日志一起排序；其他组的日志只列出，不发送。
+组和未分组的日志。组名用逗号分隔，也可重复指定。
+组名前后的空格会被忽略。拒绝空组名或无效组名；重复组名及同一日志只评估一次。
+两种组选项均未指定时，如果时间范围内有日志行的服务组有两个以上，先评估各组，
+再评估最高分组以及与最高分相差不超过 0.10 的组中的日志，同时包含 system 和未分组日志。
+其他组的日志会列出，但不参与最终的逐日志评估。
+.TP
+.B \-\-all\-groups
+跳过组选择，直接评估所有已配置的日志。
+不能与
+.B \-\-group
+同时使用。时间范围、脱敏和发送大小限制仍然适用。
 .TP
 .B \-\-config\-update
 查找配置中尚未包含的日志和 Docker 容器，并逐个询问：
@@ -123,6 +142,19 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 .TP
 .B \-\-version
 显示版本。
+.PP
+最后按名称、路径和组列出已注册日志。
+可用编号、范围或
+.B all
+选择不需要的注册项，即使日志文件仍存在也可选择。
+按 Enter 或结束输入会保留注册项。只有在最终确认时明确输入
+.B y
+才会从配置中删除；默认保留日志文件。
+配置保存后，Linux可逐个询问是否永久删除已通过安全检查的主机日志文件。
+只有明确输入 y 才删除；Enter、n 或结束输入会保留文件。
+拒绝删除Docker管理日志、Docker状态未知或路径不安全的文件。
+请使用Docker清理Docker管理日志。
+已删除注册的来源在下次更新时可能再次成为添加候选。
 .SH INIT
 .B jevtri init
 首先询问 Jev API 密钥：粘贴后按 Enter（为便于发现粘贴错误会显示在屏幕上；只按 Enter 则跳过）。
@@ -133,7 +165,9 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 .B jevtri init
 列出本服务器上存在的已知日志，让用户按编号选择（例如
 .BR "1 3\-4" ；
-留空表示全部），并根据每个日志的最后几行确认其时间格式。
+输入
+.B all
+或只按 Enter 选择全部），并根据每个日志的最后几行确认其时间格式。
 也可以添加其他路径。
 对于时间格式未知的日志，会显示前 10 行（已脱敏），
 并在发送给 Jev 判断格式之前征求同意。
@@ -177,6 +211,12 @@ jevtri \- 故障发生后，对服务器日志按应先检查的顺序排序
 不发送任何内容：报告用于 jevtri 仓库的公开 Issue 表单，并显示其地址。
 Issue 对所有人公开，提交前请阅读报告，并删除其他主机名、系统账户名等内容。
 .SH 配置
+配置文件的默认位置为
+.BR /etc/jevtri/jevtri.conf 。
+可用
+.BR \-c ", " \-\-config " \fIFILE\fR"
+指定其他文件。
+.PP
 配置文件为 INI 格式：
 .B [general]
 以及每个日志一个
@@ -230,7 +270,7 @@ Issue 对所有人公开，提交前请阅读报告，并删除其他主机名�
 .B \-\-config\-update
 时匹配容器。
 注册时从本地 Docker 获取实际 json\-file 日志的具体绝对路径，验证可读后保存；支持自定义数据目录。
-时间格式为 docker\-json，无需填写。
+注册时显式保存 time_format = docker\-json。
 正常运行只读取已保存的路径，不查询 Docker。
 重新创建容器后，请用
 .B \-\-config\-update
@@ -251,6 +291,15 @@ Issue 对所有人公开，提交前请阅读报告，并删除其他主机名�
 .B \-\-config\-update
 注册后才会被读取。
 Docker 无法发现日志时，请手动注册具体绝对路径；保留已有配置。
+.PP
+Compose 日志按 Compose 项目分组。组名候选来自实际的
+.B com.docker.compose.project
+标签，不会根据应用名或目录名猜测。组名只能包含 ASCII 字母、数字、下划线、点或连字符。
+注册时验证每个容器实际的日志绝对路径，并显式保存 docker-json 时间格式。
+添加或重新创建容器、更改存储位置或 Compose 项目后，请运行
+.B \-\-config\-update
+查看更新建议并注册。独立容器默认使用容器名，主机日志默认使用 system。
+也可以设置自定义组，因此并非所有组都是 Compose 项目。
 .TP
 .B journal_unit
 代替
@@ -295,6 +344,21 @@ Docker 无法发现日志时，请手动注册具体绝对路径；保留已有�
 .TP
 .B mask
 发送前额外脱敏的正则表达式。可以重复。
+.PP
+在同一日志的 [log 名称] 节内，每行写一个正则表达式。例如:
+.PP
+.RS
+.nf
+[log app]
+path = /var/log/myapp/app.log
+time_format = iso\-space
+mask = order\-\ed+
+mask = CUSTOMER\-[0\-9]+
+mask = \eb[a\-f0\-9]{48}\eb
+.fi
+.RE
+.PP
+三个规则都添加到内置规则中，匹配到的整个字符串都会被脱敏。仅适用于该日志；其他日志也需要时，请在相应节内填写。发送前请用 jevtri \-\-dry\-run 确认。
 .PP
 时间格式。秒的小数部分和时区可有可无，时间可以出现在行中的任何位置。
 没有时间的行视为上一行的延续。
@@ -383,6 +447,15 @@ API 密钥不会被记录。
 .I /usr/share/jevtri/jevtri.conf.example
 配置示例。
 .SH 示例
+显示配置，或指定其他配置文件:
+.PP
+.RS
+.nf
+jevtri \-\-show
+jevtri \-\-show \-c /path/to/jevtri.conf
+.fi
+.RE
+.PP
 针对网站故障，对今天 03:02 前后的日志排序：
 .PP
 .RS
@@ -404,6 +477,18 @@ sudo jevtri \-t "2026\-09\-28 03:02" \-\-dry\-run
 .RS
 .nf
 */10 * * * * root jevtri \-m 10 \-\-json >> /var/log/jevtri/runs.json
+.fi
+.RE
+.PP
+先正常运行，跨组缩小范围；再直接检查已注册的 Compose 项目 shop。需要时指定多个组或所有日志：
+.PP
+.RS
+.nf
+sudo jevtri
+sudo jevtri \-\-group shop
+sudo jevtri \-\-group shop,billing
+sudo jevtri \-\-group shop,billing \-\-group web
+sudo jevtri \-\-all\-groups
 .fi
 .RE
 .SH 另请参阅

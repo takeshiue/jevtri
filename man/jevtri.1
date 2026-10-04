@@ -1,4 +1,4 @@
-.TH JEVTRI 1 "2026-10-03" "jevtri 0.2.0" "User Commands"
+.TH JEVTRI 1 "2026-10-03" "jevtri 0.3.0" "User Commands"
 .SH NAME
 jevtri \- rank server logs by which to examine first after an incident
 .SH SYNOPSIS
@@ -83,12 +83,17 @@ Print JSON. Its
 .B priority
 is between 0 and 1.
 .TP
+.B \-\-show
+Show the configuration path and active settings without reading logs or API keys, sending data, or changing files. Mask patterns are hidden; only their count is shown. Supports \-\-json and \-c FILE.
+.TP
 .B \-\-dry\-run
 Show exactly what would be sent, and send nothing.
 .TP
 .BI \-\-lang " LANG"
 Language of
-.BR \-\-help :
+.B \-\-help
+and
+.BR \-\-show :
 .BR en ,
 .B ja
 or
@@ -98,18 +103,27 @@ Without it, the language follows
 .B LC_MESSAGES
 or
 .BR LANG .
-Results and error messages are always in English.
+Analysis results and error messages are always in English.
 .TP
 .BR \-h ", " \-\-help
 Show the help.
 .TP
-.BI \-\-group " NAME"
-Rank only the logs of this group and the logs that are always examined (the
+.BI \-\-group " NAMES"
+Directly rank the named groups, the
 .B system
-group and logs without a group). May be repeated.
-Without it, when two or more groups of services have lines in the window,
-jevtri first asks Jev which group to examine, then ranks the logs of that
-group (and of any group within 10 points of it) with the system logs; the logs of the other groups are listed but not sent.
+group and ungrouped logs. Separate names with commas; the option may be repeated.
+Surrounding spaces are ignored. Empty or invalid names are rejected, and repeated
+names and logs are evaluated once.
+Without either group option, when two or more service groups have lines in the
+window, Jev first evaluates the groups, then ranks logs from the highest-scoring
+group and groups within 0.10 of its score, together with system and ungrouped logs.
+Logs of other groups are listed but are not included in the final log evaluation.
+.TP
+.B \-\-all\-groups
+Skip group selection and directly rank all configured logs.
+Cannot be combined with
+.BR \-\-group .
+The time window, masking and send-size limit still apply.
 .TP
 .B \-\-config\-update
 Look for logs and Docker containers that are not in the configuration yet,
@@ -126,6 +140,21 @@ comments and file permissions are preserved.
 .TP
 .B \-\-version
 Show the version.
+.PP
+At the end, registered logs are listed by name, source path and group.
+Select registration numbers, ranges or
+.B all
+to remove unwanted entries, even if their files still exist.
+Enter or end of input keeps all registrations.
+Only an explicit
+.B y
+at the final confirmation removes them from the configuration.
+Log files are kept by default. After the configuration has been saved, Linux can
+ask separately whether to permanently delete each safely checked host log file.
+Only an explicit y deletes that file; Enter, n and end of input keep it.
+Docker-managed logs, unknown Docker state and unsafe paths are refused.
+Use Docker to clean up Docker-managed logs.
+Removed sources can be offered again on a later update.
 .SH INIT
 .B jevtri init
 first asks for the Jev API key: paste it and press Enter (it shows on the
@@ -137,7 +166,9 @@ Then it
 lists the known logs that exist on this server, lets you choose them by
 number (such as
 .B "1 3\-4" ;
-empty for all), and checks the time format of each against its last lines.
+enter
+.B all
+or press Enter to select all), and checks the time format of each against its last lines.
 Other paths can be added.
 For a log whose time format is not known, it shows the first 10 lines (masked)
 and asks before sending them to Jev to identify the format.
@@ -185,6 +216,12 @@ repository, whose address is printed.
 The issue is public, so read the report and remove other host names, system account names and
 anything else before posting it.
 .SH CONFIGURATION
+The default configuration file is
+.BR /etc/jevtri/jevtri.conf .
+Use
+.BR \-c ", " \-\-config " \fIFILE\fR"
+to choose another file.
+.PP
 The configuration is an INI file:
 .B [general]
 and one
@@ -236,7 +273,7 @@ is metadata for matching the container during
 .BR \-\-config\-update .
 Registration verifies and saves its concrete absolute json\-file log path
 from the local Docker daemon, including a custom data directory.
-The time format is docker\-json and need not be written.
+Registration explicitly saves time_format = docker\-json.
 Normal runs read only the registered path and do not query Docker.
 After recreating a container, run
 .B \-\-config\-update
@@ -257,6 +294,18 @@ New members and projects are read only after registration with
 .BR \-\-config\-update .
 If Docker discovery is unavailable, register the concrete absolute log path
 manually; existing configuration is preserved.
+.PP
+Compose logs are grouped by Compose project. The suggested group name is read
+from the actual
+.B com.docker.compose.project
+label, not guessed from an application or directory name. Group names contain
+only ASCII letters, digits, underscore, dot or hyphen. Registration saves each
+container's verified absolute log path and explicit docker-json time format.
+After adding or recreating containers or changing storage or Compose projects,
+run
+.B \-\-config\-update
+to review and register changes. Standalone containers use their names; host logs
+use system. You can also set custom groups, so not all groups are Compose projects.
 .TP
 .B journal_unit
 Instead of
@@ -303,6 +352,21 @@ Groups decide what a run examines; see
 .TP
 .B mask
 An extra regular expression to mask before sending. May be repeated.
+.PP
+In the same [log NAME] section, write one regular expression per mask line. For example:
+.PP
+.RS
+.nf
+[log app]
+path = /var/log/myapp/app.log
+time_format = iso\-space
+mask = order\-\ed+
+mask = CUSTOMER\-[0\-9]+
+mask = \eb[a\-f0\-9]{48}\eb
+.fi
+.RE
+.PP
+All three patterns are added to the built-in masks. Each entire match is masked. They apply only to this log; repeat them in other log sections if needed. Check with jevtri \-\-dry\-run before sending.
 .PP
 Time formats. Fractions of a second and a time zone may be present or not, and
 the time may be anywhere in the line. Lines without a time belong to the line
@@ -390,6 +454,15 @@ days by
 .I /usr/share/jevtri/jevtri.conf.example
 An example configuration.
 .SH EXAMPLES
+Show the configuration, or choose another configuration file:
+.PP
+.RS
+.nf
+jevtri \-\-show
+jevtri \-\-show \-c /path/to/jevtri.conf
+.fi
+.RE
+.PP
 Rank the logs around 03:02 today for a web outage:
 .PP
 .RS
@@ -411,6 +484,18 @@ Run every 10 minutes from cron and keep the JSON:
 .RS
 .nf
 */10 * * * * root jevtri \-m 10 \-\-json >> /var/log/jevtri/runs.json
+.fi
+.RE
+.PP
+Start with a normal run across groups, then examine the registered Compose project shop directly. Use several groups or all logs as needed:
+.PP
+.RS
+.nf
+sudo jevtri
+sudo jevtri \-\-group shop
+sudo jevtri \-\-group shop,billing
+sudo jevtri \-\-group shop,billing \-\-group web
+sudo jevtri \-\-all\-groups
 .fi
 .RE
 .SH SEE ALSO

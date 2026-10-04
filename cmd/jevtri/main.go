@@ -32,7 +32,7 @@ import (
 // version is the single source of the application version (spec: one
 // canonical place). Packaging may still override it with
 // -ldflags "-X main.version=...", but must pass this same value.
-var version = "0.2.0"
+var version = "0.3.0"
 
 // Exit codes (spec 12.3).
 const (
@@ -79,18 +79,21 @@ func main() {
 }
 
 type options struct {
-	timeArgument string
-	minutes      int
-	issue        string
-	configPath   string
-	verbose      bool
-	json         bool
-	dryRun       bool
-	help         bool
-	version      bool
-	configUpdate bool
-	lang         string
-	groups       []string
+	timeArgument  string
+	minutes       int
+	issue         string
+	configPath    string
+	verbose       bool
+	json          bool
+	dryRun        bool
+	help          bool
+	version       bool
+	configUpdate  bool
+	show          bool
+	showConflicts []string
+	lang          string
+	groups        []string
+	allGroups     bool
 }
 
 func parseOptions(args []string) (options, []string, error) {
@@ -121,18 +124,61 @@ func parseOptions(args []string) (options, []string, error) {
 	fs.BoolVar(&o.dryRun, "dry-run", false, "")
 	fs.BoolVar(&o.version, "version", false, "")
 	fs.BoolVar(&o.configUpdate, "config-update", false, "")
+	fs.BoolVar(&o.show, "show", false, "")
+	fs.BoolVar(&o.allGroups, "all-groups", false, "")
 	fs.Func("group", "", func(value string) error {
-		if !config.GroupName.MatchString(value) {
-			return fmt.Errorf("--group must be a group name (letters, digits, _ . -)")
+		names, err := parseGroupNames(value)
+		if err != nil {
+			return err
 		}
-		o.groups = append(o.groups, value)
+		for _, name := range names {
+			found := false
+			for _, existing := range o.groups {
+				if existing == name {
+					found = true
+					break
+				}
+			}
+			if !found {
+				o.groups = append(o.groups, name)
+			}
+		}
 		return nil
 	})
 	fs.StringVar(&o.lang, "lang", "", "")
 	if err := fs.Parse(args); err != nil {
 		return o, nil, err
 	}
+	if o.show {
+		fs.Visit(func(option *flag.Flag) {
+			switch option.Name {
+			case "c", "config", "show", "j", "json", "lang", "h", "help", "version":
+			default:
+				o.showConflicts = append(o.showConflicts, "--"+option.Name)
+			}
+		})
+	}
+	for _, argument := range fs.Args() {
+		if argument == "--show" || strings.HasPrefix(argument, "--show=") {
+			return o, nil, fmt.Errorf("--show cannot be used with a command")
+		}
+	}
+	if o.allGroups && len(o.groups) > 0 {
+		return o, nil, fmt.Errorf("--all-groups cannot be used with --group")
+	}
 	return o, fs.Args(), nil
+}
+
+func parseGroupNames(value string) ([]string, error) {
+	names := strings.Split(value, ",")
+	for index, name := range names {
+		name = strings.TrimSpace(name)
+		if !config.GroupName.MatchString(name) {
+			return nil, fmt.Errorf("--group must contain group names separated by commas (letters, digits, _ . -); empty names are not allowed")
+		}
+		names[index] = name
+	}
+	return names, nil
 }
 
 func run(args []string, env environment) int {
@@ -151,6 +197,13 @@ func run(args []string, env environment) int {
 	case o.version:
 		fmt.Fprintf(env.stdout, "jevtri %s\n", version)
 		return exitOK
+	}
+	if o.show {
+		if len(rest) != 0 || len(o.showConflicts) != 0 {
+			fmt.Fprintln(env.stderr, "jevtri: --show cannot be combined with analysis options or commands")
+			return exitUsage
+		}
+		return runShow(o, env)
 	}
 	if o.configUpdate {
 		if len(rest) > 0 {
@@ -226,6 +279,15 @@ func run(args []string, env environment) int {
 		return exitFailure
 	}
 	rep := report.Report{Reference: w.Reference, WindowStart: w.Start, WindowEnd: w.End, Minutes: minutes, Symptom: o.issue, Logs: infos, DryRun: o.dryRun}
+	if o.allGroups {
+		var registered []grouprank.Member
+		for name, assigned := range groups {
+			registered = append(registered, grouprank.Member{Name: name, Groups: assigned})
+		}
+		rep.Examined = grouprank.Names(registered)
+	} else {
+		rep.Examined = o.groups
+	}
 	if len(collected) == 0 {
 		if !anyQuiet(infos) {
 			fmt.Fprintln(env.stderr, "jevtri: none of the configured logs could be evaluated; nothing was sent")
@@ -257,12 +319,18 @@ func run(args []string, env environment) int {
 			}
 		}
 	}
-	plan, err := grouprank.Make(members, o.groups)
-	if err != nil {
-		fmt.Fprintf(env.stderr, "jevtri: %v\n", err)
-		return exitUsage
+	var plan grouprank.Plan
+	if o.allGroups {
+		for _, member := range members {
+			plan.Direct = append(plan.Direct, member.Name)
+		}
+	} else {
+		plan, err = grouprank.Make(members, o.groups)
+		if err != nil {
+			fmt.Fprintf(env.stderr, "jevtri: %v\n", err)
+			return exitUsage
+		}
 	}
-	rep.Examined = o.groups
 
 	// The asker is made once, before the first send, after the checks that
 	// must pass before anything leaves the host.
@@ -592,7 +660,10 @@ func collect(cfg *config.Config, w window.Window, zone *time.Location, root stri
 		if result.Truncated {
 			fmt.Fprintf(stderr, "jevtri: warning: %s: part of the window was left out while reading (size limits)\n", info.Path)
 		}
-		info.Masked = map[string]int{}
+		info.Masked = result.Masked
+		if info.Masked == nil {
+			info.Masked = map[string]int{}
+		}
 		log := budget.Log{Name: entry.Name}
 		for _, e := range result.Entries {
 			masked := masker.Apply(e.Text)
@@ -753,6 +824,7 @@ func runConfigUpdate(o options, env environment) int {
 	err := setup.Update(env.stdin, env.stdout, setup.Options{
 		Root:        env.root,
 		ConfigPath:  o.configPath,
+		KeyPath:     env.keyPath,
 		Now:         env.now(),
 		LoadAPIKey:  func() (string, error) { return config.LoadAPIKey(env.keyPath) },
 		NewDetector: func(key string) setup.Detector { return env.newAsker(key) },

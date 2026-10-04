@@ -354,10 +354,10 @@ func tailLines(path string) []string {
 }
 
 // ParseSelection turns "1 3-4" (or "1,3-4") into indexes 0..count-1.
-// An empty answer selects everything.
+// An empty answer or "all" selects everything.
 func ParseSelection(answer string, count int) ([]int, error) {
 	answer = strings.TrimSpace(answer)
-	if answer == "" {
+	if answer == "" || strings.EqualFold(answer, "all") {
 		all := make([]int, count)
 		for i := range all {
 			all[i] = i
@@ -425,7 +425,7 @@ func Run(in io.Reader, out io.Writer, opts Options) error {
 			fmt.Fprintf(out, "  %2d. %-*s  (%s)\n", i+1, width, c.Label(), describeFormat(c))
 		}
 		for {
-			fmt.Fprintf(out, "Logs to use (e.g. \"1 3-4\"; empty for all): ")
+			fmt.Fprintf(out, "Logs to use (e.g. \"1 3-4\"; all or Enter for all): ")
 			answer, err := reader.ReadString('\n')
 			if err != nil && answer == "" {
 				return errors.New("no answer; nothing was written")

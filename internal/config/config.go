@@ -42,6 +42,7 @@ import (
 	"unicode"
 
 	"github.com/takeshiue/jevtri/internal/budget"
+	"github.com/takeshiue/jevtri/internal/safeopen"
 	"github.com/takeshiue/jevtri/internal/timefmt"
 	"github.com/takeshiue/jevtri/internal/window"
 )
@@ -52,6 +53,9 @@ const (
 	DefaultAPIKeyPath = "/etc/jevtri/api-key"
 	DefaultSentLog    = "/var/log/jevtri/sent.log"
 )
+
+// Bound reads before allocating a pasted or stored credential.
+const MaxAPIKeyBytes = 4096
 
 // Config is the parsed configuration.
 type Config struct {
@@ -347,7 +351,17 @@ func finishLog(log *Log) error {
 // LoadAPIKey reads the key file, refusing files that other users can read
 // (spec: the key file must be 0600 and must not be empty).
 func LoadAPIKey(path string) (string, error) {
-	info, err := os.Lstat(path)
+	handle, err := safeopen.Open(path)
+	if err != nil {
+		return "", fmt.Errorf("cannot read the API key file %s: %v", path, err)
+	}
+	defer handle.Close()
+	return readAPIKey(handle, path)
+}
+
+// Validation and reading must refer to the same inode even if the path changes.
+func readAPIKey(handle *os.File, path string) (string, error) {
+	info, err := handle.Stat()
 	if err != nil {
 		return "", fmt.Errorf("cannot read the API key file %s: %v", path, err)
 	}
@@ -357,16 +371,23 @@ func LoadAPIKey(path string) (string, error) {
 	if info.Mode().Perm()&0o077 != 0 {
 		return "", fmt.Errorf("the API key file %s is readable by other users (mode %04o); run: chmod 600 %s", path, info.Mode().Perm(), path)
 	}
-	// Someone else's key would send the logs to their Jev account (spec O-08).
 	if err := refuseIfOthersCanWrite(path, info, "API key file"); err != nil {
 		return "", err
 	}
-	data, err := os.ReadFile(path)
+	// Leave room for an optional CRLF, then read one byte to detect overflow.
+	const maximumFileBytes = MaxAPIKeyBytes + 2
+	data, err := io.ReadAll(io.LimitReader(handle, maximumFileBytes+1))
 	if err != nil {
 		return "", fmt.Errorf("cannot read the API key file %s: %v", path, err)
 	}
+	if len(data) > maximumFileBytes {
+		return "", fmt.Errorf("the API key file %s is too long", path)
+	}
 	key := strings.TrimSpace(string(data))
-	if key == "" || strings.ContainsAny(key, " \t\r\n") {
+	if len(key) > MaxAPIKeyBytes {
+		return "", fmt.Errorf("the API key file %s is too long", path)
+	}
+	if key == "" || strings.ContainsAny(key, " \t\r\n") || strings.ContainsFunc(key, func(r rune) bool { return r < 0x20 || r == 0x7f }) {
 		return "", fmt.Errorf("the API key file %s must contain exactly one key on one line", path)
 	}
 	return key, nil

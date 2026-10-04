@@ -100,6 +100,58 @@ nfpms:
         dst: /usr/share/man/zh_CN/man1/jevtri.1
         file_info:
           mode: 0644
+      - src: README.md
+        dst: /usr/share/doc/jevtri/README.md
+        file_info:
+          mode: 0644
+      - src: README.ja.md
+        dst: /usr/share/doc/jevtri/README.ja.md
+        file_info:
+          mode: 0644
+      - src: README.zh-CN.md
+        dst: /usr/share/doc/jevtri/README.zh-CN.md
+        file_info:
+          mode: 0644
+      - src: guide/examples.ja.md
+        dst: /usr/share/doc/jevtri/guide/examples.ja.md
+        file_info:
+          mode: 0644
+      - src: guide/examples.md
+        dst: /usr/share/doc/jevtri/guide/examples.md
+        file_info:
+          mode: 0644
+      - src: guide/examples.zh-CN.md
+        dst: /usr/share/doc/jevtri/guide/examples.zh-CN.md
+        file_info:
+          mode: 0644
+      - src: guide/masking.ja.md
+        dst: /usr/share/doc/jevtri/guide/masking.ja.md
+        file_info:
+          mode: 0644
+      - src: guide/masking.md
+        dst: /usr/share/doc/jevtri/guide/masking.md
+        file_info:
+          mode: 0644
+      - src: guide/masking.zh-CN.md
+        dst: /usr/share/doc/jevtri/guide/masking.zh-CN.md
+        file_info:
+          mode: 0644
+      - src: images/example-ja.svg
+        dst: /usr/share/doc/jevtri/images/example-ja.svg
+        file_info:
+          mode: 0644
+      - src: images/example-zh-CN.svg
+        dst: /usr/share/doc/jevtri/images/example-zh-CN.svg
+        file_info:
+          mode: 0644
+      - src: images/example.svg
+        dst: /usr/share/doc/jevtri/images/example.svg
+        file_info:
+          mode: 0644
+      - src: images/logo.svg
+        dst: /usr/share/doc/jevtri/images/logo.svg
+        file_info:
+          mode: 0644
       - src: LICENSE
         dst: /usr/share/doc/jevtri/LICENSE
         file_info:

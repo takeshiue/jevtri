@@ -88,8 +88,8 @@ arm64 软件包以相同方式构建，但尚未在 arm64 服务器上测试。
    ```
 
    `init` 会列出本服务器上存在的已知日志（例如 `/var/log/messages`、
-   `/var/log/nginx/error.log`、PostgreSQL 和 Tomcat 的日志），让您按编号选择，
-   并根据每个日志的最后几行确认其时间格式。也可以添加其他路径。对于 jevtri 不认识时间格式的日志，
+   `/var/log/nginx/error.log`、PostgreSQL 和 Tomcat 的日志）。可按编号选择，或输入 `all`
+   选择所有候选项（只按 Enter 也会全选），并根据每个日志的最后几行确认其时间格式。也可以添加其他路径。对于 jevtri 不认识时间格式的日志，
    它会先征求您的同意，再将前 10 行（已脱敏）发送给 Jev 以判断格式；只有当日志行确实能按该格式读取时才会登记。
 
    在没有配置的情况下运行 `jevtri` 时，如果在终端中运行则会启动 `init`，
@@ -114,10 +114,65 @@ jevtri --config-update
 | `-v`, `--verbose` | 同时显示时间范围、每个日志的行数和字节数、脱敏数量以及 Jev 的原始结果 |
 | `-j`, `--json` | 以 JSON 格式输出。`priority` 为 0 到 1 之间的值 |
 | `--dry-run` | 显示将要发送的内容，但不发送任何内容 |
-| `--lang LANG` | `--help` 的语言：`en`、`ja` 或 `zh-CN` |
-| `--group NAME` | 仅对该组和 system 日志排序（可重复）。未指定时，若时间范围内有日志行的服务组有两个以上，Jev 会先选出要检查的组 |
+| `--lang LANG` | `--help` 和 `--show` 的语言：`en`、`ja` 或 `zh-CN` |
+| `--show` | 显示所选配置文件的路径及有效设置后退出。不读取日志或 API 密钥；支持 `--json` 和 `-c FILE` |
+| `--group NAMES` | 直接评估指定组、`system` 和未分组的日志。组名用逗号分隔，也可重复指定 |
+| `--all-groups` | 跳过组选择，直接评估所有已配置的日志。不能与 `--group` 同时使用 |
 | `--config-update` | 查找配置中尚未包含的日志和 Docker 容器，并逐个询问：`y` 添加，`all` 添加该项及其后全部，按 Enter 不添加。添加容器或软件后运行 |
 | `--version`, `-h`, `--help` | 版本和帮助 |
+
+用 `jevtri --config-update` 删除不需要的注册项。在最后的已注册日志列表中
+选择编号、范围或 `all`，再输入 `y` 确认。按 Enter 或结束输入会保留注册项。
+日志仍存在时也可取消注册。保存配置后，另行显示路径并询问是否永久删除
+符合安全条件的日志文件。默认不删除，只有明确输入 `y` 才删除，无法恢复。
+按 Enter、结束输入或输入 `n` 会保留文件。Docker管理的日志、共享文件和
+无法确认安全的路径不会删除；Docker日志应由Docker管理。文件删除只支持Linux，
+且必须成功查询Docker以确认没有重叠。保留的文件可能在
+下次更新时再次成为候选，但未经同意不会重新注册。
+
+用 `jevtri --show` 查看配置文件的位置和已注册的日志。
+默认文件为 `/etc/jevtri/jevtri.conf`。使用 `jevtri --show -c /path/to/jevtri.conf`
+查看其他文件，或使用 `jevtri --show --json` 输出 JSON。显示内容包括有效默认值、
+组及时间格式。附加脱敏表达式可能含有秘密信息，因此只显示规则数量。
+此操作不会更新配置，也不会连接 Jev。
+
+Docker Compose 日志**按 Compose 项目分组**。注册时，jevtri 读取实际的
+`com.docker.compose.project` 标签，并将该项目名作为所属容器的组名候选；不会根据
+应用名或目录名猜测。组名只能包含 ASCII 字母、数字、`_`、`.` 或 `-`。
+独立容器默认使用容器名，主机日志默认使用 `system`。也可以设置自定义组，
+因此并非所有组都是 Compose 项目。
+
+`init` 和 `--config-update` 验证每个容器实际的 json-file 日志绝对路径，
+保存 `path`、`docker_container`、`docker_project`、`time_format = docker-json`
+和已确认的 `group`。正常运行读取已注册的路径。添加或重新创建容器、更改 Docker
+存储位置或更改 Compose 项目后，请运行 `--config-update`，查看更新建议后注册。
+更新也会询问是否删除日志已不存在的注册项。
+
+先正常运行，跨组缩小调查范围；再指定已注册的项目名，详细检查该项目的日志。
+例如，实际的 Compose 项目名为 `shop` 时：
+
+```sh
+sudo jevtri -i "网站返回 502"
+sudo jevtri --group shop -i "网站返回 502"
+```
+
+在 0.3.0 中，可在运行时指定多个组或所有组：
+
+```sh
+sudo jevtri --group wordpress,database
+sudo jevtri --group wordpress,database --group web
+sudo jevtri --all-groups
+```
+
+请使用已配置的组名。组名前后的空格会被忽略；在逗号前后使用空格时，请加引号，
+例如 `--group "wordpress, database"`。重复的组名只处理一次。
+`wordpress,,database` 等包含空组名的写法以及无效组名会报错。
+同时属于多个指定组的同一日志也只评估一次。
+
+两种选项均未指定时，自动选择规则保持不变：如果时间范围内有日志行的服务组有两个
+以上，Jev 会先评估各组，再评估最高分组以及与最高分相差不超过 0.10 的组中的日志，
+同时包含 `system` 和未分组的日志。使用其中任一选项时，跳过组选择；时间范围、脱敏
+和发送大小限制仍然适用。
 
 请先使用 `--dry-run` 确认哪些内容会离开服务器。
 
@@ -184,7 +239,7 @@ mask = order-\d+
 | `time_format` | 下表中的名称，或使用 `%` 指令的模式 |
 | `timezone` | 未写明时区的日志所使用的时区。默认为服务器的时区 |
 | `read_compressed` | 设为 `yes` 时也读取已轮转的 `.gz` 文件 |
-| `mask` | 额外脱敏的正则表达式。可以重复 |
+| `mask` | 额外脱敏的正则表达式。在同一日志配置中，每行写一个 `mask`。参见[示例](guide/masking.zh-CN.md#additional-masks) |
 
 时间格式。秒的小数部分和时区（`+08:00`、`Z`、`CST`）可有可无，时间可以出现在行中的任何位置。
 
@@ -248,7 +303,7 @@ Jev 的费用为每百万输入令牌约 0.28 元人民币（0.042 美元），�
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.2.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.0" -o jevtri ./cmd/jevtri
 ```
 
 ## 许可证

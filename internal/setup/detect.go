@@ -74,7 +74,9 @@ func headLines(root, path string, masks ...string) []string {
 	if err != nil {
 		return nil
 	}
+	protector := mask.NewStream()
 	for i, line := range lines {
+		line = protector.Apply(line).Text
 		line = masker.Apply(line).Text
 		if len(line) > maxLineLength {
 			line = line[:maxLineLength]
@@ -91,7 +93,7 @@ func firstLines(path string) []string {
 		return nil
 	}
 	defer handle.Close()
-	scanner := bufio.NewScanner(handle)
+	scanner := bufio.NewScanner(io.LimitReader(handle, 1<<20))
 	scanner.Buffer(make([]byte, 64*1024), 1024*1024)
 	var lines []string
 	for scanner.Scan() && len(lines) < sampleLines {

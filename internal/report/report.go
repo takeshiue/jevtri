@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/takeshiue/jevtri/internal/jev"
+	"github.com/takeshiue/jevtri/internal/printsafe"
 )
 
 // LowThreshold is the priority below which every log is considered to show
@@ -80,6 +81,7 @@ type Report struct {
 
 // Text writes the human-readable report.
 func Text(w io.Writer, r Report, verbose bool) {
+	r = safeTextReport(r)
 	layout := "2006-01-02 15:04:05 MST"
 	fmt.Fprintf(w, "Reference time: %s\n", r.Reference.Format(layout))
 	fmt.Fprintf(w, "Window:         %s .. %s (%d min)\n", r.WindowStart.Format("15:04:05"), r.WindowEnd.Format("15:04:05"), r.Minutes)
@@ -338,3 +340,42 @@ func JSON(w io.Writer, r Report) error {
 }
 
 func round(value float64) float64 { return float64(int(value*1000+0.5)) / 1000 }
+
+// JSON keeps the original data; terminal text must not interpret its controls.
+func safeTextReport(r Report) Report {
+	r.Symptom = printsafe.Line(r.Symptom)
+	r.Model = printsafe.Line(r.Model)
+	r.SentLog = printsafe.Line(r.SentLog)
+	r.Examined = safeStrings(r.Examined)
+	r.Scores = append([]jev.Score(nil), r.Scores...)
+	for i := range r.Scores {
+		r.Scores[i].Path = printsafe.Line(r.Scores[i].Path)
+	}
+	r.GroupScores = append([]jev.Score(nil), r.GroupScores...)
+	for i := range r.GroupScores {
+		r.GroupScores[i].Path = printsafe.Line(r.GroupScores[i].Path)
+	}
+	r.Logs = append([]LogInfo(nil), r.Logs...)
+	for i := range r.Logs {
+		info := &r.Logs[i]
+		info.Name = printsafe.Line(info.Name)
+		info.Path = printsafe.Line(info.Path)
+		info.TimeFormat = printsafe.Line(info.TimeFormat)
+		info.Skipped = printsafe.Line(info.Skipped)
+		info.Files = safeStrings(info.Files)
+		counts := make(map[string]int, len(info.Masked))
+		for key, value := range info.Masked {
+			counts[printsafe.Line(key)] += value
+		}
+		info.Masked = counts
+	}
+	return r
+}
+
+func safeStrings(values []string) []string {
+	out := make([]string, len(values))
+	for i, value := range values {
+		out[i] = printsafe.Line(value)
+	}
+	return out
+}

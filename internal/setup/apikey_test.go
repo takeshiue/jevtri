@@ -56,3 +56,53 @@ func TestAskAPIKey(t *testing.T) {
 		t.Errorf("skip wrote a key or said nothing: %v %s", err, out.String())
 	}
 }
+
+type endlessKeyReader struct{ consumed int }
+
+func (reader *endlessKeyReader) Read(output []byte) (int, error) {
+	for index := range output {
+		output[index] = 'a'
+	}
+	reader.consumed += len(output)
+	return len(output), nil
+}
+
+func TestPastedKeyStopsBeforeUnboundedAllocation(t *testing.T) {
+	source := &endlessKeyReader{}
+	_, err := readPastedKey(bufio.NewReaderSize(source, 16))
+	if err == nil {
+		t.Fatal("endless key accepted")
+	}
+	if source.consumed > maxKeyBytes+32 {
+		t.Fatalf("read beyond bound: %d", source.consumed)
+	}
+	if _, err := readPastedKey(bufio.NewReader(strings.NewReader(strings.Repeat("a", maxKeyBytes+1) + "\n"))); err == nil {
+		t.Fatal("oversized line accepted")
+	}
+	for _, suffix := range []string{"", "\n", "\r\n"} {
+		value := strings.Repeat("a", maxKeyBytes)
+		key, err := readPastedKey(bufio.NewReader(strings.NewReader(value + suffix)))
+		if err != nil || key != value {
+			t.Fatalf("valid boundary refused: %v", err)
+		}
+	}
+}
+
+func TestOversizedReplacementKeepsExistingKey(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "api-key")
+	if err := os.WriteFile(path, []byte("old-synthetic-key\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	var output bytes.Buffer
+	err := askAPIKey(bufio.NewReader(strings.NewReader("y\n"+strings.Repeat("synthetic", 1024)+"\n")), &output, Options{KeyPath: path})
+	if err == nil {
+		t.Fatal("oversized replacement accepted")
+	}
+	data, readErr := os.ReadFile(path)
+	if readErr != nil || string(data) != "old-synthetic-key\n" {
+		t.Fatal("existing key changed")
+	}
+	if strings.Contains(output.String(), "synthetic") || strings.Contains(err.Error(), "synthetic") {
+		t.Fatal("key leaked into message")
+	}
+}

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"syscall"
 	"time"
 
 	"github.com/takeshiue/jevtri/internal/jev"
@@ -110,6 +111,10 @@ func open(path string) (*os.File, error) {
 		handle.Close()
 		return nil, fmt.Errorf("the send log %s is not a regular file", path)
 	}
+	if err := validateFileOwner(info); err != nil {
+		handle.Close()
+		return nil, fmt.Errorf("cannot write the send log %s: %v", path, err)
+	}
 	if info.Mode().Perm()&0o077 != 0 {
 		if err := handle.Chmod(0o600); err != nil {
 			handle.Close()
@@ -127,4 +132,13 @@ func CheckWritable(path string) error {
 		return err
 	}
 	return handle.Close()
+}
+
+// chmod does not revoke the owner's access to a pre-existing file.
+func validateFileOwner(info os.FileInfo) error {
+	metadata, ok := info.Sys().(*syscall.Stat_t)
+	if !ok || int(metadata.Uid) != os.Geteuid() {
+		return fmt.Errorf("send log must be owned by the user running jevtri")
+	}
+	return nil
 }

@@ -200,6 +200,11 @@ func TestParseSelection(t *testing.T) {
 		fails  bool
 	}{
 		{"", []int{0, 1, 2, 3, 4}, false},
+		{"all", []int{0, 1, 2, 3, 4}, false},
+		{" ALL ", []int{0, 1, 2, 3, 4}, false},
+		{"all 1", nil, true},
+		{"1,all", nil, true},
+		{"all-2", nil, true},
 		{"1 3-4", []int{0, 2, 3}, false},
 		{"5,1", []int{0, 4}, false},
 		{"2-2 2", []int{1}, false},
@@ -327,5 +332,38 @@ func TestControlCharactersInFileNames(t *testing.T) {
 	}
 	if strings.ContainsAny(out.String(), "\x1b") {
 		t.Errorf("an escape sequence was printed:\n%q", out.String())
+	}
+}
+
+func TestRunAllSelectionSavesEveryCandidate(t *testing.T) {
+	for _, answer := range []string{"all", " ALL ", ""} {
+		t.Run(answer, func(t *testing.T) {
+			root := fakeRoot(t, ubuntu, map[string]string{
+				"/var/log/syslog":          "ubuntu2404/syslog",
+				"/var/log/auth.log":        "ubuntu2404/auth.log",
+				"/var/log/nginx/error.log": "nginx/error.log",
+			})
+			confPath := filepath.Join(t.TempDir(), "jevtri.conf")
+			var out bytes.Buffer
+			if err := Run(strings.NewReader(answer+"\n\n"), &out, Options{Root: root, ConfigPath: confPath}); err != nil {
+				t.Fatalf("%v\n%s", err, out.String())
+			}
+			cfg, err := config.Load(confPath)
+			if err != nil {
+				t.Fatal(err)
+			}
+			want := []string{"/var/log/syslog", "/var/log/auth.log", "/var/log/nginx/error.log"}
+			if len(cfg.Logs) != len(want) {
+				t.Fatalf("saved %d logs, want %d", len(cfg.Logs), len(want))
+			}
+			for i, path := range want {
+				if cfg.Logs[i].Path != path {
+					t.Errorf("log %d path %q, want %q", i, cfg.Logs[i].Path, path)
+				}
+			}
+			if !strings.Contains(out.String(), "all or Enter for all") {
+				t.Errorf("selection prompt missing: %s", out.String())
+			}
+		})
 	}
 }

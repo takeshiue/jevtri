@@ -405,7 +405,8 @@ func TestKeptLimitWhenCurrentFileFills(t *testing.T) {
 	maxKeptBytes = 100
 	defer func() { maxKeptBytes = saved }()
 	base := time.Date(2026, 9, 30, 12, 0, 0, 0, time.UTC)
-	line := base.Format(time.RFC3339) + " " + strings.Repeat("x", 60) + "\n"
+	// A delimiter keeps retention fixtures distinct from PEM body candidates.
+	line := base.Format(time.RFC3339) + " " + strings.Repeat("x", 30) + ":" + strings.Repeat("x", 29) + "\n"
 	dir := t.TempDir()
 	current := filepath.Join(dir, "app.log")
 	write(t, current, line, base)
@@ -484,7 +485,8 @@ func TestKeepsNewestAcrossRotatedFiles(t *testing.T) {
 	defer func() { maxKeptBytes = saved }()
 	base := time.Date(2026, 9, 30, 12, 0, 0, 0, time.UTC)
 	line := func(offset time.Duration, fill string) string {
-		return base.Add(offset).Format(time.RFC3339) + " " + strings.Repeat(fill, 60) + "\n"
+		// Keep the same byte length and final character without resembling a PEM line.
+		return base.Add(offset).Format(time.RFC3339) + " " + strings.Repeat(fill, 30) + ":" + strings.Repeat(fill, 29) + "\n"
 	}
 	w := window.Window{Reference: base, Start: base.Add(-time.Hour), End: base.Add(time.Hour)}
 	read := func(t *testing.T, path string) Result {

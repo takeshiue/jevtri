@@ -27,6 +27,9 @@ func openPinned(path string) (*os.File, error) {
 		name := pending[0]
 		pending = pending[1:]
 		if len(pending) == 0 {
+			if err := validateParent(directory); err != nil {
+				return nil, err
+			}
 			// O_NONBLOCK prevents a FIFO without a reader from stopping preflight.
 			fd, err := openAt(directory, name, syscall.O_WRONLY|syscall.O_APPEND|syscall.O_CREAT|syscall.O_CLOEXEC|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0o600)
 			if err != nil {
@@ -104,4 +107,16 @@ var trustedLinkDirectory = func(directory int) bool {
 		return false
 	}
 	return stat.Uid == 0 && stat.Mode&0o022 == 0
+}
+
+// A replaced ordinary directory must not give another user our audit records.
+func validateParent(directory int) error {
+	var metadata syscall.Stat_t
+	if err := syscall.Fstat(directory, &metadata); err != nil {
+		return err
+	}
+	if int(metadata.Uid) != os.Geteuid() || metadata.Mode&0o022 != 0 {
+		return fmt.Errorf("send log directory must be owned by the user running jevtri and not writable by other users")
+	}
+	return nil
 }

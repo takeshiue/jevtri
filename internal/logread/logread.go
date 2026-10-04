@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/takeshiue/jevtri/internal/mask"
 	"github.com/takeshiue/jevtri/internal/safeopen"
 	"github.com/takeshiue/jevtri/internal/timefmt"
 	"github.com/takeshiue/jevtri/internal/window"
@@ -39,6 +40,9 @@ var maxKeptBytes = 64 << 20
 // binary search instead of reading from the beginning.
 const seekThreshold = 8 << 20
 
+// ScanLimit bounds decompressed input per source, independently of kept text.
+const ScanLimit int64 = 128 << 20
+
 // Source describes one log to read.
 type Source struct {
 	Name   string
@@ -48,6 +52,8 @@ type Source struct {
 	Location *time.Location
 	// ReadCompressed allows reading rotated .gz files.
 	ReadCompressed bool
+	// MaxScanBytes overrides the input limit for bounded callers. Zero uses ScanLimit.
+	MaxScanBytes int64
 }
 
 // Entry is one log event: a timestamped line plus its continuation lines.
@@ -63,6 +69,7 @@ type Result struct {
 	Entries   []Entry
 	Files     []string
 	BytesRead int64
+	Masked    map[string]int
 	// Truncated is set when anything in the window was left out: entries over
 	// the count or byte limits, continuation lines over maxEntryBytes, or a
 	// line longer than maxLineBytes that cut a file short.
@@ -83,7 +90,7 @@ func Read(src Source, w window.Window, zone *time.Location) (Result, error) {
 	if IsPattern(src.Path) {
 		return readPattern(src, w, zone)
 	}
-	result := Result{Source: src}
+	result := Result{Source: src, Masked: map[string]int{}}
 	files, err := candidateFiles(src)
 	if err != nil {
 		return result, err
@@ -93,7 +100,13 @@ func Read(src Source, w window.Window, zone *time.Location) (Result, error) {
 	total := 0
 	sawText, sawTimestamp := false, false
 	for _, file := range files {
-		entries, stats, err := readFile(file, src, w, zone)
+		if result.BytesRead >= scanLimit(src) {
+			result.Truncated = true
+			break
+		}
+		remaining := src
+		remaining.MaxScanBytes = scanLimit(src) - result.BytesRead
+		entries, stats, err := readFile(file, remaining, w, zone)
 		if err != nil {
 			if file.path == src.Path {
 				return result, fmt.Errorf("%w: %s: %v", ErrUnreadable, file.path, err)
@@ -102,6 +115,7 @@ func Read(src Source, w window.Window, zone *time.Location) (Result, error) {
 		}
 		result.Files = append(result.Files, file.path)
 		result.BytesRead += stats.bytesRead
+		mergeMaskCounts(result.Masked, stats.masked)
 		sawText = sawText || stats.sawText
 		result.Truncated = result.Truncated || stats.longLine || stats.trimmed
 		sawTimestamp = sawTimestamp || stats.sawTimestamp
@@ -140,7 +154,7 @@ func IsPattern(path string) bool { return strings.ContainsAny(path, "*?[") }
 // and merges the entries by time. The files may be sequential (one per day)
 // or written side by side (sssd writes one file per service).
 func readPattern(src Source, w window.Window, zone *time.Location) (Result, error) {
-	result := Result{Source: src}
+	result := Result{Source: src, Masked: map[string]int{}}
 	matches, err := filepath.Glob(src.Path)
 	if err != nil {
 		return result, fmt.Errorf("%w: %v", ErrUnreadable, err)
@@ -167,12 +181,19 @@ func readPattern(src Source, w window.Window, zone *time.Location) (Result, erro
 	total := 0
 	sawText, sawTimestamp := false, false
 	for _, f := range files {
-		entries, stats, err := readFile(f, src, w, zone)
+		if result.BytesRead >= scanLimit(src) {
+			result.Truncated = true
+			break
+		}
+		remaining := src
+		remaining.MaxScanBytes = scanLimit(src) - result.BytesRead
+		entries, stats, err := readFile(f, remaining, w, zone)
 		if err != nil {
 			return result, fmt.Errorf("%w: %s: %v", ErrUnreadable, f.path, err)
 		}
 		result.Files = append(result.Files, f.path)
 		result.BytesRead += stats.bytesRead
+		mergeMaskCounts(result.Masked, stats.masked)
 		result.Entries = append(result.Entries, entries...)
 		total += textBytes(entries)
 		if total > maxKeptBytes {
@@ -298,6 +319,7 @@ func candidateFiles(src Source) ([]file, error) {
 
 type fileStats struct {
 	bytesRead          int64
+	masked             map[string]int
 	longLine           bool
 	sawOlderThanWindow bool
 	sawText            bool
@@ -313,20 +335,23 @@ func readFile(f file, src Source, w window.Window, zone *time.Location) ([]Entry
 	}
 	defer handle.Close()
 
-	var reader io.Reader = handle
+	info, err := handle.Stat()
+	if err != nil {
+		return nil, stats, err
+	}
+	// A file growing during collection must not extend this read indefinitely.
+	var reader io.Reader = io.NewSectionReader(handle, 0, info.Size())
 	if f.compressed {
-		gz, err := gzip.NewReader(handle)
+		gz, err := gzip.NewReader(reader)
 		if err != nil {
 			return nil, stats, err
 		}
 		defer gz.Close()
 		reader = gz
-	} else if info, err := handle.Stat(); err == nil && info.Size() > seekThreshold {
+	} else if info.Size() > seekThreshold {
 		offset, older := seekStart(handle, info.Size(), src, w.Reference, w.Start)
 		stats.sawOlderThanWindow = older
-		if _, err := handle.Seek(offset, io.SeekStart); err != nil {
-			return nil, stats, err
-		}
+		reader = io.NewSectionReader(handle, offset, info.Size()-offset)
 	}
 
 	return readLines(reader, src, w, zone, stats)
@@ -335,12 +360,13 @@ func readFile(f file, src Source, w window.Window, zone *time.Location) ([]Entry
 // ReadStream extracts the window from text that is not a file, such as the
 // output of journalctl (spec 12.7.2). There are no rotated files to look at.
 func ReadStream(reader io.Reader, src Source, w window.Window, zone *time.Location) (Result, error) {
-	result := Result{Source: src}
+	result := Result{Source: src, Masked: map[string]int{}}
 	entries, stats, err := readLines(reader, src, w, zone, fileStats{})
 	if err != nil {
 		return result, fmt.Errorf("%w: %v", ErrUnreadable, err)
 	}
 	result.BytesRead = stats.bytesRead
+	mergeMaskCounts(result.Masked, stats.masked)
 	result.Truncated = stats.longLine || stats.trimmed
 	if stats.sawText && !stats.sawTimestamp {
 		return result, fmt.Errorf("%w (time_format %s); not sent", ErrNoTimestamps, src.Format.Name)
@@ -356,9 +382,19 @@ func ReadStream(reader io.Reader, src Source, w window.Window, zone *time.Locati
 // readLines turns lines into entries of the window. stats carries what the
 // caller already learned (such as having skipped older lines by seeking).
 func readLines(reader io.Reader, src Source, w window.Window, zone *time.Location, stats fileStats) ([]Entry, fileStats, error) {
-	counter := &countingReader{reader: reader}
+	limited := &io.LimitedReader{R: reader, N: scanLimit(src) + 1}
+	counter := &countingReader{reader: limited}
+	protector := mask.NewStream()
+	stats.masked = map[string]int{}
 	scanner := bufio.NewScanner(counter)
 	scanner.Buffer(make([]byte, 64*1024), maxLineBytes)
+	scanner.Split(func(data []byte, atEOF bool) (int, []byte, error) {
+		// A scan cap must not turn a partial secret line into an accepted event.
+		if atEOF && limited.N == 0 && !strings.Contains(string(data), "\n") {
+			return len(data), nil, nil
+		}
+		return bufio.ScanLines(data, atEOF)
+	})
 	var entries []Entry
 	// Continuation lines of the last in-window entry, joined once at the end:
 	// appending to the entry's string for every line would copy it each time.
@@ -403,6 +439,18 @@ func readLines(reader io.Reader, src Source, w window.Window, zone *time.Locatio
 			stats.sawText = true
 		}
 		m, ok := src.Format.Find(line, src.Location)
+		var protected mask.Result
+		if ok && src.Format.Name != "docker-json" {
+			protected = protector.Apply(line[m.End:])
+			line = line[:m.End] + protected.Text
+		} else {
+			protected = protector.Apply(line)
+			line = protected.Text
+			if ok {
+				m, ok = src.Format.Find(line, src.Location)
+			}
+		}
+		mergeMaskCounts(stats.masked, protected.Counts)
 		if !ok {
 			// A line without a timestamp continues the previous event.
 			if inWindow {
@@ -435,6 +483,9 @@ func readLines(reader io.Reader, src Source, w window.Window, zone *time.Locatio
 		flush()
 	}
 	stats.bytesRead = counter.count
+	if counter.count > scanLimit(src) {
+		stats.trimmed = true
+	}
 	// One line longer than the buffer must not lose the whole log: whoever can
 	// write a log could otherwise keep it out of the ranking (SEC-004).
 	if err := scanner.Err(); err != nil && !errors.Is(err, bufio.ErrTooLong) {
@@ -494,4 +545,17 @@ func (c *countingReader) Read(p []byte) (int, error) {
 	n, err := c.reader.Read(p)
 	c.count += int64(n)
 	return n, err
+}
+
+func scanLimit(src Source) int64 {
+	if src.MaxScanBytes > 0 && src.MaxScanBytes < ScanLimit {
+		return src.MaxScanBytes
+	}
+	return ScanLimit
+}
+
+func mergeMaskCounts(target, source map[string]int) {
+	for kind, count := range source {
+		target[kind] += count
+	}
 }

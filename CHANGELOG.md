@@ -2,6 +2,35 @@
 
 ## Unreleased
 
+## 0.3.0 - 2026-10-04
+
+- Add a separate, default-No confirmation for eligible log-file deletion after unregistering it; protect Docker-managed logs and unsafe or shared paths.
+
+- Add `--show` to display the selected configuration path and effective settings
+  without reading logs or API keys, with JSON and localized text support.
+- Make the default configuration location explicit in help and man pages.
+- Accept `all` when choosing initial logs, while keeping Enter for all.
+- Let configuration updates remove unwanted registrations, including sources
+  that still exist, after explicit selection and confirmation.
+
+- Protect private-key blocks across timestamped entries before window/retention
+  filtering, decode Docker log payloads and separate stdout/stderr state. Mask
+  PEM-width base64 candidates after seeks/rotation conservatively.
+- Bound decompressed input per source and snapshot file size; report truncation
+  and discard a final partial line at the scan cap.
+- Refuse unsafe audit parents or foreign-owned audit files before changing modes
+  or appending. Read API keys through the checked descriptor with a size limit.
+- Escape untrusted terminal fields while preserving original JSON report data.
+
+- Accept comma-separated names with `--group`, including repeated options.
+  Trim surrounding spaces and deduplicate names; reject empty or invalid names.
+- Add `--all-groups` to skip group selection and rank every configured log
+  directly. Reject combining it with `--group`.
+- Keep automatic two-stage selection unchanged when neither option is supplied.
+  Update English, Japanese and Chinese help and examples.
+- Document multiple per-log `mask` lines in all three languages. Include the
+  README files, guides and referenced images in rpm/deb packages.
+
 ## 0.2.0 - 2026-10-03
 
 - Reject Compose configuration migration before any changes when an existing

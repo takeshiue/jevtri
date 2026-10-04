@@ -133,3 +133,52 @@ func TestRefusesFilesOthersCanWrite(t *testing.T) {
 		t.Error("a symbolic link to the key was accepted")
 	}
 }
+
+func TestAPIKeyBoundedReadAndControls(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "api-key")
+	for _, suffix := range []string{"", "\n", "\r\n"} {
+		value := strings.Repeat("a", MaxAPIKeyBytes)
+		if err := os.WriteFile(path, []byte(value+suffix), 0o600); err != nil {
+			t.Fatal(err)
+		}
+		if key, err := LoadAPIKey(path); err != nil || key != value {
+			t.Fatalf("boundary suffix %q failed: %v", suffix, err)
+		}
+	}
+	for _, value := range []string{strings.Repeat("a", MaxAPIKeyBytes+1), strings.Repeat("a", 1024*1024), "synthetic\x00canary", "synthetic\x7fcanary"} {
+		if err := os.WriteFile(path, []byte(value), 0o600); err != nil {
+			t.Fatal(err)
+		}
+		if _, err := LoadAPIKey(path); err == nil || strings.Contains(err.Error(), value) {
+			t.Fatalf("invalid key not safely rejected: %v", err)
+		}
+	}
+}
+
+func TestAPIKeyValidationAndReadUsePinnedFile(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "api-key")
+	if err := os.WriteFile(path, []byte("original-synthetic-key\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	handle, err := os.Open(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer handle.Close()
+	if err := os.Rename(path, path+".old"); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte("replacement-key\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chmod(path, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	key, err := readAPIKey(handle, path)
+	if err != nil || key != "original-synthetic-key" {
+		t.Fatalf("pinned read failed: %v", err)
+	}
+	if _, err := LoadAPIKey(path); err == nil {
+		t.Fatal("unprotected replacement accepted")
+	}
+}
