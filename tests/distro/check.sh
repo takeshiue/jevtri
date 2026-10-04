@@ -22,9 +22,9 @@ remove_package() {
     if [ "$kind" = rpm ]; then rpm -e jevtri; else dpkg -r jevtri; fi
 }
 install_logrotate() { # gzip: missing in almalinux/8-minimal and needed by compress; util-linux: script(1) for RP-01
-    if command -v microdnf >/dev/null; then microdnf -y install logrotate gzip util-linux >/dev/null
-    elif command -v dnf >/dev/null; then dnf -y install logrotate gzip util-linux >/dev/null
-    else apt-get update >/dev/null && DEBIAN_FRONTEND=noninteractive apt-get install -y logrotate gzip util-linux >/dev/null
+    if command -v microdnf >/dev/null; then microdnf -y install logrotate gzip ca-certificates tzdata util-linux >/dev/null
+    elif command -v dnf >/dev/null; then dnf -y install logrotate gzip ca-certificates tzdata util-linux >/dev/null
+    else apt-get update >/dev/null && DEBIAN_FRONTEND=noninteractive apt-get install -y logrotate gzip ca-certificates tzdata util-linux >/dev/null
     fi
 }
 
@@ -32,10 +32,42 @@ install_logrotate() { # gzip: missing in almalinux/8-minimal and needed by compr
 # about what the package holds, so let dpkg install it as on a full system.
 rm -f /etc/dpkg/dpkg.cfg.d/excludes
 
-# PK-01: gzip is a declared dependency. rpm -U and dpkg -i do not fetch
-# dependencies, so it is installed first, as dnf or apt would.
+# rpm -U and dpkg -i do not resolve dependencies, so prerequisites are
+# installed explicitly here; standard-manager resolution is tested separately.
 if [ "$kind" = rpm ]; then deps=$(rpm -qpR "$old"); else deps=$(dpkg-deb -f "$old" Depends); fi
 check "PK-01 depends on gzip" sh -c 'echo "$0" | grep -qw gzip' "$deps"
+if [ "$kind" = rpm ]; then new_deps=$(rpm -qpR "$new"); else new_deps=$(dpkg-deb -f "$new" Depends); fi
+check "PK-01 new package depends on ca-certificates" sh -c 'printf "%s\n" "$0" | tr ", " "\n\n" | grep -Fxq ca-certificates' "$new_deps"
+for dependency in logrotate tzdata; do
+    check "PK-01 new package depends on $dependency" sh -c 'printf "%s\n" "$0" | tr ", " "\n\n" | grep -Fxq "$1"' "$new_deps" "$dependency"
+done
+# Standard-manager resolution must pass before test prerequisites can mask gaps.
+install_resolved() {
+    if [ "$kind" = rpm ]; then
+        if ! command -v dnf >/dev/null; then microdnf -y install dnf || return; fi
+        dnf -y install "$new"
+    else
+        apt-get update || return
+        DEBIAN_FRONTEND=noninteractive apt-get install -y "$new"
+    fi
+}
+if install_resolved; then
+    for dependency in gzip ca-certificates logrotate tzdata; do
+        if [ "$kind" = rpm ]; then
+            check "PK-DEP resolved $dependency" rpm -q "$dependency"
+        else
+            check "PK-DEP resolved $dependency" sh -c 'dpkg -s "$1" | grep -qx "Status: install ok installed"' sh "$dependency"
+        fi
+    done
+    check "PK-DEP logrotate executable" sh -c 'command -v logrotate'
+    check "PK-DEP CA bundle" sh -c 'test -s /etc/ssl/certs/ca-certificates.crt || test -s /etc/pki/tls/certs/ca-bundle.crt'
+    check "PK-DEP IANA timezone data" test -f /usr/share/zoneinfo/Asia/Tokyo
+    check "PK-DEP resolved version" sh -c 'jevtri --version | grep -qx "jevtri $1"' sh "$new_version"
+    check "PK-DEP remove preflight candidate" remove_package
+else
+    fail "PK-DEP standard-manager installation failed"
+    exit 1
+fi
 install_logrotate
 # PK-01: files, modes, and the command runs.
 check "PK-01 install" install_package "$old"

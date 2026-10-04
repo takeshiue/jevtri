@@ -28,13 +28,13 @@ jevtri は、最初にどのログを読むかを決める手助けをします�
 AlmaLinux、Rocky Linux、RHEL 8・9・10：
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_x86_64.rpm
 ```
 
 Ubuntu 22.04・24.04、Debian 12：
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_amd64.deb && sudo apt install ./jevtri_0.2.0_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_amd64.deb && sudo apt install ./jevtri_0.3.1_amd64.deb
 ```
 
 arm64 のサーバーでは、`x86_64` を `aarch64` に、`amd64` を `arm64` に置き換えます。
@@ -49,33 +49,42 @@ arm64 のサーバーでは、`x86_64` を `aarch64` に、`amd64` を `arm64` �
 AlmaLinux、Rocky Linux、RHEL 8・9・10：
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
-curl -fL --remote-name-all $base/jevtri_0.2.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
+curl -fL --remote-name-all $base/jevtri_0.3.1_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.2.0_x86_64.rpm
+sudo dnf install ./jevtri_0.3.1_x86_64.rpm
 ```
 
 Ubuntu 22.04・24.04、Debian 12：
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
-curl -fL --remote-name-all $base/jevtri_0.2.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
+curl -fL --remote-name-all $base/jevtri_0.3.1_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.2.0_amd64.deb
+sudo apt install ./jevtri_0.3.1_amd64.deb
 ```
 
 ### 対象と入るもの
 
-パッケージは x86_64 の AlmaLinux 8・9・10、Ubuntu 22.04・24.04、Debian 12 で試験しています。
-arm64 のパッケージは同じ方法で作っていますが、arm64 のサーバーでは試験していません。
+パッケージは AlmaLinux 8・9・10、Ubuntu 22.04・24.04、Debian 12 を、
+x86_64・arm64それぞれのネイティブ環境のコンテナで導入・動作・更新・削除試験しています。
 
 パッケージが入れるのは `/usr/bin/jevtri`、`/usr/share/jevtri/` の設定の見本、man ページ、
 `/etc/logrotate.d/jevtri` です。`/etc/jevtri/jevtri.conf` は入れません。そのサーバー向けの
 設定は `jevtri init` が書きます。パッケージを削除しても、設定、API キー、送信記録は残ります。
+
+### 実行に必要なパッケージ
+
+RPM・debは `ca-certificates`、`logrotate`、`gzip`、`tzdata` を依存として指定します。
+`apt`・`dnf`での導入時に揃います。CA証明書はHTTPS接続の検証、tzdataは
+`Asia/Tokyo`などの時刻指定、logrotateとgzipは送信ログの回転・圧縮に使います。
+日ごとの回転にはOSのlogrotate timerまたはcronが動いている必要があります。
+コンテナへパッケージを入れるだけでは定期実行は始まりません。
+この依存指定は0.3.1以降に含まれます。
 
 ## 初期設定
 
@@ -311,7 +320,7 @@ Go の標準ライブラリだけを使っています。ビルドと試験に�
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.1" -o jevtri ./cmd/jevtri
 ```
 
 ## ヘルプとマニュアル

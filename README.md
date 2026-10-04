@@ -28,13 +28,13 @@ One command:
 AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_x86_64.rpm
+sudo dnf install https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_x86_64.rpm
 ```
 
 Ubuntu 22.04, 24.04, Debian 12:
 
 ```sh
-curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.2.0/jevtri_0.2.0_amd64.deb && sudo apt install ./jevtri_0.2.0_amd64.deb
+curl -fLO https://github.com/takeshiue/jevtri/releases/download/v0.3.1/jevtri_0.3.1_amd64.deb && sudo apt install ./jevtri_0.3.1_amd64.deb
 ```
 
 On arm64 servers, replace `x86_64` with `aarch64` and `amd64` with `arm64`.
@@ -49,35 +49,44 @@ Check that `gpg --verify` prints `Good signature` and the fingerprint
 AlmaLinux, Rocky Linux, RHEL 8, 9, 10:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
-curl -fL --remote-name-all $base/jevtri_0.2.0_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
+curl -fL --remote-name-all $base/jevtri_0.3.1_x86_64.rpm $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo dnf install ./jevtri_0.2.0_x86_64.rpm
+sudo dnf install ./jevtri_0.3.1_x86_64.rpm
 ```
 
 Ubuntu 22.04, 24.04, Debian 12:
 
 ```sh
-base=https://github.com/takeshiue/jevtri/releases/download/v0.2.0
-curl -fL --remote-name-all $base/jevtri_0.2.0_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
+base=https://github.com/takeshiue/jevtri/releases/download/v0.3.1
+curl -fL --remote-name-all $base/jevtri_0.3.1_amd64.deb $base/SHA256SUMS $base/SHA256SUMS.asc
 curl -fsSL $base/jevtri-signing-key.asc | gpg --import
 gpg --verify SHA256SUMS.asc SHA256SUMS
 sha256sum -c --ignore-missing SHA256SUMS
-sudo apt install ./jevtri_0.2.0_amd64.deb
+sudo apt install ./jevtri_0.3.1_amd64.deb
 ```
 
 ### Platforms and installed files
 
-The packages are tested on AlmaLinux 8, 9 and 10, Ubuntu 22.04 and 24.04 and
-Debian 12 on x86_64. The arm64 packages are built the same way but have not been
-tested on arm64 servers.
+The packages are tested on AlmaLinux 8, 9 and 10, Ubuntu 22.04 and 24.04, and
+Debian 12 on both x86_64 and arm64. Installation, execution, upgrade and removal
+are checked in distribution containers on native runners for each architecture.
 
 The package installs `/usr/bin/jevtri`, an example configuration in
 `/usr/share/jevtri/`, the manual pages, and `/etc/logrotate.d/jevtri`. It does not install
 `/etc/jevtri/jevtri.conf`: `jevtri init` writes it for your server. Removing the
 package leaves your configuration, API key and send log in place.
+
+### Runtime packages
+
+RPM/deb packages declare `ca-certificates`, `logrotate`, `gzip`, and `tzdata`
+as dependencies; `apt` or `dnf` installs them. CA certificates verify HTTPS
+connections, tzdata supports named zones such as `Asia/Tokyo`, and logrotate
+with gzip rotates and compresses the send log. Daily rotation requires the
+OS logrotate timer or cron job to run. Installing the package in a container
+does not start scheduled rotation. These dependencies are declared starting with version 0.3.1.
 
 ## Set up
 
@@ -325,7 +334,7 @@ the tests send nothing to Jev.
 
 ```sh
 go test ./...
-CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.0" -o jevtri ./cmd/jevtri
+CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.1" -o jevtri ./cmd/jevtri
 ```
 
 ## Help and manual

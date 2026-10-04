@@ -32,7 +32,7 @@ import (
 // version is the single source of the application version (spec: one
 // canonical place). Packaging may still override it with
 // -ldflags "-X main.version=...", but must pass this same value.
-var version = "0.3.0"
+var version = "0.3.1"
 
 // Exit codes (spec 12.3).
 const (

@@ -76,6 +76,9 @@ nfpms:
     # logrotate compresses the send log with gzip, which minimal EL8 images lack.
     dependencies:
       - gzip
+      - ca-certificates
+      - logrotate
+      - tzdata
     rpm:
       group: Applications/System
     contents:

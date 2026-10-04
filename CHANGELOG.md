@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 0.3.1 - 2026-10-04
+
+- Declare `logrotate` and `tzdata` dependencies for send-log rotation and IANA timezone settings on minimal systems.
+- Declare `ca-certificates` as an RPM/deb dependency so minimal installations can verify HTTPS connections.
+
 ## 0.3.0 - 2026-10-04
 
 - Add a separate, default-No confirmation for eligible log-file deletion after unregistering it; protect Docker-managed logs and unsafe or shared paths.
