@@ -332,3 +332,7 @@ CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.2" -o jevtri ./cm
 ## ライセンス
 
 MIT。[LICENSE](LICENSE) を参照してください。
+
+## 判断AIの比較ツール
+
+Jev・Clef・Clef-flashを同じ合成ログで比較するPython製の検証用ツールもあります。[使い方](tools/decisionbench/README.md)。製品CLIとは別に実行します。

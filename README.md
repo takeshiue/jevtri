@@ -347,3 +347,7 @@ welcome.
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Decision model benchmark
+
+A separate Python benchmark compares Jev, Clef, and Clef-flash using identical synthetic logs. See the [benchmark guide](tools/decisionbench/README.md) (Japanese).

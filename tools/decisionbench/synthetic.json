@@ -1,0 +1,1162 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "oom",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "API requests fail",
+        "logs": {
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "kernel": "2026-10-01T10:00:03Z Out of memory: Killed process 1234 (web-api), anon-rss:1048576kB",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "application": "2026-10-01T10:00:01Z Worker exited unexpectedly"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine kernel first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 3,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 2
+      }
+    },
+    {
+      "id": "disk-full",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "Application cannot save files",
+        "logs": {
+          "access": "2026-10-01T10:00:01Z POST /upload HTTP 500",
+          "application": "2026-10-01T10:00:03Z write /var/lib/app/data: No space left on device",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine access first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 2,
+        "log2": 3,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 0
+      }
+    },
+    {
+      "id": "database",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "API requests fail",
+        "logs": {
+          "application": "2026-10-01T10:00:01Z Connection refused connecting to database",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "database": "2026-10-01T10:00:03Z database startup failed: could not open required data file"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine database first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 2,
+        "log2": 0,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 3
+      }
+    },
+    {
+      "id": "dns",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "External requests fail",
+        "logs": {
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "application": "2026-10-01T10:00:01Z getaddrinfo api.example.test: Temporary failure in name resolution",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "resolver": "2026-10-01T10:00:03Z upstream nameserver unreachable; query api.example.test timed out"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine resolver first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 2,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 3
+      }
+    },
+    {
+      "id": "tls-expired",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "HTTPS clients fail to connect",
+        "logs": {
+          "tls": "2026-10-01T10:00:03Z certificate expired at 2026-09-30T00:00:00Z",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "application": "2026-10-01T10:00:01Z TLS handshake failed: certificate has expired"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine tls first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 3,
+        "log2": 0,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 2
+      }
+    },
+    {
+      "id": "permissions",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "Application cannot read configuration",
+        "logs": {
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "access": "2026-10-01T10:00:01Z GET /api HTTP 500",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "application": "2026-10-01T10:00:03Z open /etc/app/settings.conf: Permission denied"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine access first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 0,
+        "log3": 2,
+        "log4": 0,
+        "log5": 0,
+        "log6": 3
+      }
+    },
+    {
+      "id": "database-lock",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "Order writes time out",
+        "logs": {
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "application": "2026-10-01T10:00:01Z order write exceeded request deadline",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "database": "2026-10-01T10:00:03Z transaction lock wait timeout on orders; blocking transaction 901",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine database first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 2,
+        "log3": 0,
+        "log4": 3,
+        "log5": 0,
+        "log6": 0
+      }
+    },
+    {
+      "id": "service-start",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "Requests fail after deploy",
+        "logs": {
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "proxy": "2026-10-01T10:00:01Z connect to upstream web-api failed: Connection refused",
+          "service": "2026-10-01T10:00:03Z web-api startup failed: invalid configuration key database_port",
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine proxy first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine service first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 2,
+        "log3": 3,
+        "log4": 0,
+        "log5": 0,
+        "log6": 0
+      }
+    },
+    {
+      "id": "filesystem-readonly",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "Writes fail",
+        "logs": {
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "application": "2026-10-01T10:00:01Z write failed: Read-only file system",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "kernel": "2026-10-01T10:00:03Z EXT4-fs error: remounting filesystem read-only",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine kernel first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 0,
+        "log3": 2,
+        "log4": 0,
+        "log5": 3,
+        "log6": 0
+      }
+    },
+    {
+      "id": "network-link",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "Remote clients cannot connect",
+        "logs": {
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "application": "2026-10-01T10:00:01Z Connection reset by peer",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "kernel": "2026-10-01T10:00:03Z eth0: Link is Down",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine kernel first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 2,
+        "log3": 0,
+        "log4": 0,
+        "log5": 3,
+        "log6": 0
+      }
+    },
+    {
+      "id": "long-oom-begin",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "API requests fail",
+        "logs": {
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "kernel": "2026-10-01T10:00:03Z Out of memory: Killed process 1234 (web-api), anon-rss:1048576kB\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "application": "2026-10-01T10:00:01Z Worker exited unexpectedly"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine kernel first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 3,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 2
+      }
+    },
+    {
+      "id": "long-oom-middle",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "API requests fail",
+        "logs": {
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "kernel": "2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T10:00:03Z Out of memory: Killed process 1234 (web-api), anon-rss:1048576kB\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "application": "2026-10-01T10:00:01Z Worker exited unexpectedly"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine kernel first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 3,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 2
+      }
+    },
+    {
+      "id": "long-oom-end",
+      "state": {
+        "task": "These are log excerpts collected from one Linux server around the time of an incident. Decide which log an engineer should examine in detail first to find the cause.",
+        "incident_time": "2026-10-01T10:00:00Z",
+        "window_start": "2026-10-01T09:55:00Z",
+        "window_end": "2026-10-01T10:05:00Z",
+        "window_minutes": 5,
+        "symptom": "API requests fail",
+        "logs": {
+          "routine-auth": "2026-10-01T10:00:00Z scheduled session closed normally",
+          "kernel": "2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T09:59:59Z routine health-check completed normally\n2026-10-01T10:00:03Z Out of memory: Killed process 1234 (web-api), anon-rss:1048576kB\n",
+          "routine-monitor": "2026-10-01T09:59:55Z collected standard metrics",
+          "routine-package": "2026-10-01T08:00:00Z package metadata check completed",
+          "routine-cron": "2026-10-01T10:00:02Z completed scheduled cleanup successfully",
+          "application": "2026-10-01T10:00:01Z Worker exited unexpectedly"
+        }
+      },
+      "questions": {
+        "log1": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-auth first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log2": {
+          "type": "score",
+          "instructions": "How valuable is it to examine kernel first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log3": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-monitor first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log4": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-package first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log5": {
+          "type": "score",
+          "instructions": "How valuable is it to examine routine-cron first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        },
+        "log6": {
+          "type": "score",
+          "instructions": "How valuable is it to examine application first to find the cause of the incident?",
+          "criteria": [
+            "Nothing related to the incident; can be skipped",
+            "Only indirect or routine information",
+            "Shows symptoms or effects of the incident",
+            "Shows the cause of the incident or its direct evidence; examine this first"
+          ]
+        }
+      },
+      "grades": {
+        "log1": 0,
+        "log2": 3,
+        "log3": 0,
+        "log4": 0,
+        "log5": 0,
+        "log6": 2
+      }
+    }
+  ]
+}

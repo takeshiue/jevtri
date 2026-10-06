@@ -317,3 +317,7 @@ CGO_ENABLED=0 go build -trimpath -ldflags "-X main.version=0.3.2" -o jevtri ./cm
 ## 许可证
 
 MIT。请参阅 [LICENSE](LICENSE)。
+
+## 决策模型比较工具
+
+独立的 Python 基准工具可使用相同的合成日志比较 Jev、Clef 和 Clef-flash。请参阅[使用指南](tools/decisionbench/README.md)（日语）。
